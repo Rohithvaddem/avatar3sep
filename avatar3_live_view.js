@@ -120,39 +120,23 @@
      */
     function createPlotNumberSprite(plotNo, hexColor) {
         const canvas = document.createElement('canvas');
-        canvas.width = 256;
+        canvas.width = 128;
         canvas.height = 128;
         const ctx = canvas.getContext('2d');
 
-        // Draw pill shape background with dark sleek glass fill
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+        // Compact circular marker: readable number, subtle dark fill and a status rim.
         ctx.beginPath();
-        const r = 36;
-        const x = 20, y = 16, w = 216, h = 96;
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-        ctx.lineTo(x + r, y + h);
-        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-        ctx.lineTo(x, y + r);
-        ctx.quadraticCurveTo(x, y, x + r, y);
-        ctx.closePath();
+        ctx.arc(64, 64, 52, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
         ctx.fill();
-
-        // Prominent border colored with plot status
-        ctx.lineWidth = 8;
+        ctx.lineWidth = 4;
         ctx.strokeStyle = hexColor || '#38bdf8';
         ctx.stroke();
-
-        // Bold Crisp White Number
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 52px "Plus Jakarta Sans", Outfit, Arial, sans-serif';
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = '700 43px "Plus Jakarta Sans", Outfit, Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(String(plotNo), 128, 64);
-
+        ctx.fillText(String(plotNo), 64, 65);
         const texture = new THREE.CanvasTexture(canvas);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
@@ -168,13 +152,13 @@
             depthWrite: false
         });
         const sprite = new THREE.Sprite(material);
-        sprite.scale.set(5.2, 2.6, 1);
+        sprite.scale.set(2, 2, 1);
         sprite.renderOrder = 999;
         sprite.userData = { plotNo };
         return sprite;
     }
 
-    function scalePlotLabel(label) { label.scale.set(5.2, 2.6, 1); }
+    function scalePlotLabel(label) { label.scale.set(2, 2, 1); }
 
     /**
      * Initialize Three.js Scene, Camera, Renderer, Controls
@@ -608,7 +592,7 @@
 
             // Plot Number Sprite Floating Above Roof Peak
             const labelSprite = createPlotNumberSprite(plotNo, colorHex);
-            labelSprite.position.set(0, plinthH + houseH + roofH + 1.25, 0);
+            labelSprite.position.set(0, houseMesh.userData.pHeight + 0.8, 0);
             labelSprite.name = 'PlotNumber-' + plotNo;
             labelSprite.userData = { plotNo, detail, status, statusHex: colorHex };
             plotGroup.traverse(object => {
@@ -1915,7 +1899,7 @@
 
         // Update plot label height
         if (plotButtons[plotNo]) {
-            plotButtons[plotNo].position.y = newMesh.userData.pHeight + 1.25;
+            plotButtons[plotNo].position.y = newMesh.userData.pHeight + 0.8;
         }
 
         // Quick pop-in animation
@@ -2096,5 +2080,6 @@
     window.download3DModelGLB = download3DModelGLB;
 
 })();
+
 
 
