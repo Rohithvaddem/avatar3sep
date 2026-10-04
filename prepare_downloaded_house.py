@@ -1,6 +1,7 @@
 from pathlib import Path
 import numpy as np
-import json, struct, base64
+import json, struct, base64, sys
+far_only = '--far' in sys.argv
 root=Path(__file__).resolve().parent
 source=Path(r'C:\Users\varsh\Downloads\modern_lego_house.glb')
 raw=source.read_bytes(); length=struct.unpack_from('<I',raw,12)[0]
@@ -32,7 +33,7 @@ def visit(i,parent):
 for i in doc['scenes'][doc.get('scene',0)]['nodes']:visit(i,np.eye(4))
 v=np.concatenate(positions); c=np.concatenate(colors); tris=np.concatenate(indices).reshape(-1,3)
 origin=v.min(0); extent=v.max(0)-origin
-for resolution in [96]:
+for resolution in ([32] if far_only else [96]):
     cell=extent.max()/resolution
     key=np.c_[np.round((v-origin)/cell).astype(int),np.round(c*255).astype(int)]
     _,first,inverse=np.unique(key,axis=0,return_index=True,return_inverse=True)
@@ -52,6 +53,11 @@ for i,a in enumerate(arrays):
 out=dict(asset=doc['asset'],scene=0,scenes=[dict(nodes=[0])],nodes=[dict(mesh=0)],meshes=[dict(primitives=[dict(attributes=dict(POSITION=0,NORMAL=1,COLOR_0=2),indices=3,material=0)])],materials=[dict(name='Original house colors',pbrMetallicRoughness=dict(baseColorFactor=[1,1,1,1],roughnessFactor=.8,metallicFactor=0),doubleSided=True)],buffers=[dict(byteLength=len(blob))],bufferViews=views,accessors=access)
 js=json.dumps(out,separators=(',',':')).encode();js+=b' '*((-len(js))%4);blob+=b'\0'*((-len(blob))%4)
 glb=struct.pack('<III',0x46546c67,2,12+8+len(js)+8+len(blob))+struct.pack('<II',len(js),0x4e4f534a)+js+struct.pack('<II',len(blob),0x004e4942)+blob
+if far_only:
+    (root/'downloaded_house_far.glb').write_bytes(glb)
+    (root/'downloaded_house_far_data.js').write_text('window.AVATAR3_DOWNLOADED_HOUSE_FAR_B64 = "'+base64.b64encode(glb).decode()+'";')
+    print(f'Distant house: {len(t)} triangles.')
+    sys.exit(0)
 (root/'downloaded_house_optimized.glb').write_bytes(glb)
 (root/'downloaded_house_data.js').write_text('window.AVATAR3_DOWNLOADED_HOUSE_B64 = "'+base64.b64encode(glb).decode()+'";')
 (root/'downloaded_house_credit.json').write_text(json.dumps(dict(**doc['asset']['extras'],originalTriangles=len(tris),optimizedTriangles=len(t),optimization='Vertex clustering, merged mesh, baked original material colors'),indent=2))
@@ -68,6 +74,5 @@ out['bufferViews']=views;out['accessors']=access;out['buffers']=[dict(byteLength
 js=json.dumps(out,separators=(',',':')).encode();js+=b' '*((-len(js))%4);blob+=b'\0'*((-len(blob))%4)
 full=struct.pack('<III',0x46546c67,2,12+8+len(js)+8+len(blob))+struct.pack('<II',len(js),0x4e4f534a)+js+struct.pack('<II',len(blob),0x004e4942)+blob
 (root/'downloaded_house_full.glb').write_bytes(full)
-with (root/'downloaded_house_data.js').open('a') as f:
-    f.write('\nwindow.AVATAR3_DOWNLOADED_HOUSE_FULL_B64 = "'+base64.b64encode(full).decode()+'";')
+(root/'downloaded_house_full_data.js').write_text('window.AVATAR3_DOWNLOADED_HOUSE_FULL_B64 = "'+base64.b64encode(full).decode()+'";')
 print('Full-detail house saved with unchanged source vertices and sharp normals.')

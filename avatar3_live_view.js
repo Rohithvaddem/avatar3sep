@@ -18,6 +18,9 @@
     const customPlotStyles = {};
     let downloadedHouseTemplate = null;
     let downloadedHouseFullTemplate = null;
+    let downloadedHouseFarTemplate = null;
+    let fullHouseRequested = false;
+    const houseLods = new Map();
     let downloadedHouseSize = null;
     try {
         const styles = JSON.parse(localStorage.getItem('avatar3_house_styles_v1'));
@@ -197,9 +200,11 @@
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
         renderer.setClearColor(0x000000, 0);
         renderer.setSize(w, h);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.autoUpdate = false;
+        renderer.shadowMap.needsUpdate = true;
         if (THREE.sRGBEncoding) {
             renderer.outputEncoding = THREE.sRGBEncoding;
         }
@@ -235,6 +240,7 @@
 
         // 10. Exactly ONE Roaming Car on the whole layout
         setupSingleRoamingCar();
+        if (singleCarMesh) singleCarMesh.traverse(object => { object.castShadow = false; });
 
         // 11. Highlight Beacon
         setupBeacon();
@@ -258,8 +264,8 @@
         lights.sun = new THREE.DirectionalLight(0xffffff, 1.05);
         lights.sun.position.set(120, 220, 100);
         lights.sun.castShadow = true;
-        lights.sun.shadow.mapSize.width = 2048;
-        lights.sun.shadow.mapSize.height = 2048;
+        lights.sun.shadow.mapSize.width = 1024;
+        lights.sun.shadow.mapSize.height = 1024;
         lights.sun.shadow.camera.near = 10;
         lights.sun.shadow.camera.far = 700;
         const d = 160;
@@ -276,6 +282,7 @@
 
     function applyLightingMode(mode) {
         currentLightingMode = mode;
+        if (renderer) renderer.shadowMap.needsUpdate = true;
         const palette = {
             day: { sky: 0xb8d5ed, ground: 0xffffff, hemi: .45 },
             sunset: { sky: 0xd98665, ground: 0xffb176, hemi: .25 },
@@ -623,8 +630,11 @@
         if (style === 'downloaded' && downloadedHouseTemplate) {
             const wrapper = new THREE.Group();
             const house = new THREE.LOD();
+            house.autoUpdate = false;
             if (downloadedHouseFullTemplate) house.addLevel(downloadedHouseFullTemplate.clone(true), 0);
             house.addLevel(downloadedHouseTemplate.clone(true), downloadedHouseFullTemplate ? 160 : 0);
+            if (downloadedHouseFarTemplate) house.addLevel(downloadedHouseFarTemplate.clone(true), 600);
+            houseLods.set(String(plotNo), house);
             const scale = Math.min(pWidth * .86 / downloadedHouseSize.x, pDepth * .86 / downloadedHouseSize.z);
             house.scale.setScalar(scale);
             house.traverse(object => {
@@ -1267,12 +1277,37 @@
             }
 
             if (controls) controls.update();
+            updateHouseDetailLevels();
             if (renderer && scene && camera) {
                 renderer.render(scene, camera);
             }
         }
 
         animate();
+    }
+
+    const houseWorldPosition = new THREE.Vector3();
+    function updateHouseDetailLevels() {
+        if (!camera || !scene || !houseLods.size) return;
+        scene.updateMatrixWorld();
+        const nearby = [];
+        houseLods.forEach((lod, plotNo) => {
+            if (!plotGroups[plotNo]?.visible) return;
+            lod.getWorldPosition(houseWorldPosition);
+            nearby.push({lod, distance:camera.position.distanceTo(houseWorldPosition), plotNo});
+        });
+        nearby.sort((a,b) => a.distance-b.distance);
+        if (nearby[0]?.distance < 65 && !downloadedHouseFullTemplate) loadFullHouseOnDemand();
+        let fullCount = 0, mediumCount = 0;
+        nearby.forEach(({lod,distance,plotNo}) => {
+            let level = lod.levels.length-1;
+            if (downloadedHouseFullTemplate && distance < 65 && fullCount < 1) {
+                level = 0; fullCount++;
+            } else if (distance < 180 && mediumCount < 8) {
+                level = downloadedHouseFullTemplate ? 1 : 0; mediumCount++;
+            }
+            lod.levels.forEach((entry,index) => entry.object.visible = index === level);
+        });
     }
 
     /**
@@ -1528,8 +1563,9 @@
         });
         Promise.all([
             parseModel(window.AVATAR3_DOWNLOADED_HOUSE_B64),
-            window.AVATAR3_DOWNLOADED_HOUSE_FULL_B64 ? parseModel(window.AVATAR3_DOWNLOADED_HOUSE_FULL_B64) : Promise.resolve(null)
-        ]).then(([model, full]) => {
+            Promise.resolve(null),
+            window.AVATAR3_DOWNLOADED_HOUSE_FAR_B64 ? parseModel(window.AVATAR3_DOWNLOADED_HOUSE_FAR_B64) : Promise.resolve(null)
+        ]).then(([model, full, far]) => {
             const bounds = new THREE.Box3().setFromObject(model);
             downloadedHouseSize = bounds.getSize(new THREE.Vector3());
             const center = bounds.getCenter(new THREE.Vector3());
@@ -1537,6 +1573,14 @@
             downloadedHouseTemplate = new THREE.Group();
             model.traverse(object => { if (object.isMesh) object.userData.distantHouse = true; });
             downloadedHouseTemplate.add(model);
+            if (far) {
+                const farBounds = new THREE.Box3().setFromObject(far);
+                const farCenter = farBounds.getCenter(new THREE.Vector3());
+                far.position.set(-farCenter.x, -farBounds.min.y, -farCenter.z);
+                far.traverse(object => { if (object.isMesh) object.userData.distantHouse = true; });
+                downloadedHouseFarTemplate = new THREE.Group();
+                downloadedHouseFarTemplate.add(far);
+            }
             if (full) {
                 const fullBounds = new THREE.Box3().setFromObject(full);
                 const fullCenter = fullBounds.getCenter(new THREE.Vector3());
@@ -1548,7 +1592,7 @@
             globalDefaultStyle = 'downloaded';
             Object.keys(plotMeshes).forEach(plotNo => {
                 customPlotStyles[plotNo] = 'downloaded';
-                rebuildPlotModel(plotNo, 'downloaded');
+                rebuildPlotModel(plotNo, 'downloaded', false, false);
             });
             try { localStorage.setItem('avatar3_house_styles_v1', JSON.stringify(customPlotStyles)); } catch (_) {}
             if (selectedPlotNo) {
@@ -1556,6 +1600,31 @@
                 populateReferenceDrawer(data.detail, selectedPlotNo, data.status, data.baseColorHex);
             }
         }).catch(error => console.error('Downloaded house could not be loaded:', error));
+    }
+
+    function loadFullHouseOnDemand() {
+        if (fullHouseRequested || !downloadedHouseTemplate) return;
+        fullHouseRequested = true;
+        const script = document.createElement('script');
+        script.src = 'downloaded_house_full_data.js';
+        script.onload = () => {
+            const bytes = Uint8Array.from(atob(window.AVATAR3_DOWNLOADED_HOUSE_FULL_B64), c => c.charCodeAt(0));
+            new THREE.GLTFLoader().parse(bytes.buffer, '', gltf => {
+                const model = gltf.scene;
+                const bounds = new THREE.Box3().setFromObject(model);
+                const center = bounds.getCenter(new THREE.Vector3());
+                model.position.set(-center.x, -bounds.min.y, -center.z);
+                downloadedHouseFullTemplate = new THREE.Group();
+                downloadedHouseFullTemplate.add(model);
+                Object.keys(plotMeshes).forEach(plotNo => {
+                    if (plotMeshes[plotNo].userData.styleKey === 'downloaded') rebuildPlotModel(plotNo, 'downloaded', false, false);
+                });
+                delete window.AVATAR3_DOWNLOADED_HOUSE_FULL_B64;
+                script.remove();
+            }, error => console.error('Close-up house could not load:', error));
+        };
+        script.onerror = () => console.error('Close-up house asset could not load.');
+        document.head.appendChild(script);
     }
 
     function setupUI() {
@@ -1790,13 +1859,15 @@
         drawer.classList.add('open');
     }
 
-    function rebuildPlotModel(plotNo, styleKey) {
+    function rebuildPlotModel(plotNo, styleKey, animate = true, persist = true) {
         const oldMesh = plotMeshes[plotNo];
         const group = plotGroups[plotNo];
         if (!oldMesh || !group) return;
 
         customPlotStyles[plotNo] = styleKey;
-        try { localStorage.setItem('avatar3_house_styles_v1', JSON.stringify(customPlotStyles)); } catch (_) {}
+        if (persist) { try { localStorage.setItem('avatar3_house_styles_v1', JSON.stringify(customPlotStyles)); } catch (_) {} }
+        houseLods.delete(String(plotNo));
+        if (renderer) renderer.shadowMap.needsUpdate = true;
         const u = oldMesh.userData;
 
         // Animate out scale
@@ -1825,6 +1896,7 @@
         }
 
         // Quick pop-in animation
+        if (!animate) return;
         newMesh.scale.set(0.2, 0.2, 0.2);
         let scale = 0.2;
         const growInterval = setInterval(() => {
