@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Aspirealty Avatar 3 - Interactive Plot Status Viewer</title>
+
+    <!-- Meta tags for SEO -->
+    <meta name="description"
+        content="Explore and search plot availability inside Aspirealty Avatar. Interactive map layout with real-time status updates, sizes, and facing directions.">
+    <meta name="keywords" content="Aspirealty, Avatar, Real Estate, Plot Viewer, Plot Map, Interactive Layout">
+    <meta name="author" content="Aspirealty">
+
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Preload Layout Map Images for Instant Switching -->
+    <link rel="preload" as="image" href="avatar1_map_layout.jpg">
+    <link rel="preload" as="image" href="avatar2_digi/map_layout.jpg">
+    <link rel="preload" as="image" href="map_layout.png">
+
+    <!-- Leaflet.js Real-World GIS Map Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="avatar3_page_design.css?v=3">
+    <link rel="stylesheet" href="avatar3_reference_design.css?v=2">
+</head>
+
+<body data-project="avatar3">
+
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand sidebar-header">
+                <div class="logo-container">
+                    <img src="aspirealty_label.png" class="brand-logo-full" alt="Aspirealty Logo">
+                </div>
+                <button class="sidebar-close" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Scrollable Sidebar Menu Content -->
+            <div class="sidebar-menu sidebar-content">
+
+                <!-- Sidebar Coming Soon Info Box (shown when Avatar 3 active) -->
+                <div class="sidebar-section" id="sidebarComingSoonSection" style="display: none;">
+                    <div class="sidebar-cs-card" style="text-align: center; padding: 20px 16px;">
+                        <h4 class="sidebar-cs-title"
+                            style="font-size: 15px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">Aspirealty
+                            Avatar 3</h4>
+                        <div class="sidebar-cs-badge"
+                            style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 1px;"><i
+                                class="fa-solid fa-clock"></i> COMING SOON</div>
+                    </div>
+                </div>
+
+                <!-- Search Section -->
+                <div class="sidebar-section" id="searchSection">
+                    <h3 class="section-title">Search Plots</h3>
+                    <div class="search-box search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Enter Plot No. (e.g. 125)" autocomplete="off">
+                        <button id="searchClearBtn" class="clear-btn search-clear-btn"><i class="fa-solid fa-circle-xmark"></i></button>
+                    </div>
+                    <button id="openPlotFinderSidebarBtn" class="smart-finder-btn-header"
+                        style="width: 100%; justify-content: center; margin-top: 8px;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Smart Plot Finder</span>
+                    </button>
+                    <div id="searchSuggestions" class="suggestions-dropdown search-suggestions"></div>
+                </div>
+
+                <!-- Filters Section -->
+                <div class="sidebar-section" id="filtersSection">
+                    <div class="section-header">
+                        <h3 class="section-title">Filter by Facing</h3>
+                        <button class="filter-reset-btn" id="facingResetBtn">Clear</button>
+                    </div>
+                    <div class="filter-grid" id="facingFilterGrid">
+                        <button class="filter-pill" data-facing="East">East</button>
+                        <button class="filter-pill" data-facing="West">West</button>
+                        <button class="filter-pill" data-facing="North">North</button>
+                        <button class="filter-pill" data-facing="South">South</button>
+                        <button class="filter-pill" data-facing="North-East">North-East</button>
+                        <button class="filter-pill" data-facing="North-West">North-West</button>
+                        <button class="filter-pill" data-facing="South-East">South-East</button>
+                        <button class="filter-pill" data-facing="South-West">South-West</button>
+                    </div>
+                </div>
+
+                <!-- Mapper Mode Section -->
+                <div class="sidebar-section" id="mapperSection"
+                    style="border-top: 1px solid var(--border-color); display: none;">
+                    <div class="section-header">
+                        <h3 class="section-title" style="color: var(--accent); margin-bottom: 0;"><i
+                                class="fa-solid fa-map-pin"></i> Plot Button Aligner</h3>
+                        <button class="filter-reset-btn" id="toggleMapperBtn">Start</button>
+                    </div>
+                    <div id="mapperPanel" style="display: none; margin-top: 12px;">
+                        <p
+                            style="font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.4; text-align: left;">
+                            Select a plot below or click its dot on the map, then click on the map anywhere to align its
+                            button. The active plot will auto-advance.
+                        </p>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 12px; font-weight: 600; color: var(--text-primary);">Active: Plot
+                                #</span>
+                            <input type="number" id="mapperActivePlot"
+                                style="width: 70px; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 4px 8px; border-radius: 6px;"
+                                value="1" min="1" max="328">
+                        </div>
+                        <div style="max-height: 150px; overflow-y: auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 12px;"
+                            id="mapperPlotList">
+                            <!-- 1 to 206 buttons -->
+                        </div>
+                        <button id="mapperExportBtn" class="admin-login-btn"
+                            style="background-color: var(--accent); color: #fff; border: none; font-weight: 700; width: 100%;">
+                            <i class="fa-solid fa-download"></i> Export Coords Config
+                        </button>
+                    </div>
+                </div>
+            </div> <!-- End of .sidebar-menu -->
+
+            <div class="sidebar-footer" id="sidebarFooter">
+                <button class="admin-login-btn" id="staffLoginBtn"
+                    style="border: none; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fa-solid fa-lock"></i> Staff Login
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Dashboard Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="sidebarToggleBtn"><i class="fa-solid fa-bars"></i></button>
+                    <div class="header-project-info">
+                        <h2 class="project-name">Layout View</h2>
+                        <span class="badge approved-badge">
+                            <i class="fa-solid fa-circle-check"></i> DTCP Approved (LP No. 224/2023/H)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Center Actions: View Switcher -->
+                <div class="header-center-actions">
+                    <div class="view-switch-container" id="viewSwitchContainer">
+                        <button class="view-switch-btn active" id="btnSchematicView"
+                            title="Switch to 2D Schematic View">
+                            <i class="fa-solid fa-map"></i> <span>Schematic View</span>
+                        </button>
+                        <button class="view-switch-btn" id="btnSatelliteView" title="Switch to Satellite Map View">
+                            <i class="fa-solid fa-earth-americas"></i> <span>Satellite View</span>
+                        </button>
+                        <button class="view-switch-btn" id="btn3DView" title="Explore the live 3D layout">
+                            <i class="fa-solid fa-cube"></i> <span>3D View</span>
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="header-stats">
+                    <div class="stat-card stat-header-item">
+                        <span class="stat-header-val stat-num" id="statTotalPlots">-</span>
+                        <span class="stat-label stat-header-label">Total Plots</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num text-success" id="statAvailablePlots">-</span>
+                        <span class="stat-label">Available</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num text-danger" id="statBookedPlots">-</span>
+                        <span class="stat-label">Sold/Booked</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num text-warning" id="statMortgagePlots">-</span>
+                        <span class="stat-label">Mortgage</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Map Viewport -->
+            <div class="map-viewport" id="mapViewport">
+                <!-- Floating On-Screen Status Legend Card -->
+                <div class="floating-legend-card" id="floatingLegendCard">
+                    <div class="floating-legend-header" id="floatingLegendHeader"
+                        title="Click to collapse/expand legend">
+                        <div class="floating-legend-title">
+                            <i class="fa-solid fa-palette" style="color: #60a5fa;"></i> <span>Plot Status Legend</span>
+                        </div>
+                        <button class="floating-legend-toggle" id="floatingLegendToggle">
+                            <i class="fa-solid fa-chevron-up"></i>
+                        </button>
+                    </div>
+                    <div class="floating-legend-body" id="floatingLegendBody">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+                </div>
+
+                <!-- Floating Smart Plot Finder Match Result Banner -->
+                <div class="finder-result-banner" id="finderResultBanner" style="display: none;">
+                    <span><i class="fa-solid fa-wand-magic-sparkles" style="color: #60a5fa;"></i> Found <strong
+                            id="matchedPlotCount" style="color: #4ade80; font-size: 14px;">0</strong> matching
+                        plots!</span>
+                    <button id="clearFinderMatchBtn" class="clear-finder-btn"><i class="fa-solid fa-xmark"></i>
+                        Clear</button>
+                </div>
+
+                <!-- Leaflet Real-World GIS Map Container -->
+                <div id="leafletMapContainer"></div>
+
+                <!-- 3D Interactive Model for Avatar 3 on Satellite Map -->
+                <div id="threeMapContainer" style="display: none; width: 100%; height: 100%; position: absolute; inset: 0; z-index: 5; overflow: hidden;">
+                    <div style="position:absolute;bottom:12px;left:12px;z-index:30;background:rgba(15,23,42,.85);padding:6px 9px;border-radius:6px;font-size:10px;color:#cbd5e1;">
+                        <a href="https://sketchfab.com/3d-models/modern-lego-house-04d6f854fad246b999419ff8cf5ab309" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">Modern Lego House — Arrcaz</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">CC BY 4.0</a> · Simplified for this layout
+                    </div>
+                    <div id="threeCanvasContainer" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
+
+<header class="modal-3d-header">
+                <div class="modal-3d-title-group">
+                    <div class="modal-3d-icon-badge">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 class="modal-3d-title">Avatar 3 · 3D Interactive Model</h3>
+                            <span class="modal-3d-tag"><i class="fa-solid fa-vr-cardboard"></i> Real-time 3D</span>
+                        </div>
+                        <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">
+                            Architectural villas, camera flight, and sunlight simulation
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar / Presets -->
+                <div class="modal-3d-toolbar" id="threeMapToolbar">
+                    <!-- Camera Presets -->
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn btn-cam-preset active" data-preset="isometric" title="Isometric 45° Angle">
+                            <i class="fa-solid fa-cubes"></i> Isometric
+                        </button>
+                        <button class="toolbar-btn btn-cam-preset" data-preset="topDown" title="Top-Down Plan View">
+                            <i class="fa-solid fa-compass"></i> Top-Down
+                        </button>
+                    </div>
+
+                    <!-- Lighting Modes -->
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn btn-light-mode active" data-mode="day" title="Bright Daylight">
+                            <i class="fa-solid fa-sun" style="color: #fbbf24;"></i> Day
+                        </button>
+                        <button class="toolbar-btn btn-light-mode" data-mode="sunset" title="Golden Hour Sunset">
+                            <i class="fa-solid fa-cloud-sun" style="color: #f97316;"></i> Sunset
+                        </button>
+                        <button class="toolbar-btn btn-light-mode" data-mode="night" title="Cyber Night Glow">
+                            <i class="fa-solid fa-moon" style="color: #38bdf8;"></i> Night
+                        </button>
+                    </div>
+
+                    <!-- Utilities -->
+
+                    <button class="toolbar-btn active" id="threeToggleLayoutBtn" title="Toggle Blueprint Ground Layout Map">
+                        <i class="fa-solid fa-map"></i> Layout Plan
+                    </button>
+                    <button class="toolbar-btn" id="threeXRayBtn" title="X-Ray View: See-Through Plots to Inspect Blueprint Details">
+                        <i class="fa-solid fa-layer-group"></i> X-Ray View
+                    </button>
+                    <button class="toolbar-btn" id="threeSoloLayoutBtn" title="Hide 3D Plots to View Bare Layout Plan">
+                        <i class="fa-solid fa-map-marked-alt"></i> Layout Only
+                    </button>
+                    <button class="toolbar-btn" id="threeAutoRotateBtn" title="Toggle Auto-Orbit Turntable">
+                        <i class="fa-solid fa-arrows-spin"></i> Auto-Orbit
+                    </button>
+                    <button class="toolbar-btn" id="threeResetViewBtn" title="Reset Camera View">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                    <button class="toolbar-btn" id="threeFullscreenBtn" title="Toggle Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+
+                    <!-- Close Modal -->
+                    <button class="modal-3d-close-btn" id="modal3DCloseBtn" onclick="document.getElementById('btnSchematicView').click()" title="Close 3D View (Esc)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </header>
+
+                    <!-- HUD Overlay: Top-Left 3D Filter Pills -->
+                    <div class="three-hud-filters" style="position: absolute; top: 16px; left: 16px; z-index: 25; display: flex; gap: 6px; flex-wrap: wrap; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 6px 10px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
+                        <span style="font-size: 11px; font-weight: 700; color: #94a3b8; align-self: center; margin-right: 4px;">3D Plots:</span>
+                        <button class="three-filter-pill active" data-status="ALL">All (206)</button>
+                        <button class="three-filter-pill" data-status="AVAILABLE" style="border-left: 3px solid #059669;">Available</button>
+                        <button class="three-filter-pill" data-status="SOLD" style="border-left: 3px solid #1d4ed8;">Sold</button>
+                        <button class="three-filter-pill" data-status="MORTGAGE" style="border-left: 3px solid #f97316;">Mortgage</button>
+                    </div>
+
+                    <div class="three-hud-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="number" id="plotSearchInput" class="three-search-input" placeholder="Fly to Plot # (1–206)" min="1" max="206">
+                    </div>
+                    <!-- Bottom Controls Navigation Guide -->
+                    <div class="three-controls-guide" id="threeControlsGuide" style="position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 25; pointer-events: none; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 20px; padding: 7px 18px; font-size: 11px; color: #e2e8f0; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                        <i class="fa-solid fa-computer-mouse" style="color: #38bdf8;"></i>
+                        <span><strong>Left-Click + Drag:</strong> Orbit &bull; <strong>Right-Click:</strong> Pan &bull; <strong>Scroll:</strong> Zoom &bull; <strong>Click House:</strong> Plot Details</span>
+                    </div>
+
+                    <!-- Hover Tooltip -->
+                    <div class="three-plot-tooltip" id="threePlotTooltip"></div>
+
+                    <!-- Right-side Quick Inspect Drawer -->
+                    <div class="three-inspect-drawer" id="threeInspectDrawer">
+                        <div class="three-inspect-header">
+                            <div class="three-inspect-title" id="threeInspectPlotTitle">
+                                <span>Plot Details</span>
+                            </div>
+                            <button class="three-drawer-close" id="threeInspectCloseBtn" title="Close Drawer">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div id="threeInspectDetailsBody">
+                            <!-- Dynamic details injected by three_avatar3.js -->
+                        </div>
+                        <div class="three-drawer-actions">
+                            <button class="three-drawer-btn three-btn-primary" id="threeOpenFullPlotModalBtn">
+                                <i class="fa-solid fa-up-right-from-square"></i> Open Full Details
+                            </button>
+                            <button class="three-drawer-btn three-btn-secondary" id="threeViewIn2DBtn">
+                                <i class="fa-solid fa-map-location-dot"></i> View on 2D / Satellite Map
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GIS Custom Layer Control Panel (glowing glassmorphism) -->
+                <div class="gis-layer-control" id="gisLayerControl" style="display: none;">
+                    <div class="layer-control-header">
+                        <i class="fa-solid fa-layer-group"></i> <span>Map Layers</span>
+                    </div>
+                    <div class="layer-control-body">
+                        <label class="layer-toggle-item">
+                            <input type="checkbox" id="toggleLayouts" checked>
+                            <span class="custom-checkbox"></span>
+                            <span class="layer-label">Layout Overlays</span>
+                        </label>
+                        <label class="layer-toggle-item">
+                            <input type="checkbox" id="toggleRegionalRoads" checked>
+                            <span class="custom-checkbox"></span>
+                            <span class="layer-label">Regional Roads</span>
+                        </label>
+                        <label class="layer-toggle-item">
+                            <input type="checkbox" id="toggleLocalRoads" checked>
+                            <span class="custom-checkbox"></span>
+                            <span class="layer-label">Road Connections</span>
+                        </label>
+                        <label class="layer-toggle-item">
+                            <input type="checkbox" id="toggleProjectMarkers" checked>
+                            <span class="custom-checkbox"></span>
+                            <span class="layer-label">Project Markers</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Project Details Card (slides in from right in Satellite View) -->
+                <div class="project-details-card" id="projectDetailsCard" style="display: none;">
+                    <div class="details-card-header">
+                        <h4 id="projDetailsTitle">Avatar 3</h4>
+                        <button class="details-card-close" id="projDetailsCloseBtn"><i
+                                class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="details-card-body">
+                        <div class="details-row">
+                            <span class="details-label"><i class="fa-solid fa-location-dot"></i> Location</span>
+                            <span class="details-value" id="projDetailsLocation">-</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label"><i class="fa-solid fa-maximize"></i> Total Area</span>
+                            <span class="details-value" id="projDetailsArea">-</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label"><i class="fa-solid fa-thumbtack"></i> Total Plots</span>
+                            <span class="details-value" id="projDetailsPlots">-</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label"><i class="fa-solid fa-certificate"></i> LP Status</span>
+                            <span class="details-value" id="projDetailsLP">-</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label"><i class="fa-solid fa-circle-info"></i> Project Status</span>
+                            <span class="details-value" id="projDetailsStatus">-</span>
+                        </div>
+                        <div class="details-highlights">
+                            <span class="highlights-title">Location Highlights</span>
+                            <ul class="highlights-list" id="projDetailsHighlights">
+                                <!-- Location Highlights list goes here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Float Controls -->
+                <div class="map-controls">
+                    <button class="map-btn" id="zoomInBtn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+                    <button class="map-btn" id="zoomOutBtn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+                </div>
+
+                <!-- Floating Recenter Action Button at Bottom Center -->
+                <button class="floating-recenter-btn" id="recenterBtn" title="Recenter Map">
+                    <i class="fa-solid fa-arrows-to-dot"></i> <span>Recenter</span>
+                </button>
+
+                <!-- Floating User Tips Banner (Displays for 10 seconds then disappears) -->
+                <div class="map-tip" id="mapTip">
+                    <i class="fa-solid fa-lightbulb" style="color: #facc15; font-size: 14px;"></i>
+                    <span><strong>Quick Tip:</strong> Click plot buttons for details &bull; Switch to Satellite View for
+                        nearby highlights</span>
+                </div>
+
+                <!-- Coming Soon Overlay for Unlaunched Projects (Avatar 3) -->
+                <div class="coming-soon-overlay" id="comingSoonOverlay" style="display: none;">
+                    <div class="coming-soon-card" style="max-width: 580px; padding: 54px 44px; text-align: center;">
+                        <div class="cs-brand-logo" style="margin-bottom: 24px;">
+                            <img src="aspirealty_label.png" alt="Aspirealty Logo"
+                                style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2 class="coming-soon-title"
+                            style="font-size: 38px; font-weight: 800; color: #ffffff; margin-bottom: 20px; letter-spacing: -0.5px;">
+                            Aspirealty Avatar 3</h2>
+                        <div class="coming-soon-pill-badge"
+                            style="display: inline-flex; align-items: center; gap: 10px; background: rgba(249, 115, 22, 0.15); border: 1.5px solid rgba(249, 115, 22, 0.5); color: #f97316; font-weight: 800; font-size: 16px; padding: 12px 32px; border-radius: 40px; letter-spacing: 3px; text-transform: uppercase; box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);">
+                            <i class="fa-solid fa-clock"></i> COMING SOON
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sleek Layout Loader -->
+                <div class="layout-loader" id="layoutLoader">
+                    <div class="spinner"></div>
+                    <div>Loading Layout...</div>
+                </div>
+
+                <!-- Drag/Zoom Container -->
+                <div class="map-container" id="mapContainer">
+                    <img src="map_layout.png" alt="Aspirealty Avatar 3 Project Layout" class="map-image"
+                        id="mapImage">
+                    <!-- Dynamic overlay nodes go here -->
+                    <div class="plots-overlay" id="plotsOverlay"></div>
+                </div>
+                <!-- Custom Animated Plot Details Modal Scoped to Map Viewport -->
+                <div class="modal-backdrop" id="modalBackdrop">
+                    <div class="custom-modal" id="plotModal">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Plot Details</h3>
+                            <button class="modal-close" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="modal-body" id="modalBody">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Staff / Director Login Modal -->
+    <div class="modal-backdrop" id="loginModalBackdrop">
+        <div class="custom-modal login-modal" id="loginModal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="loginModalTitle"><i class="fa-solid fa-lock"></i> Staff Login</h3>
+                <button class="modal-close" id="loginModalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+                <form id="loginForm" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
+                        <label id="loginUsernameLabel"
+                            style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Username / Login
+                            ID</label>
+                        <input type="text" id="loginUsername" required
+                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                            placeholder="Enter staff username">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Password</label>
+                        <div style="position: relative; width: 100%;">
+                            <input type="password" id="loginPassword" required
+                                style="width: 100%; background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 10px 38px 10px 12px; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                                placeholder="Enter password">
+                            <button type="button" id="togglePasswordBtn" title="Toggle Password Visibility"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 14px; padding: 4px;">
+                                <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="loginError"
+                        style="color: var(--status-registered); font-size: 12px; text-align: left; display: none; font-weight: 600;">
+                        <i class="fa-solid fa-circle-exclamation"></i> Invalid credentials! Please verify username and
+                        password.
+                    </div>
+                    <button type="submit" id="loginSubmitBtn" class="admin-login-btn"
+                        style="background-color: var(--accent); color: #fff; border: none; font-weight: 700; padding: 12px; font-size: 14px; margin-top: 8px; cursor: pointer; border-radius: 8px;">
+                        Login as Staff
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Director Mode Live Deal Closer & Margin Simulator Modal -->
+    <div class="modal-backdrop" id="dealSimulatorModalBackdrop">
+        <div class="custom-modal deal-simulator-modal" id="dealSimulatorModal" style="max-width: 520px; width: 95%;">
+            <div class="modal-header"
+                style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(202, 138, 4, 0.25)); border-bottom: 1px solid rgba(250, 204, 21, 0.3);">
+                <h3 class="modal-title" style="color: #facc15; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-crown" style="color: #facc15;"></i> Live Deal Closer & Margin Simulator
+                </h3>
+                <button class="modal-close" id="dealSimulatorCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="dealSimulatorBody"
+                style="padding: 18px 20px; max-height: 80vh; overflow-y: auto;">
+                <!-- Populated dynamically by app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pre-Launch Interest Modal -->
+    <div class="modal-backdrop" id="interestModalBackdrop">
+        <div class="custom-modal login-modal" id="interestModal" style="max-width: 420px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-bell" style="color: var(--accent);"></i> Avatar 3
+                    Pre-Launch Interest</h3>
+                <button class="modal-close" id="interestModalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 20px 24px;">
+                <p
+                    style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; text-align: left;">
+                    Be among the first to receive exclusive pre-launch layout maps, plot inventory list, and early bird
+                    launch pricing for <strong>Avatar 3</strong>.
+                </p>
+                <form id="interestForm" style="display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Full Name
+                            *</label>
+                        <input type="text" id="interestName" required
+                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none;"
+                            placeholder="Enter your name">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Phone / WhatsApp
+                            Number *</label>
+                        <input type="tel" id="interestPhone" required
+                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none;"
+                            placeholder="Enter mobile number">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 6px; text-align: left;">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Preferred Plot
+                            Facing</label>
+                        <select id="interestFacing"
+                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none;">
+                            <option value="Any">Any Facing</option>
+                            <option value="East">East Facing</option>
+                            <option value="West">West Facing</option>
+                            <option value="North">North Facing</option>
+                            <option value="South">South Facing</option>
+                            <option value="Corner">Corner Plot</option>
+                        </select>
+                    </div>
+                    <div id="interestSuccess"
+                        style="color: #4ade80; font-size: 13px; text-align: center; display: none; font-weight: 600; padding: 10px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px;">
+                        <i class="fa-solid fa-circle-check"></i> Thank you! Your pre-launch interest has been
+                        registered.
+                    </div>
+                    <button type="submit" class="admin-login-btn" id="interestSubmitBtn"
+                        style="background-color: var(--accent); color: #fff; border: none; font-weight: 700; padding: 12px; font-size: 14px; margin-top: 4px; cursor: pointer; border-radius: 8px;">
+                        Submit Pre-Launch Enquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating "Book Site Visit" Action Button -->
+                <button class="floating-site-visit-btn" id="floatingSiteVisitBtn" title="Book Free Site Visit">
+                    <i class="fa-solid fa-car-side"></i> <span>Book Free Site Visit</span>
+                </button>
+
+                <!-- Book Site Visit Modal (Glassmorphism Modal) -->
+                <div class="site-visit-modal-backdrop" id="siteVisitModalBackdrop">
+                    <div class="site-visit-modal" id="siteVisitModal">
+                        <div class="modal-header">
+                            <h3 class="modal-title"
+                                style="display: flex; align-items: center; gap: 8px; color: var(--accent); font-size: 16px;">
+                                <i class="fa-solid fa-calendar-check"></i> Book Free Site Visit
+                            </h3>
+                            <button class="modal-close" id="siteVisitCloseBtn"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="modal-body" style="padding-top: 10px;">
+                            <p
+                                style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.4;">
+                                Experience Aspirealty venture layouts in person! Schedule a free site visit with
+                                complimentary AC cab pick-up.
+                            </p>
+                            <form id="siteVisitForm" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Select
+                                        Project Layout</label>
+                                    <select id="visitProjectSelect" required
+                                        style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                        <option value="Aspirealty Avatar 1">Aspirealty Avatar 1 (Kadthal)</option>
+                                        <option value="Aspirealty Avatar 2">Aspirealty Avatar 2 (Karkalpahad)</option>
+                                        <option value="Aspirealty Avatar 3">Aspirealty Avatar 3 (Pre-Launch)</option>
+                                    </select>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label
+                                            style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Visit
+                                            Date</label>
+                                        <input type="date" id="visitDate" required
+                                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label
+                                            style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Preferred
+                                            Time</label>
+                                        <input type="text" id="visitTimeSlot" placeholder="e.g. 11:30 AM or 4:00 PM"
+                                            required
+                                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Full
+                                        Name</label>
+                                    <input type="text" id="visitName" placeholder="Enter your full name" required
+                                        style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Phone
+                                        Number (WhatsApp)</label>
+                                    <input type="tel" id="visitPhone" placeholder="Enter 10-digit mobile no." required
+                                        pattern="[0-9]{10}"
+                                        style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Plot
+                                        / Facing Preferences <span
+                                            style="font-size: 10px; color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+                                    <textarea id="visitPreferences"
+                                        placeholder="e.g. Prefer East facing, ~200 sq.yds, corner plot..." rows="2"
+                                        style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; resize: none; font-family: var(--font-body);"></textarea>
+                                </div>
+
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-secondary); cursor: pointer; margin-top: 2px;">
+                                    <input type="checkbox" id="visitCabPickup" checked
+                                        style="accent-color: var(--accent); width: 15px; height: 15px;">
+                                    <span>Request complimentary AC cab pick-up &amp; drop</span>
+                                </label>
+
+                                <div id="visitSuccessMsg"
+                                    style="color: #4ade80; font-size: 12px; text-align: center; display: none; font-weight: 600; padding: 10px; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px;">
+                                    <i class="fa-solid fa-circle-check"></i> Site visit booked successfully! Our
+                                    executive will contact you shortly.
+                                </div>
+
+                                <button type="submit" class="admin-login-btn"
+                                    style="background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%); color: #fff; border: none; font-weight: 700; padding: 11px; font-size: 13px; margin-top: 4px; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);">
+                                    <i class="fa-solid fa-paper-plane"></i> Confirm Site Visit Booking
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Plot Finder Quiz Modal -->
+                <div class="site-visit-modal-backdrop" id="smartFinderModalBackdrop">
+                    <div class="site-visit-modal smart-finder-modal" style="max-width: 480px; padding: 24px;">
+                        <div class="modal-header"
+                            style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div
+                                    style="width: 36px; height: 36px; border-radius: 10px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); display: flex; align-items: center; justify-content: center; color: #60a5fa;">
+                                    <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 16px;"></i>
+                                </div>
+                                <div>
+                                    <h3 class="modal-title" style="font-size: 18px; font-weight: 800; color: #fff;">
+                                        Smart Plot Finder</h3>
+                                    <span style="font-size: 11px; color: var(--text-secondary);">Find your ideal plot in
+                                        30 seconds</span>
+                                </div>
+                            </div>
+                            <button class="modal-close" id="smartFinderCloseBtn"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="smart-finder-body" style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Step 1: Preferred Size -->
+                            <div class="finder-step">
+                                <label
+                                    style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; display: block;">
+                                    1. Select Preferred Plot Size
+                                </label>
+                                <div class="finder-options-grid" id="finderSizeOptions">
+                                    <button class="finder-chip active" data-value="all">Any Size</button>
+                                    <button class="finder-chip" data-value="150-200">150 - 200 Sq.Yds</button>
+                                    <button class="finder-chip" data-value="201-300">201 - 300 Sq.Yds</button>
+                                    <button class="finder-chip" data-value="301+">300+ Sq.Yds</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Preferred Facing -->
+                            <div class="finder-step">
+                                <label
+                                    style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; display: block;">
+                                    2. Select Preferred Facing Direction
+                                </label>
+                                <div class="finder-options-grid" id="finderFacingOptions">
+                                    <button class="finder-chip active" data-value="all">Any Facing</button>
+                                    <button class="finder-chip" data-value="East">East Facing</button>
+                                    <button class="finder-chip" data-value="West">West Facing</button>
+                                    <button class="finder-chip" data-value="North">North / South</button>
+                                    <button class="finder-chip" data-value="Corner">Corner / Cross</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Availability Filter -->
+                            <div class="finder-step">
+                                <label
+                                    style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; display: block;">
+                                    3. Plot Availability Status
+                                </label>
+                                <div class="finder-options-grid" id="finderStatusOptions">
+                                    <button class="finder-chip active" data-value="AVAILABLE">Available Only</button>
+                                    <button class="finder-chip" data-value="all">All Statuses</button>
+                                </div>
+                            </div>
+
+                            <button id="runSmartFinderBtn" class="admin-login-btn"
+                                style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #fff; border: none; font-weight: 800; padding: 13px; font-size: 14px; margin-top: 8px; cursor: pointer; border-radius: 10px; box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <i class="fa-solid fa-magnifying-glass"></i> Find &amp; Highlight Matching Plots
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Plot Hover Preview Tooltip -->
+                <div class="plot-hover-tooltip" id="plotHoverTooltip">
+                    <div class="tooltip-header">
+                        <span class="tooltip-title" id="hoverPlotNo">Plot #00</span>
+                        <span class="status-badge" id="hoverPlotStatus"
+                            style="font-size: 9px; padding: 2px 6px;">AVAILABLE</span>
+                    </div>
+                    <div class="tooltip-body">
+                        <div class="tooltip-row"><i class="fa-solid fa-ruler-combined"></i> <span id="hoverPlotArea">200
+                                Sq. Yards</span></div>
+                        <div class="tooltip-row"><i class="fa-solid fa-compass"></i> <span id="hoverPlotFacing">East
+                                Facing</span></div>
+                    </div>
+                </div>
+
+
+                <!-- Three.js Real-time 3D Engine & OrbitControls -->
+                <script src="three.min.js"></script>
+                <script src="OrbitControls.js"></script>
+                <script src="GLTFLoader.js"></script>
+                <script>
+                    if (typeof THREE === 'undefined') {
+                        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+                    }
+                    if (typeof THREE !== 'undefined' && !THREE.OrbitControls) {
+                        document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');
+                    }
+                </script>
+
+                <!-- Coordinate & Dataset Scripts -->
+                <script src="plot_coords.js"></script>
+                <script src="data.js"></script>
+                <script src="avatar2_plot_coords.js"></script>
+                <script src="avatar2_data.js"></script>
+                <script src="avatar1_plot_coords.js"></script>
+                <script src="avatar1_data.js"></script>
+                <script src="avatar3_plot_coords.js"></script>
+                <script src="avatar3_data.js"></script>
+                <script src="avatar3_texture_data.js"></script>
+                <script src="doc_kml.js"></script>
+
+                <!-- 3D Layout Model Engine & Core Application -->
+                
+                <script src="avatar3_satellite_texture.js"></script>
+                <script src="avatar3_satellite_wide_texture.js?v=2"></script>
+                <script src="downloaded_house_data.js?v=2"></script>
+                <script src="avatar3_live_view.js?v=13"></script>
+                <script src="app.js?v=29"></script>
+</body>
+
+</html>
+
+
+

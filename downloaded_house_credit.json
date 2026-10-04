@@ -1,0 +1,9 @@
+{
+  "author": "Arrcaz (https://sketchfab.com/Arrcaz)",
+  "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+  "source": "https://sketchfab.com/3d-models/modern-lego-house-04d6f854fad246b999419ff8cf5ab309",
+  "title": "Modern Lego House",
+  "originalTriangles": 640216,
+  "optimizedTriangles": 88913,
+  "optimization": "Vertex clustering, merged mesh, baked original material colors"
+}

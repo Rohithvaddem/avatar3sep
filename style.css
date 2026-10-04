@@ -1,0 +1,3963 @@
+/* CSS Variables for Premium Dark/Light theme */
+:root {
+    --bg-primary: #0a0d14;
+    --bg-secondary: #121824;
+    --bg-tertiary: #1b2336;
+    --bg-glass: rgba(18, 24, 36, 0.75);
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --accent: #0ea5e9;
+    --accent-glow: rgba(14, 165, 233, 0.25);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    
+    /* Plot Status Colors */
+    --status-available: #006400;    /* Dark Green */
+    --status-sold: #1d4ed8;         /* Deep Blue */
+    --status-hold: #92400e;         /* Brown */
+    --status-mortgage: #ff6600;     /* Vibrant Orange */
+    --status-registered: #dc2626;   /* Rich Vibrant Red */
+    --status-resale: #06b6d4;       /* Cyan */
+    --status-investor: #06b6d4;     /* Cyan */
+    --status-unknown: #4b5563;      /* Grey */
+}
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Scrollbar Style */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 320px;
+    background-color: rgba(18, 24, 36, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 100;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-menu {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-brand {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    height: 38px;
+    object-fit: contain;
+}
+
+.brand-logo-full {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: transparent;
+    padding: 0;
+}
+
+.logo-container .brand-title {
+    color: #0a0d14 !important;
+}
+
+.logo-container .brand-subtitle {
+    color: #64748b !important;
+}
+
+.logo-icon {
+    font-size: 24px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+}
+
+.brand-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+
+.brand-subtitle {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+}
+
+.sidebar-close {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Sidebar Sections */
+.sidebar-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.filter-reset-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.filter-reset-btn:hover {
+    opacity: 0.8;
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+#searchInput {
+    width: 100%;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 40px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#searchInput:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+}
+
+.clear-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Suggestions Dropdown */
+.suggestions-dropdown {
+    position: absolute;
+    width: calc(320px - 48px);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 110;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.suggestion-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* Filter Grid */
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.filter-pill {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.filter-pill:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.filter-pill.active {
+    background-color: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+/* Status Legend & Statistics */
+.status-legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.legend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.legend-item:hover {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+.legend-item.active {
+    background-color: var(--accent-glow);
+    border-color: rgba(14, 165, 233, 0.5);
+}
+
+.legend-color-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.legend-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--status-color);
+    background-color: var(--status-color);
+}
+
+.legend-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 24px;
+    border-top: 1px solid var(--border-color);
+}
+
+.admin-login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.admin-login-btn:hover {
+    background-color: #26334e;
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header */
+.dashboard-header {
+    position: relative;
+    min-height: 72px;
+    background-color: rgba(18, 24, 36, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    gap: 20px;
+    flex-shrink: 0;
+    z-index: 95;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.header-project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.project-name {
+    font-family: var(--font-heading);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+.badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.approved-badge {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    max-width: max-content;
+}
+
+.header-center-actions {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 5;
+}
+
+/* Side-by-Side View Switcher Container */
+.view-switch-container {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(10, 14, 23, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3px;
+    border-radius: 10px;
+    gap: 3px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.view-switch-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.view-switch-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.view-switch-btn.active {
+    background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.header-stats {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.stat-card {
+    background-color: rgba(22, 30, 46, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: max-content;
+    gap: 1px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.stat-num {
+    font-family: var(--font-heading);
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.stat-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.text-success { color: var(--status-available); }
+.text-danger { color: var(--status-registered); }
+.text-warning { color: var(--status-mortgage); }
+
+/* Map Viewport Grid */
+.map-viewport {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff;
+    cursor: grab;
+}
+
+.map-viewport:active {
+    cursor: grabbing;
+}
+
+/* Floating On-Screen Status Legend Card */
+.floating-legend-card {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.15);
+    min-width: 190px;
+    max-width: 240px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.floating-legend-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #60a5fa;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.floating-legend-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.floating-legend-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 11px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.2s, transform 0.3s ease;
+}
+
+.floating-legend-card.collapsed .floating-legend-toggle {
+    transform: rotate(180deg);
+}
+
+.floating-legend-card.collapsed {
+    padding-bottom: 10px;
+}
+
+.floating-legend-card.collapsed .floating-legend-header {
+    padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.floating-legend-card.collapsed .floating-legend-body {
+    display: none;
+}
+
+.floating-legend-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.floating-legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.floating-legend-item:hover,
+.floating-legend-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(2px);
+}
+
+.floating-legend-item .label-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.floating-legend-item .color-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--status-color);
+    box-shadow: 0 0 6px var(--status-color);
+    flex-shrink: 0;
+}
+
+.floating-legend-item .count-badge {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 10.5px;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+/* Floating Controls */
+.map-controls {
+    position: absolute;
+    bottom: 90px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+}
+
+/* Sidebar Footer Positioning */
+.sidebar-footer {
+    padding: 14px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin-top: auto;
+    flex-shrink: 0;
+    z-index: 105;
+}
+
+/* Floating Recenter Button at Bottom Center */
+.floating-recenter-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 55%;
+    transform: translateX(-50%);
+    z-index: 999;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(59, 130, 246, 0.5);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.floating-recenter-btn:hover {
+    background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.6);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.map-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background-color: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.map-btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.map-btn:active {
+    transform: translateY(0);
+}
+
+/* Instructions Tip */
+.map-tip {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(250, 204, 21, 0.4);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+    z-index: 1000 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(250, 204, 21, 0.2);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    white-space: nowrap;
+}
+
+.map-tip.fade-out {
+    opacity: 0;
+}
+
+/* Map Drag/Scale Container */
+.map-container {
+    width: 1024px;
+    height: 576px;
+    position: absolute;
+    transform-origin: 0 0;
+    user-select: none;
+    background-color: #ffffff;
+    border-radius: 0;
+    box-shadow: none !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.map-image {
+    width: 1024px;
+    height: 576px;
+    pointer-events: none;
+    display: block;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.plots-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: opacity 0.25s ease-in-out;
+}
+
+/* Layout loading state overlay and transitions */
+.map-image.loading-layout,
+.plots-overlay.loading-layout {
+    opacity: 0;
+}
+
+.layout-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(18, 24, 36, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    padding: 24px 36px;
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    pointer-events: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.25s ease-in-out;
+    opacity: 0;
+    gap: 12px;
+}
+
+.layout-loader.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.layout-loader .spinner {
+    width: 36px;
+    height: 36px;
+    border: 4px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    border-top-color: var(--accent);
+    animation: layout-spin 0.8s linear infinite;
+}
+
+@keyframes layout-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Plot dots styling */
+.plot-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 8px;
+    font-weight: 800;
+    color: #ffffff;
+    cursor: pointer;
+    pointer-events: auto;
+    border: 1px solid #ffffff;
+    box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.6);
+    background-color: var(--plot-color);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s, opacity 0.3s;
+    will-change: transform;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.95), 0px 1px 2px rgba(0, 0, 0, 1);
+    letter-spacing: -0.2px;
+    line-height: 1;
+}
+
+.plot-dot.avatar2-dot {
+    width: 24px;
+    height: 24px;
+    font-size: 10.5px;
+    font-weight: 800;
+    border: 1.5px solid #ffffff;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.95), 0px 1px 2px rgba(0, 0, 0, 1);
+}
+
+.plot-dot:hover {
+    transform: scale(1.35);
+    z-index: 20;
+    box-shadow: 0 0 16px var(--plot-color), 0 4px 12px rgba(0,0,0,0.5);
+    border-color: #ffffff;
+}
+
+.plot-dot.filtered-out {
+    opacity: 0.12;
+    pointer-events: none;
+    animation: none !important;
+}
+
+.plot-dot.filtered-out::before {
+    animation: none !important;
+    display: none !important;
+}
+
+.plot-dot.search-filtered {
+    display: none !important;
+}
+
+/* Highlighting searched plot */
+.plot-dot.highlighted {
+    transform: scale(1.4);
+    z-index: 30;
+    border-color: #ffffff;
+    box-shadow: 0 0 24px var(--plot-color), 0 0 0 6px rgba(255, 255, 255, 0.4);
+    animation: pulse-glow 1.2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    from {
+        box-shadow: 0 0 20px var(--plot-color), 0 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+    to {
+        box-shadow: 0 0 35px var(--plot-color), 0 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Custom Animated Details Modal (Scoped to Map Viewport) */
+#modalBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    backdrop-filter: none;
+    z-index: 1050;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#modalBackdrop.show {
+    opacity: 1;
+    visibility: visible;
+    display: block;
+    pointer-events: auto;
+}
+
+#plotModal {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: auto;
+    width: 300px;
+    max-width: calc(100% - 32px);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background-color: rgba(15, 22, 38, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(14, 165, 233, 0.25);
+    pointer-events: none;
+    transform: translateX(-60px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+#plotModal::-webkit-scrollbar {
+    width: 6px;
+}
+
+#plotModal::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+#plotModal::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #facc15, #eab308);
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.5);
+}
+
+#plotModal::-webkit-scrollbar-thumb:hover {
+    background: #fde047;
+}
+
+#plotModal .modal-header {
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+#plotModal .modal-title {
+    font-size: 14px;
+}
+
+#plotModal .detail-card {
+    gap: 8px;
+}
+
+#plotModal .detail-row {
+    padding-bottom: 6px;
+}
+
+#plotModal .detail-label {
+    font-size: 11px;
+}
+
+#plotModal .detail-val {
+    font-size: 12px;
+}
+
+#plotModal .status-badge {
+    padding: 4px 8px;
+    font-size: 10px;
+}
+
+#modalBackdrop.show #plotModal {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Staff Login Centered Modal Styling */
+#loginModalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 7, 10, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#loginModalBackdrop.show {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    pointer-events: auto;
+}
+
+#loginModal {
+    width: 90%;
+    max-width: 380px;
+    background-color: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#loginModalBackdrop.show #loginModal {
+    transform: scale(1) translateY(0);
+}
+
+/* Director Deal Simulator Centered Modal Styling */
+#dealSimulatorModalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 7, 10, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 2050;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#dealSimulatorModalBackdrop.show {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    pointer-events: auto;
+}
+
+#dealSimulatorModal {
+    background-color: #0f172a;
+    border: 1px solid rgba(250, 204, 21, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 179, 8, 0.2);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+#dealSimulatorModalBackdrop.show #dealSimulatorModal {
+    transform: scale(1) translateY(0);
+}
+
+/* Avatar 3 Pre-Launch Interest Modal Styling */
+#interestModalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 7, 10, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#interestModalBackdrop.show,
+#interestModalBackdrop.active {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    pointer-events: auto;
+}
+
+#interestModal {
+    background-color: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+}
+
+#interestModalBackdrop.show #interestModal,
+#interestModalBackdrop.active #interestModal {
+    transform: scale(1) translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+/* Detail Card Styling */
+.detail-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.detail-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.detail-val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: right;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 0 10px var(--badge-glow);
+    background-color: var(--badge-color);
+}
+
+/* Responsive Rules */
+@media (max-width: 992px) {
+    /* Collapse sidebar onto overlay style */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .sidebar-close {
+        display: block;
+    }
+    
+    .sidebar-toggle {
+        display: block;
+    }
+    
+    .header-stats {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-header {
+        padding: 0 16px;
+    }
+    
+    .project-name {
+        font-size: 18px;
+    }
+    
+    .custom-modal {
+        padding: 20px;
+    }
+    
+    /* Responsive Bottom Drawer for Plot Modal on Mobile */
+    #plotModal {
+        top: auto;
+        bottom: 20px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+        max-width: none;
+        transform: translateY(120px);
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+    }
+    
+    #modalBackdrop.show #plotModal {
+        transform: translateY(0);
+    }
+}
+
+/* ====================================================
+   Leaflet GIS Map & Satellite Overlay Styles
+   ==================================================== */
+#leafletMapContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    display: none;
+    background-color: #05070a;
+}
+
+/* Ensure Leaflet controls and overlays respect our layout bounds */
+.leaflet-control-container .leaflet-routing-container-map,
+.leaflet-control-zoom {
+    margin-bottom: 90px !important; /* Move above floating controls */
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.leaflet-bar a {
+    background-color: var(--bg-glass) !important;
+    backdrop-filter: blur(12px) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    transition: all 0.2s !important;
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--accent) !important;
+}
+
+/* Hide floating plot legend in Satellite Mode */
+body.satellite-mode-active .floating-legend-card {
+    display: none !important;
+}
+
+/* Satellite Toggle Button */
+.satellite-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.satellite-toggle-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: 0 0 12px var(--accent-glow);
+    transform: translate(-50%, -1px);
+}
+
+.satellite-toggle-btn:active {
+    transform: translate(-50%, 0);
+}
+
+.satellite-toggle-btn.active {
+    background-color: var(--accent-glow);
+    border-color: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 0 14px var(--accent-glow);
+}
+
+@media (max-width: 768px) {
+    .satellite-toggle-btn span {
+        display: none; /* Icon-only on mobile screens */
+    }
+    .satellite-toggle-btn {
+        padding: 10px 12px;
+    }
+}
+
+/* Custom Leaflet Marker Icons for Plot Numbers */
+.leaflet-plot-marker {
+    background-color: var(--plot-color);
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 8px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6), 0 0 8px var(--plot-color);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s, border-color 0.2s;
+}
+
+.leaflet-plot-marker:hover {
+    transform: scale(1.35) !important;
+    z-index: 1000 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8), 0 0 16px var(--plot-color);
+    border-color: #ffffff;
+}
+
+.leaflet-plot-marker.filtered-out {
+    opacity: 0.12 !important;
+    pointer-events: none !important;
+}
+
+.leaflet-plot-marker.highlighted {
+    transform: scale(1.4) !important;
+    z-index: 1010 !important;
+    border-color: #ffffff;
+    box-shadow: 0 0 24px var(--plot-color), 0 0 0 6px rgba(255, 255, 255, 0.4);
+    animation: pulse-glow 1.2s infinite alternate;
+}
+
+/* ====================================================
+   GIS Custom Layer Control Panel (Premium glassmorphism)
+   ==================================================== */
+.gis-layer-control {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    width: 180px;
+    background-color: rgba(13, 20, 38, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    font-family: var(--font-heading);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.layer-control-header {
+    background-color: rgba(255, 255, 255, 0.03);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.layer-control-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.layer-toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-secondary);
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.layer-toggle-item:hover {
+    color: var(--text-primary);
+}
+
+.layer-toggle-item input {
+    display: none;
+}
+
+.custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    position: relative;
+    background-color: var(--bg-tertiary);
+    transition: all 0.2s;
+}
+
+.layer-toggle-item input:checked + .custom-checkbox {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.layer-toggle-item input:checked + .custom-checkbox::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 9px;
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Custom Pulsing Markers for KML Project Locations */
+.custom-gis-marker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gis-marker-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent);
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+    z-index: 2;
+}
+
+.gis-marker-pulse {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--accent-glow);
+    animation: marker-pulse 1.8s infinite ease-out;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gis-marker-label {
+    position: absolute;
+    left: 18px;
+    white-space: nowrap;
+    background-color: rgba(13, 20, 38, 0.9);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--border-color);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    opacity: 0.85;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.custom-gis-marker:hover .gis-marker-label {
+    opacity: 1;
+    background-color: var(--accent-glow);
+    border-color: var(--accent);
+}
+
+@keyframes marker-pulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* GIS Road Labels Styling */
+.road-label {
+    background: rgba(15, 23, 42, 0.85) !important;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #f8fafc !important;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.road-label::before {
+    display: none !important; /* Hide Leaflet arrow helper */
+}
+
+.road-label-local {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #f1f5f9 !important;
+    font-weight: 600;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.road-label-local::before {
+    border-right-color: rgba(30, 41, 59, 0.95) !important;
+}
+
+/* Project Selector Navigation Styling */
+.project-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.project-nav-btn {
+    background-color: rgba(27, 35, 54, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 11px 4px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    text-align: center;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.project-nav-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.project-nav-btn.active {
+    color: var(--text-primary);
+}
+
+/* Specific Project Button Colors & Visibility */
+#navAvatar1 {
+    background-color: rgba(30, 58, 138, 0.25); /* Translucent Dark Blue */
+    border-color: rgba(59, 130, 246, 0.4);
+    color: rgba(255, 255, 255, 0.95);
+}
+#navAvatar1:hover {
+    background-color: rgba(30, 58, 138, 0.45);
+    border-color: rgba(59, 130, 246, 0.65);
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.4);
+}
+#navAvatar1.active {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.8) !important;
+}
+
+#navAvatar2 {
+    background-color: rgba(14, 165, 233, 0.2); /* Translucent Light Blue */
+    border-color: rgba(14, 165, 233, 0.4);
+    color: rgba(255, 255, 255, 0.95);
+}
+#navAvatar2:hover {
+    background-color: rgba(14, 165, 233, 0.4);
+    border-color: rgba(14, 165, 233, 0.65);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+}
+#navAvatar2.active {
+    background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%) !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.7) !important;
+}
+
+#navAvatar3 {
+    background-color: rgba(249, 115, 22, 0.2); /* Translucent Orange */
+    border-color: rgba(249, 115, 22, 0.4);
+    color: rgba(255, 255, 255, 0.95);
+}
+#navAvatar3:hover {
+    background-color: rgba(249, 115, 22, 0.4);
+    border-color: rgba(249, 115, 22, 0.65);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.35);
+}
+#navAvatar3.active {
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 100%) !important;
+    border-color: #fdba74 !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.7) !important;
+}
+
+/* Custom radio button styles for Map Style selection */
+.custom-radio {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s;
+    background: transparent;
+}
+
+input[type="radio"]:checked + .custom-radio {
+    border-color: var(--accent);
+}
+
+input[type="radio"]:checked + .custom-radio::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.theme-selector-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Floating Project Details Card */
+.project-details-card {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 260px;
+    background-color: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    z-index: 95;
+    animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.details-card-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.details-card-header h4 {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.details-card-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 2px 4px;
+}
+
+.details-card-close:hover {
+    color: var(--text-primary);
+}
+
+.details-card-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+}
+
+.details-label {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.details-label i {
+    color: var(--accent);
+    width: 12px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.details-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-align: right;
+    font-size: 11.5px;
+}
+
+.details-highlights {
+    margin-top: 4px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 8px;
+}
+
+.highlights-title {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.highlights-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.highlights-list li {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.3;
+    text-align: left;
+}
+
+.highlights-list li::before {
+    content: "•";
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* Custom Mini-map Inset Control styling */
+.leaflet-control-minimap {
+    border: 2px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden;
+    background-color: var(--bg-primary) !important;
+    margin-bottom: 24px !important;
+    margin-left: 24px !important;
+    transition: transform 0.2s ease;
+}
+
+.leaflet-control-minimap:hover {
+    transform: scale(1.02);
+}
+
+.minimap-viewport-rect {
+    border: 2px solid #ef4444;
+    background-color: rgba(239, 68, 68, 0.15);
+    border-radius: 4px;
+}
+
+/* ---------------------------------------------------- */
+/* Coming Soon Overlay & Pre-Launch Teaser Component    */
+/* ---------------------------------------------------- */
+
+.coming-soon-pill {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.5);
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 4px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.blurred-layout {
+    filter: blur(8px) brightness(0.85);
+    opacity: 0.85;
+    pointer-events: none;
+    transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.coming-soon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 85;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: auto;
+    background: rgba(10, 13, 20, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.coming-soon-card {
+    background: rgba(18, 24, 36, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(249, 115, 22, 0.4);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(249, 115, 22, 0.25);
+    border-radius: 24px;
+    padding: 36px 40px;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    animation: zoomInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes zoomInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.coming-soon-badge-glow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.4);
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.2);
+}
+
+.coming-soon-title {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.coming-soon-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.coming-soon-status-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.coming-soon-status-box i {
+    font-size: 20px;
+    color: #f97316;
+    flex-shrink: 0;
+}
+
+.coming-soon-features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.cs-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    background: rgba(18, 24, 36, 0.6);
+    border: 1px solid var(--border-color);
+    padding: 12px 16px;
+    border-radius: 12px;
+}
+
+.cs-feature-item i {
+    font-size: 18px;
+    color: var(--accent);
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.cs-feature-item strong {
+    display: block;
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.cs-feature-item span {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.coming-soon-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.cs-notify-btn {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cs-notify-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
+}
+
+/* Sidebar Coming Soon Card */
+.sidebar-cs-card {
+    background: rgba(249, 115, 22, 0.08);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: left;
+}
+
+.sidebar-cs-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #f97316;
+    margin-bottom: 8px;
+}
+
+.sidebar-cs-title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.sidebar-cs-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 14px;
+}
+
+.sidebar-cs-btn {
+    width: 100%;
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.5);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s ease;
+}
+
+.sidebar-cs-btn:hover {
+    background: rgba(249, 115, 22, 0.35);
+}
+
+/* Satellite View Coming Soon Mask Overlay */
+.satellite-cs-marker-wrapper {
+    background: transparent !important;
+    border: none !important;
+}
+
+.sat-cs-badge-card {
+    background: rgba(10, 13, 20, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1.5px solid rgba(249, 115, 22, 0.5);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(249, 115, 22, 0.35);
+    border-radius: 28px;
+    padding: 56px 52px;
+    min-height: 270px;
+    text-align: center;
+    width: 560px;
+    animation: zoomInScale 0.3s ease;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sat-cs-badge-pill {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.15);
+    border: 1.5px solid rgba(249, 115, 22, 0.4);
+    padding: 12px 32px;
+    border-radius: 35px;
+    display: inline-block;
+}
+
+.sat-cs-badge-title {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.sat-cs-badge-sub {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.sat-cs-badge-btn {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 18px rgba(249, 115, 22, 0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Custom GIS Map Markers for Satellite View */
+.custom-gis-marker {
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gis-marker-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(10, 13, 20, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(59, 130, 246, 0.6);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 15px rgba(59, 130, 246, 0.35);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+    pointer-events: auto;
+}
+
+.gis-marker-wrapper:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 22px rgba(59, 130, 246, 0.6);
+    border-color: #3b82f6;
+}
+
+.gis-marker-dot {
+    width: 9px;
+    height: 9px;
+    background: #3b82f6;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #3b82f6;
+    flex-shrink: 0;
+}
+
+.gis-marker-label {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+/* Floating "Book Free Site Visit" Button */
+.floating-site-visit-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.45), 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 120;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.floating-site-visit-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 36px rgba(14, 165, 233, 0.6), 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Book Site Visit Centered Modal */
+.site-visit-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 7, 10, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.site-visit-modal-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.site-visit-modal {
+    width: 92%;
+    max-width: 440px;
+    background: rgba(18, 24, 36, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(14, 165, 233, 0.25);
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-visit-modal-backdrop.show .site-visit-modal {
+    transform: scale(1) translateY(0);
+}
+
+/* EMI & Loan Calculator Card inside Plot Modal */
+.emi-calc-container {
+    background: rgba(10, 13, 20, 0.55);
+    border: 1px solid rgba(14, 165, 233, 0.25);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.emi-calc-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.emi-slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.emi-slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.emi-slider-input {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+    height: 4px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.emi-result-box {
+    background: rgba(14, 165, 233, 0.12);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Plot Hover Preview Tooltip */
+.plot-hover-tooltip {
+    position: fixed;
+    z-index: 1500;
+    background: rgba(13, 20, 36, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #ffffff;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), 0 0 18px rgba(14, 165, 233, 0.2);
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.plot-hover-tooltip.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 6px;
+}
+
+.tooltip-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.tooltip-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tooltip-row {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tooltip-row i {
+    font-size: 10px;
+    color: var(--accent);
+    width: 12px;
+}
+
+/* ====================================================
+   Animation & Micro-Interaction Enhancements
+   ==================================================== */
+
+/* 1. Pulsing Radar Wave on Available Plots */
+.plot-dot[data-status="AVAILABLE"] {
+    position: absolute;
+}
+
+.plot-dot[data-status="AVAILABLE"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--status-available);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+    animation: available-pulse-ring 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes available-pulse-ring {
+    0% {
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.35;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* 2. Pulsating Radar Wave & Glow for Mortgage Plots */
+.plot-dot[data-status="MORTGAGE"],
+.plot-dot[data-status="MORTAGAGE"] {
+    position: absolute;
+    animation: mortgage-pulse-dot 1.8s ease-in-out infinite;
+}
+
+.plot-dot[data-status="MORTGAGE"]::before,
+.plot-dot[data-status="MORTAGAGE"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--status-mortgage, #ff6600);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+    animation: mortgage-pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes mortgage-pulse-dot {
+    0%, 100% {
+        box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.6), 0 0 0 0 rgba(255, 102, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 14px 4px rgba(255, 102, 0, 0.9);
+    }
+}
+
+@keyframes mortgage-pulse-ring {
+    0% {
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.85;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2.4);
+        opacity: 0;
+    }
+}
+
+/* 5. Interactive Floating Site Visit Button Shimmer & Car Drive Animation */
+.floating-site-visit-btn {
+    position: fixed;
+    overflow: hidden;
+}
+
+.floating-site-visit-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    transition: left 0.75s cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: none;
+}
+
+.floating-site-visit-btn:hover::after {
+    left: 140%;
+}
+
+.floating-site-visit-btn i.fa-car-side {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.floating-site-visit-btn:hover i.fa-car-side {
+    transform: translateX(4px) scale(1.18);
+}
+
+/* 6. Metallic Shimmer Light Sweep Effect for Active Nav Buttons & Cards */
+.project-nav-btn.active,
+.view-switch-btn.active {
+    position: relative;
+    overflow: hidden;
+}
+
+.project-nav-btn.active::before,
+.view-switch-btn.active::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    animation: shimmer-sweep 3.5s infinite ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes shimmer-sweep {
+    0% {
+        left: -75%;
+    }
+    30% {
+        left: 150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+/* Schematic Layout Switch Smooth Fade & Scale Transition */
+#mapImage, #plotsOverlay {
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.loading-layout {
+    opacity: 0 !important;
+    transform: scale(0.96) !important;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Premium Welcome Intro Splash Screen */
+.welcome-splash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(23, 33, 56, 0.98) 0%, rgba(6, 10, 18, 0.99) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+.welcome-splash-overlay.hide {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+}
+
+.welcome-splash-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    max-width: 480px;
+    animation: splashCardEntrance 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes splashCardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.92);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.splash-logo-wrapper {
+    margin-bottom: 20px;
+}
+
+.splash-logo {
+    max-width: 240px;
+    height: auto;
+    filter: drop-shadow(0 0 25px rgba(14, 165, 233, 0.4));
+    animation: splashLogoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes splashLogoGlow {
+    from {
+        filter: drop-shadow(0 0 15px rgba(14, 165, 233, 0.3));
+    }
+    to {
+        filter: drop-shadow(0 0 35px rgba(14, 165, 233, 0.7));
+    }
+}
+
+.splash-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+.splash-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.splash-progress-track {
+    width: 240px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.splash-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #0284c7 0%, #38bdf8 50%, #2563eb 100%);
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+    transition: width 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.splash-badges {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.splash-badges span {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Splash Screen Pro Tips Styling */
+.splash-tips-container {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin: 16px 0 22px 0;
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.splash-tips-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 6px;
+}
+
+.splash-tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.tip-num {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    font-weight: 700;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-top: 1px;
+}
+
+.tip-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+/* Click Anywhere to Continue Prompt */
+.splash-continue-prompt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(37, 99, 235, 0.35) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    padding: 12px 24px;
+    border-radius: 30px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+    animation: continuePulse 1.8s ease-in-out infinite alternate;
+    cursor: pointer;
+}
+
+@keyframes continuePulse {
+    from {
+        box-shadow: 0 0 15px rgba(14, 165, 233, 0.25);
+        transform: scale(0.98);
+    }
+    to {
+        box-shadow: 0 0 30px rgba(14, 165, 233, 0.6);
+        transform: scale(1.02);
+    }
+}
+
+.continue-icon-pulse {
+    font-size: 14px;
+    color: #38bdf8;
+    animation: fingerTap 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes fingerTap {
+    from { transform: translateY(0); }
+    to { transform: translateY(-3px); }
+}
+
+/* Leaflet GIS Satellite Map Optimization */
+#leafletMapContainer {
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------- */
+/* Smart Plot Finder Quiz Component Styles             */
+/* ---------------------------------------------------- */
+
+@keyframes matchPulseGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.9), 0 0 12px #3b82f6;
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0), 0 0 26px #60a5fa;
+        transform: scale(1.3);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0), 0 0 12px #3b82f6;
+        transform: scale(1);
+    }
+}
+
+.plot-dot.matched-finder-dot {
+    z-index: 50 !important;
+    animation: matchPulseGlow 1.4s infinite cubic-bezier(0.4, 0, 0.6, 1) !important;
+    border: 2px solid #ffffff !important;
+    outline: 2px solid #3b82f6 !important;
+}
+
+.plot-dot.dimmed-finder-dot {
+    opacity: 0.25 !important;
+    filter: grayscale(80%) !important;
+}
+
+.smart-finder-btn-header {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #60a5fa;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.smart-finder-btn-header:hover {
+    background: rgba(59, 130, 246, 0.3);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-1px);
+}
+
+.finder-options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.finder-chip {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.finder-chip:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    color: #fff;
+}
+
+.finder-chip.active {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3b82f6;
+    color: #60a5fa;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+}
+
+.finder-result-banner {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+    padding: 8px 18px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    animation: zoomInScale 0.3s ease;
+}
+
+.clear-finder-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #f87171;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.clear-finder-btn:hover {
+    background: rgba(248, 113, 113, 0.2);
+}
+
+/* ====================================================
+   Director Mode Live Deal Closer & Digital Allotment Styles
+   ==================================================== */
+
+.sim-control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.sim-slider {
+    width: 100%;
+    accent-color: #facc15;
+    cursor: pointer;
+}
+
+.margin-badge {
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 11.5px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.margin-high {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid #10b981;
+    color: #34d399;
+}
+
+.margin-mod {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid #f59e0b;
+    color: #fbbf24;
+}
+
+.margin-low {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #f87171;
+}
+
+.sim-toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.sim-toggle-switch input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #facc15;
+    cursor: pointer;
+}
+
+.btn-director-action {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    width: 100%;
+    margin-top: 8px;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    font-size: 13.5px;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-director-action:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+    transform: translateY(-1px);
+}
+
+/* ====================================================
+   Comprehensive Mobile & Touch Optimization Styles
+   ==================================================== */
+
+/* Global Touch & Tap Improvements */
+button,
+.plot-dot,
+.leaflet-plot-marker,
+.project-nav-btn,
+.view-switch-btn,
+.map-btn,
+.floating-recenter-btn,
+.floating-site-visit-btn,
+.filter-chip,
+.filter-pill {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile Sidebar Backdrop Overlay */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 7, 10, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Responsive Breakpoints: Tablet & Mobile (< 768px) */
+@media (max-width: 768px) {
+    /* Header & Navigation Adjustments */
+    .dashboard-header {
+        padding: 10px 14px;
+    }
+
+    .project-name {
+        font-size: 16px;
+    }
+
+    .approved-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .header-stats {
+        display: none; /* Hide top stat cards on mobile to save viewport height */
+    }
+
+    .view-switch-btn span {
+        display: none; /* Icon-only view switch buttons on mobile */
+    }
+
+    .view-switch-btn {
+        padding: 8px 12px;
+    }
+
+    /* Floating Controls Positioning on Mobile */
+    .map-controls {
+        bottom: 80px;
+        right: 14px;
+    }
+
+    .map-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .floating-recenter-btn {
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 18px;
+        font-size: 11.5px;
+    }
+
+    .floating-recenter-btn:hover {
+        transform: translateX(-50%) translateY(-2px);
+    }
+
+    .floating-site-visit-btn {
+        bottom: 18px;
+        right: 14px;
+        padding: 9px 15px;
+        font-size: 11.5px;
+    }
+
+    .gis-layer-control {
+        top: 14px;
+        right: 14px;
+        width: 160px;
+    }
+
+    .floating-legend-card {
+        bottom: 75px;
+        left: 14px;
+        max-width: calc(100vw - 120px);
+    }
+
+    .floating-legend-body {
+        max-height: 160px;
+        overflow-y: auto;
+    }
+
+    /* Map Tip Banner */
+    .map-tip {
+        bottom: 70px;
+        font-size: 11px;
+        padding: 6px 14px;
+        max-width: 90%;
+        text-align: center;
+    }
+}
+
+/* Mobile Screens (< 640px) - App Bottom Sheet for Plot Modal */
+@media (max-width: 640px) {
+    #modalBackdrop {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-color: rgba(5, 7, 10, 0.7) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        z-index: 2000 !important;
+    }
+
+    #plotModal {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 85vh !important;
+        border-radius: 20px 20px 0 0 !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        margin: 0 !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(14, 165, 233, 0.25) !important;
+    }
+
+    #modalBackdrop.show #plotModal {
+        transform: translateY(0) !important;
+    }
+
+    /* Drag Handle Indicator for Bottom Sheet */
+    #plotModal::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 4px;
+        margin: 0 auto 12px auto;
+    }
+
+    /* Centered Modals Responsiveness */
+    #loginModal,
+    #dealSimulatorModal,
+    #interestModal,
+    .site-visit-modal {
+        width: 94% !important;
+        max-width: 360px !important;
+        padding: 18px !important;
+    }
+
+    .project-nav-grid {
+        gap: 6px;
+    }
+
+    .project-nav-btn {
+        padding: 8px 2px;
+        font-size: 11px;
+    }
+}
+
+
+
+
+
+
+/* ========================================================
+   3D DIGITAL INTERACTIVE MODEL STYLES (AVATAR 3)
+   ======================================================== */
+/* 3D Modal Backdrop */
+.modal-3d-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 7, 18, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-3d-backdrop.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 3D Modal Container */
+.modal-3d-container {
+    width: 95vw;
+    max-width: 1500px;
+    height: 92vh;
+    background: #090e1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, 0.2);
+    position: relative;
+    animation: modal-3d-zoom-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modal-3d-zoom-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 3D Modal Header */
+.modal-3d-header {
+    height: 64px;
+    padding: 0 20px;
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 20;
+    flex-shrink: 0;
+}
+
+.modal-3d-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-3d-icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+.modal-3d-title {
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 800;
+    color: #f8fafc;
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+
+.modal-3d-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: rgba(168, 85, 247, 0.18);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    font-weight: 700;
+}
+
+/* Header Controls & Presets */
+.modal-3d-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.toolbar-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.toolbar-btn:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.toolbar-btn.active {
+    background: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+.btn-light-mode.active {
+    background: #f59e0b;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.modal-3d-close-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-3d-close-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+}
+
+/* 3D Viewport Area */
+.modal-3d-viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#threeCanvasContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#threeCanvasContainer canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    outline: none;
+}
+
+/* 3D HUD Overlay: Top-Left Filter Bar */
+.three-hud-filters {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 6px 10px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.three-filter-pill {
+    padding: 5px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.three-filter-pill:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.three-filter-pill.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+}
+
+/* 3D HUD Search Box */
+.three-hud-search {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 4px 8px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.three-search-input {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    outline: none;
+    width: 110px;
+    padding: 4px 6px;
+}
+
+.three-search-input.error {
+    border-bottom: 2px solid #ef4444;
+}
+
+.three-search-input::placeholder {
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Bottom Controls Guide */
+.three-controls-guide {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 11px;
+    color: #94a3b8;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+
+.three-controls-guide strong {
+    color: #f8fafc;
+}
+
+/* 3D Hover Tooltip */
+.three-plot-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    padding: 10px 14px;
+    min-width: 170px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: none;
+    transform: translate(0, 0);
+    transition: opacity 0.15s ease;
+}
+
+/* Quick Inspect Drawer (Right Side) */
+.three-inspect-drawer {
+    position: absolute;
+    top: 60px;
+    right: 16px;
+    width: 290px;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+    z-index: 15;
+    transform: translateX(330px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.three-inspect-drawer.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.three-inspect-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.three-inspect-title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 800;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.three-drawer-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px;
+}
+
+.three-drawer-close:hover {
+    color: #fff;
+}
+
+.three-drawer-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.three-drawer-btn {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.three-btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.three-btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.three-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+}
+
+.three-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+/* Button in 2D Plot Modal to jump to 3D */
+.btn-jump-3d {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(59, 130, 246, 0.2));
+    border: 1px solid rgba(168, 85, 247, 0.5);
+    color: #c084fc;
+    font-weight: 700;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    font-size: 13.5px;
+    transition: all 0.2s;
+}
+
+.btn-jump-3d:hover {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(59, 130, 246, 0.35));
+    border-color: #c084fc;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+@media (max-width: 820px) {
+    .modal-3d-backdrop {
+        padding: 0;
+    }
+
+    .modal-3d-container {
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        border-radius: 0;
+        border: none;
+    }
+
+    .modal-3d-header {
+        height: auto;
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .modal-3d-toolbar {
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    .three-hud-filters {
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        max-width: calc(100% - 16px);
+    }
+
+    .three-hud-search {
+        top: 56px;
+        right: 8px;
+    }
+
+    .three-inspect-drawer {
+        width: calc(100% - 24px);
+        right: 12px;
+        left: 12px;
+        top: auto;
+        bottom: 12px;
+        max-height: 48vh;
+        overflow-y: auto;
+        transform: translateY(120%);
+    }
+
+    .three-inspect-drawer.open {
+        transform: translateY(0);
+    }
+}
+
+/* ========================================================
+   3D House Customization Styles
+   ======================================================== */
+/* 3D House Customization in Inspect Drawer */
+.house-style-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.house-style-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.house-style-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.house-style-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 7px;
+    padding: 7px 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-align: center;
+}
+.house-style-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(56, 189, 248, 0.4);
+    transform: translateY(-1px);
+}
+.house-style-card.active {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+.house-style-icon {
+    font-size: 15px;
+    color: #38bdf8;
+}
+.house-style-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+.house-style-desc {
+    font-size: 8.5px;
+    color: #94a3b8;
+    line-height: 1.1;
+}
+
+
+
+
+
+
+
+/* Satellite View - 3D Layout Interactive Badge */
+.sat-3d-layout-marker-wrapper {
+    background: transparent !important;
+    border: none !important;
+}
+
+.sat-3d-layout-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(168, 85, 247, 0.6);
+    border-radius: 40px;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.sat-3d-layout-badge:hover {
+    transform: translateY(-3px) scale(1.04);
+    background: rgba(24, 18, 50, 0.96);
+    border-color: #c084fc;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 28px rgba(192, 132, 252, 0.6);
+}
+
+.sat-3d-badge-pulse {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    width: 28px;
+    height: 28px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.35);
+    animation: sat3DPulse 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes sat3DPulse {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
+    70% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+}
+
+.sat-3d-badge-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.7);
+    flex-shrink: 0;
+}
+
+.sat-3d-badge-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.sat-3d-badge-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sat-3d-badge-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: #c084fc;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Project navigation now links to separate layout pages. */
+ a.project-nav-btn { text-decoration: none; }
+
+
+/* Temporary Avatar 3 placement controls. */
+#threeMapToolbar { flex-wrap: wrap; max-width: calc(100% - 32px); justify-content: flex-end; }
+.layout-calibrator { position: absolute; top: 76px; right: 16px; z-index: 35; width: 310px; max-width: calc(100% - 32px); max-height: calc(100% - 145px); overflow-y: auto; padding: 18px; box-sizing: border-box; background: rgba(15, 23, 42, .96); border: 1px solid #475569; border-radius: 12px; box-shadow: 0 12px 36px #0007; color: #e2e8f0; }
+.layout-calibrator[hidden] { display: none; }
+.calibrator-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.calibrator-heading span { font-size: 10px; color: #fbbf24; }
+.layout-calibrator p { font-size: 12px; line-height: 1.5; color: #94a3b8; margin: 10px 0 14px; }
+.calibrator-row { margin-bottom: 12px; }
+.calibrator-row label { display: block; font-size: 12px; margin-bottom: 5px; }
+.calibrator-inputs { display: flex; gap: 10px; align-items: center; }
+.calibrator-inputs input[type=range] { flex: 1; min-width: 0; accent-color: #38bdf8; cursor: pointer; }
+.calibrator-inputs input[type=number] { width: 76px; box-sizing: border-box; border: 1px solid #475569; border-radius: 6px; color: #fff; background: #1e293b; padding: 5px; font: inherit; font-size: 12px; }
+.calibrator-actions { display: flex; gap: 10px; margin-top: 16px; }
+#calibratorNotice { display: block; font-size: 11px; color: #94a3b8; margin-top: 10px; }
+@media (max-width: 700px) {
+    #threeMapToolbar { left: 16px; right: 16px; justify-content: flex-start; }
+    .layout-calibrator { top: 140px; max-height: calc(100% - 200px); }
+    #threeMapContainer .three-hud-filters { top: auto !important; bottom: 55px; }
+}
+
+.calibrator-actions { flex-wrap: wrap; }
+
+/* Satellite and 3D views fill the page; the sidebar belongs to Schematic View. */
+body.immersive-view .sidebar { display: none !important; }
+body.immersive-view .main-content { width: 100%; height: 100vh; margin: 0; }
+body.immersive-view .dashboard-header { display: contents !important; }
+body.immersive-view .dashboard-header > :not(.header-center-actions) { display: none !important; }
+body.immersive-view .header-center-actions {
+    position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+    z-index: 1500; margin: 0; padding: 5px; border-radius: 14px;
+    background: rgba(15, 23, 42, .94); border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 6px 24px #0005; width: max-content; max-width: calc(100% - 24px);
+}
+body.immersive-view .view-switch-container { margin: 0; }
+body.immersive-view #mapViewport { width: 100%; height: 100vh; flex: 1; }
+body.immersive-view #threeMapContainer .three-controls-guide { bottom: 80px !important; }
+@media (max-width:600px) {
+ body.immersive-view .view-switch-btn { padding: 8px; font-size: 10px; }
+ body.immersive-view #threeMapContainer .three-controls-guide { display:none; }
+}
