@@ -625,6 +625,25 @@
 
 
 
+    function roadFacingYaw(plotGroup, detail) {
+        const position = plotGroup.position;
+        const path = singleCarState?.waypoints || [];
+        let nearest = Infinity, yaw = 0;
+        for (let i = 1; i < path.length; i++) {
+            const a = path[i-1], b = path[i];
+            const dx = b.x-a.x, dz = b.z-a.z;
+            const lengthSquared = dx*dx+dz*dz;
+            if (!lengthSquared) continue;
+            const t = Math.max(0, Math.min(1, ((position.x-a.x)*dx+(position.z-a.z)*dz)/lengthSquared));
+            const towardX = a.x+t*dx-position.x, towardZ = a.z+t*dz-position.z;
+            const distance = towardX*towardX+towardZ*towardZ;
+            if (distance < nearest) { nearest = distance; yaw = Math.atan2(towardX, towardZ); }
+        }
+        if (nearest < Infinity) return yaw;
+        const facing = String(detail.facing || '').toLowerCase();
+        return facing.includes('east') ? Math.PI/2 : facing.includes('west') ? -Math.PI/2 : facing.includes('north') ? Math.PI : 0;
+    }
+
     function createPlotArchitectureMesh(plotNo, detail, status, colorHex, pWidth, pDepth, styleKey, plotGroup) {
         const style = styleKey || customPlotStyles[plotNo] || globalDefaultStyle || 'villa';
         if (style === 'downloaded' && downloadedHouseTemplate) {
@@ -635,8 +654,12 @@
             house.addLevel(downloadedHouseTemplate.clone(true), downloadedHouseFullTemplate ? 160 : 0);
             if (downloadedHouseFarTemplate) house.addLevel(downloadedHouseFarTemplate.clone(true), 600);
             houseLods.set(String(plotNo), house);
-            const scale = Math.min(pWidth * .86 / downloadedHouseSize.x, pDepth * .86 / downloadedHouseSize.z);
+            const yaw = roadFacingYaw(plotGroup, detail);
+            const rotatedWidth = Math.abs(Math.cos(yaw))*downloadedHouseSize.x + Math.abs(Math.sin(yaw))*downloadedHouseSize.z;
+            const rotatedDepth = Math.abs(Math.sin(yaw))*downloadedHouseSize.x + Math.abs(Math.cos(yaw))*downloadedHouseSize.z;
+            const scale = Math.min(pWidth * .86 / rotatedWidth, pDepth * .86 / rotatedDepth) * 1.10;
             house.scale.setScalar(scale);
+            house.rotation.y = yaw;
             house.traverse(object => {
                 if (!object.isMesh) return;
                 object.material = object.material.clone();
@@ -649,7 +672,7 @@
             wrapper.add(house);
             const pickHeight = downloadedHouseSize.y * scale;
             const pickProxy = new THREE.Mesh(
-                new THREE.BoxGeometry(downloadedHouseSize.x * scale, pickHeight, downloadedHouseSize.z * scale),
+                new THREE.BoxGeometry(rotatedWidth * scale, pickHeight, rotatedDepth * scale),
                 new THREE.MeshBasicMaterial({visible:false})
             );
             pickProxy.position.y = pickHeight / 2;
