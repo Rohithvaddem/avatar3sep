@@ -22,6 +22,14 @@ https://sketchfab.com/3d-models/arc-lamp-victorian-street-lamp-41e1be71fdaf430d9
 
 Original lamp geometry is retained nearby; a simplified distant model and shared instancing keep repeated lamps efficient. Lamps alternate along house rows beside the road. Details are in `downloaded_streetlight_credit.json`.
 
+Park and border oak trees are by **DJMaesen** (CC BY 4.0):
+https://sketchfab.com/3d-models/oak-trees-d841c3bcc5324daebee50f45619e05fc
+
+Park benches are by **adventurer** (CC BY 4.0):
+https://sketchfab.com/3d-models/bench--park-14mb-6081a54e64a94edda2c444d81e8aec2c
+
+These models retain their source geometry. Materials are merged per tree variant, textures resized to 512px, and repeated trees/benches use instancing. Asset credit JSON files preserve source attribution.
+
 ## Data
 
 This workspace includes sales and customer information. Keep the repository private unless the data has been reviewed for public release.

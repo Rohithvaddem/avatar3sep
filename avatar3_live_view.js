@@ -294,6 +294,7 @@
         setupSingleRoamingCar();
         if (singleCarMesh) singleCarMesh.traverse(object => { object.castShadow = false; });
         setupStreetLights();
+        setupDownloadedLandscaping();
 
         // 11. Highlight Beacon
         setupBeacon();
@@ -542,6 +543,81 @@
     /**
      * Build lush 3D trees across parks and boulevard
      */
+    function setupDownloadedLandscaping() {
+        if (!THREE.GLTFLoader || !window.AVATAR3_TREES_B64 || !window.AVATAR3_BENCH_B64) return;
+        const parse = data => new Promise((resolve, reject) => {
+            const bytes = Uint8Array.from(atob(data), c => c.charCodeAt(0));
+            new THREE.GLTFLoader().parse(bytes.buffer, '', gltf => resolve(gltf.scene), reject);
+        });
+        Promise.all([parse(window.AVATAR3_TREES_B64), parse(window.AVATAR3_BENCH_B64)]).then(([trees, bench]) => {
+            const landscaping = new THREE.Group();
+            landscaping.name = 'DownloadedParkLandscaping';
+            layoutWorldGroup.add(landscaping);
+            const placements = [];
+            // Follow the green outer edge of the layout image, including the entrance arm.
+            const border = [[.119,.071],[.368,.082],[.372,.229],[.665,.265],
+                [.681,.601],[.870,.425],[.876,.573],[.861,.606],[.686,.754],
+                [.644,.891],[.513,.945],[.341,.902],[.294,.824],[.253,.704],
+                [.215,.510],[.187,.268],[.119,.071]];
+            for (let i = 1; i < border.length; i++) {
+                const a = new THREE.Vector3((border[i-1][0]-.5)*LAYOUT_WIDTH, 0, (border[i-1][1]-.5)*LAYOUT_HEIGHT);
+                const b = new THREE.Vector3((border[i][0]-.5)*LAYOUT_WIDTH, 0, (border[i][1]-.5)*LAYOUT_HEIGHT);
+                const steps = Math.max(1, Math.ceil(a.distanceTo(b)/3.6));
+                for (let j = 0; j < steps; j++) {
+                    const position = a.clone().lerp(b,j/steps);
+                    // Keep canopies away from plot centres and their labels.
+                    if (Object.values(plotGroups).some(plot => plot.position.distanceTo(position) < 3.2)) continue;
+                    placements.push({position, height:2.5+(placements.length%3)*.25, variant:placements.length%3, yaw:placements.length*2.4});
+                }
+            }
+            const parks = [
+                {name:'Park-1', trees:[[81,11],[88,9],[91,4]], benches:[[82,8,-1.05],[87,5,-1.05]]},
+                {name:'Park-2', trees:[[-61,27],[-57,39],[-52,42]], benches:[[-55,32,.7],[-52,36,.7]]},
+                {name:'Park-3', trees:[[-74,-25],[-71,-9],[-67,0]], benches:[[-71,-17,Math.PI/2],[-67,-7,Math.PI/2]]},
+                {name:'Park-4', trees:[[-91,-57],[-83,-55],[-77,-49]], benches:[[-85,-50,.7],[-80,-44,.7]]}
+            ];
+            parks.forEach(park => park.trees.forEach(([x,z], index) => placements.push({
+                position:new THREE.Vector3(x,.08,z), height:3.4+index*.35, variant:index%3, yaw:index*1.9
+            })));
+            const variants = trees.children;
+            variants.forEach((variant,index) => instanceLandscapeModel(variant,
+                placements.filter(item => item.variant===index), landscaping, 'BorderAndParkTrees-'+index));
+            const benchPlacements = parks.flatMap(park => park.benches.map(([x,z,yaw]) => ({
+                position:new THREE.Vector3(x,.12,z), yaw, width:2.1, park:park.name
+            })));
+            instanceLandscapeModel(bench,benchPlacements,landscaping,'ParkBenches');
+            landscaping.userData = {treeCount:placements.length, benchCount:benchPlacements.length,
+                parkBenches:parks.map(park => ({park:park.name,count:park.benches.length}))};
+            if (renderer) renderer.shadowMap.needsUpdate = true;
+        }).catch(error => console.error('Downloaded landscaping could not load:', error));
+    }
+
+    function instanceLandscapeModel(model, placements, parent, name) {
+        if (!placements.length) return;
+        model.updateMatrixWorld(true);
+        const bounds = new THREE.Box3().setFromObject(model);
+        const size = bounds.getSize(new THREE.Vector3());
+        const center = bounds.getCenter(new THREE.Vector3());
+        model.traverse(object => {
+            if (!object.isMesh) return;
+            const mesh = new THREE.InstancedMesh(object.geometry,object.material,placements.length);
+            mesh.name = name;
+            mesh.castShadow = false;
+            mesh.receiveShadow = true;
+            mesh.frustumCulled = false;
+            placements.forEach((item,index) => {
+                const scale = item.width ? item.width/Math.max(size.x,size.z) : item.height/size.y;
+                const matrix = new THREE.Matrix4().compose(item.position,
+                    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),item.yaw),new THREE.Vector3(scale,scale,scale));
+                matrix.multiply(new THREE.Matrix4().makeTranslation(-center.x,-bounds.min.y,-center.z));
+                matrix.multiply(object.matrixWorld);
+                mesh.setMatrixAt(index,matrix);
+            });
+            mesh.instanceMatrix.needsUpdate = true;
+            parent.add(mesh);
+        });
+    }
+
     function setup3DLandscaping() {
         const treesGroup = new THREE.Group();
         treesGroup.name = "Landscaping3D";
