@@ -1,0 +1,5578 @@
+PAGE 1
+DESIGN SYSTEM, VERSION 3, REVISION 1
+One system for every screen, forevery role.
+RDS v3 is the single source of truth for how Realtified looks and behaves.
+Every colour, size, space and shadow is a token in one :root block. Every
+com ponent is drawn only from  those tokens. Change a token and the
+whole file restyles.
+1Overview and principles
+HOW TO USE THIS FILE
+Start with the tokens (section 2), then the primitives (sections 3 to 7). Everything after that
+composes them into cards, search, compare, listing blocks and every role's console.
+Class names are BEM-like and prefixed rt-. All colour comes through var(--rt-…);
+there is no literal colour outside :root. A standalone copy of the CSS is in rds-v3.css.
+The seven product principles the components encode
+1. Every buyer-facing fact carries a source tag (TS-RERA, Developer, Estimate,
+Visited, Public record). On fact rows the tag sits right-aligned on the value line. In
+tight 2×2 grids it becomes an icon-only tag with an aria-label. "Not yet verified"
+uses the issue colour: "RERA no. not yet verified". Unknown numbers are
+[PLACEHOLDERS], never invented.
+2. One primary action per region. Raspberry is used only for primary buttons.
+3AnamedadvisorBuyerspaynothingThebuyer'snumberissharedwiththe
+Light theme only21 sectionsEvery colour is a token
+Sections1. Overview and principles
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 1/191
+PAGE 2
+3. A named advisor. Buyers pay nothing. The buyers number is shared with the
+developer only when they say so. No pre-ticked consent boxes.
+4. No payment-holding language anywhere, and no YouTube. Sponsored items
+are clearly labelled and never sit in the hero.
+5. The photo is never covered by default. Overlays, including the fact card, are
+collapsed or dismissible.
+6. Missing media gets a designed fallback: the neutral locality map tile. Never
+"Photo not yet published", never a black box.
+7. Plain words, from the user's side, in Indian English.
+Who this covers
+Every screen, component file and status each role sees is traced in inventory.md.
+2Foundations
+RULES
+Visitors signed out "Login" none
+Buyers buyer (default for every new
+account) Home Buyer My
+Dashboard
+Developers builder Developer Developer
+Console
+Agents and
+channel
+partners
+agent TS-RERA Agent Partner
+Console
+Team
+listings_catalogue, legal,
+sales, support, accounts,
+marketing, procurement,
+engineering
+Team Team
+Console
+Admins admin, super_admin Admin Admin
+Console
+Group Role value (users.role) Shown in the UI asConsole
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 2/191
+PAGE 3
+RULES
+Never type a colour, size or shadow into a component: use its token. Calm cool-neutral
+ground, deep navy ink from the logo-blue hue, brand blue for links and selection,
+raspberry on primary buttons only. Green only for success, verified and visited. Never:
+green or teal anywhere else, the logo blue as text on a light ground, gradients, emoji, left-
+border accent cards, text under 12px, dark "tech" sections (only the footer and the gallery
+viewer are dark).
+Colour
+Neutrals
+Aa
+--rt-ground
+#F6F8FA
+page background
+Aa
+--rt-band
+#EDF1F5
+alternate section band, quiet
+fills
+Aa
+--rt-surface
+#FFFFFF
+cards, inputs, popovers
+Aa
+--rt-hairline
+#DDE3EA
+dividers, card borders
+Aa
+--rt-hairline-strong
+#CBD3DD
+chip and button-outline
+borders
+Aa
+--rt-field-border
+#738192
+input borders (3.7:1 or more,
+WCAG 1.4.11)
+Aa
+--rt-photo
+#DDE5EC
+photo placeholder
+Aa
+--rt-skeleton
+#E4EAF0
+loading blocks (flat, no
+shimmer)
+Map tile
+Aa Aa Aa
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 3/191
+PAGE 4
+--rt-map-tile
+#E9EEF3
+map land
+--rt-map-block
+#DCE4EB
+blocks and parks on the tile
+(cool grey, not green)
+--rt-map-water
+#C3DBEC
+water: soft blue
+Aa
+--rt-map-street
+#FFFFFF
+streets
+Ink (deep navy)
+Aa
+--rt-ink
+#0F2335
+headings, body text, selected
+pills, dark UI
+Aa
+--rt-ink-soft
+#3E4F61
+muted text on frosted cards
+and tinted fills
+Aa
+--rt-ink-muted
+#55667A
+secondary text, captions,
+labels
+Aa
+--rt-ink-hover
+#223A52
+hover on ink-filled pills
+Aa
+--rt-ink-wash
+#E4EBF2
+hovered quiet control
+Brand blue (from the logo)
+Aa
+--rt-brand
+#20B0F0
+the logo blue: the mark,
+highlights, small accents. Not
+for text on light grounds (2.5:1)
+Aa
+--rt-brand-strong
+#0A6AA3
+links, selected tab underline,
+TS-RERA tag text, focus ring
+(5.8:1 on white)
+Aa
+--rt-brand-hover
+#085683
+link hover
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 4/191
+PAGE 5
+Aa
+--rt-brand-tint
+#E3F4FD
+selected rows and chips, info
+background, TS-RERA tag fill
+Aa
+--rt-brand-tint-border
+#B4DEF5
+border on selected chips
+Action (raspberry, primary buttons only)
+Aa
+--rt-action
+#A81F55
+Aa
+--rt-action-hover
+#8C1947
+Aa
+--rt-action-pressed
+#73133A
+Aa
+--rt-action-tint
+#F9E6EE
+soft notice fill
+Aa
+--rt-action-tint-border
+#E8B7CB
+Status
+Aa
+--rt-verified
+#1F6B3A
+checked, "Visited", live,
+success. The only green in the
+system
+Aa
+--rt-verified-tint
+#DFF0E3
+Aa
+--rt-estimate
+#85530A
+estimates, indicative numbers,
+warnings (amber)
+Aa
+--rt-estimate-tint
+#F8ECD0
+Aa
+--rt-issue
+#C0262D
+problems, missing legal items,
+destructive (true red, apart
+from raspberry)
+Aa
+--rt-issue-hover
+#9C1D23
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 5/191
+PAGE 6
+Aa
+--rt-issue-tint
+#FBE5E5
+Aa
+--rt-record
+#0A6AA3
+TS-RERA, public record (brand
+blue family)
+Aa
+--rt-record-tint
+#E3F4FD
+Aa
+--rt-info
+#0A6AA3
+information (brand blue)
+Aa
+--rt-info-tint
+#E3F4FD
+Aa
+--rt-developer-tint
+#E6EBF1
+"Developer" tag fill (text is ink-
+muted)
+Dark surfaces (footer, gallery viewer)
+Aa
+--rt-dark
+#0A1828
+deep navy
+Aa
+--rt-on-dark
+#F6F8FA
+Aa
+--rt-on-dark-muted
+#A9BBCC
+Aa
+--rt-dark-line
+#223750
+Overlays (not swatches)
+--rt-scrim dark navy at 56% behind modals and drawers. --rt-frosted-bg white at 82% with
+--rt-frosted-blur 14px. --rt-photo-chip-bg white at 92% for controls on photos.
+Contrast, computed
+WCAG 2.x ratios for every text and background pairing defined. Text needs 4.5 or more (3 from
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 6/191
+PAGE 7
+24px); interface boundaries need 3 or more. Colour never carries meaning alone: status always
+pairs with an icon and a label.
+Body text on ground
+--rt-ink on --rt-ground Aa 12px 15.03 4.5Pass
+Body text on cards and inputs
+--rt-ink on --rt-surface Aa 12px 16.00 4.5Pass
+Text on a band
+--rt-ink on --rt-band Aa 12px 14.10 4.5Pass
+Text on a hovered or selected row
+--rt-ink on --rt-ink-wash Aa 12px 13.31 4.5Pass
+Muted text on ground
+--rt-ink-soft on --rt-ground Aa 12px 7.90 4.5Pass
+Text on a frosted card, worst case
+(white 82% over black)
+--rt-ink-soft on frosted worst case
+Aa 12px 5.51 4.5Pass
+Ink-soft on the Developer tint
+--rt-ink-soft on --rt-developer-tint Aa 12px 7.02 4.5Pass
+Secondary text on ground
+--rt-ink-muted on --rt-ground Aa 12px 5.53 4.5Pass
+Secondary text on cards
+--rt-ink-muted on --rt-surface Aa 12px 5.89 4.5Pass
+Secondary text on a band
+--rt-ink-muted on --rt-band Aa 12px 5.19 4.5Pass
+Secondary text on a skeleton block
+--rt-ink-muted on --rt-skeleton Aa 12px 4.86 4.5Pass
+Secondary text on the map tile
+--rt-ink-muted on --rt-map-tile Aa 12px 5.04 4.5Pass
+"Developer" tag text on its tint
+--rt-ink-muted on --rt-developer-tint Aa 12px 4.91 4.5Pass
+Caption on the photo stand-in
+--rt-ink-muted on --rt-photo Aa 12px 4.62 4.5Pass
+White on primary button
+--rt-on-action on --rt-action Aa 12px 7.02 4.5Pass
+White on primary hover
+--rt-on-action on --rt-action-hover Aa 12px 8.95 4.5Pass
+Pairing Sample Ratio NeedsResult
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 7/191
+PAGE 8
+White on primary pressed
+--rt-on-action on --rt-action-pressed Aa 12px 11.15 4.5Pass
+Raspberry text on ground (an
+outlined primary action)
+--rt-action on --rt-ground
+Aa 12px 6.59 4.5Pass
+Raspberry on its tint
+--rt-action on --rt-action-tint Aa 12px 5.88 4.5Pass
+Ink on the raspberry tint
+--rt-ink on --rt-action-tint Aa 12px 13.40 4.5Pass
+Verified on ground
+--rt-verified on --rt-ground Aa 12px 6.12 4.5Pass
+Verified tag text on tint
+--rt-verified on --rt-verified-tint Aa 12px 5.50 4.5Pass
+Estimate on ground
+--rt-estimate on --rt-ground Aa 12px 6.09 4.5Pass
+Estimate tag text on tint
+--rt-estimate on --rt-estimate-tint Aa 12px 5.53 4.5Pass
+Issue on ground
+--rt-issue on --rt-ground Aa 12px 5.55 4.5Pass
+Issue tag text on tint
+--rt-issue on --rt-issue-tint Aa 12px 4.90 4.5Pass
+White on destructive button
+--rt-on-ink on --rt-issue Aa 12px 5.90 4.5Pass
+White on destructive hover
+--rt-on-ink on --rt-issue-hover Aa 12px 8.03 4.5Pass
+TS-RERA tag text on ground
+--rt-record on --rt-ground Aa 12px 5.47 4.5Pass
+TS-RERA and Public record tag text
+on tint
+--rt-record on --rt-record-tint
+Aa 12px 5.17 4.5Pass
+Info (review status) text on tint
+--rt-info on --rt-info-tint Aa 12px 5.17 4.5Pass
+Link and selected text on white
+--rt-brand-strong on --rt-surface Aa 12px 5.83 4.5Pass
+Link on ground
+--rt-brand-strong on --rt-ground Aa 12px 5.47 4.5Pass
+Link on a band
+ tbdt tbd Aa 12px 5.13 4.5Pass
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 8/191
+PAGE 9
+--rt-brand-strong on --rt-band
+Brand-strong on the brand tint
+(selected chip, TS-RERA tag)
+--rt-brand-strong on --rt-brand-tint
+Aa 12px 5.17 4.5Pass
+Link hover on the brand tint
+--rt-brand-hover on --rt-brand-tint Aa 12px 6.98 4.5Pass
+Ink on the brand tint (selected row)
+--rt-ink on --rt-brand-tint Aa 12px 14.19 4.5Pass
+Secondary text on the brand tint
+--rt-ink-muted on --rt-brand-tint Aa 12px 5.22 4.5Pass
+White on a brand-strong fill
+--rt-on-brand on --rt-brand-strong Aa 12px 5.83 4.5Pass
+Logo blue on dark (mark, highlight)
+--rt-brand on --rt-dark Aa 12px 7.26 3Pass
+Logo blue on ink (UI boundary)
+--rt-brand on --rt-ink Aa 12px 6.50 3Pass
+White on ink (selected pill, tooltip, bulk
+bar)
+--rt-on-ink on --rt-ink
+Aa 12px 16.00 4.5Pass
+White on ink hover
+--rt-on-ink on --rt-ink-hover Aa 12px 11.70 4.5Pass
+Text on the dark surface (footer,
+gallery viewer)
+--rt-on-dark on --rt-dark
+Aa 12px 16.80 4.5Pass
+Secondary text on the dark surface
+--rt-on-dark-muted on --rt-dark Aa 12px 9.08 4.5Pass
+Input border on white (UI boundary)
+--rt-field-border on --rt-surface Aa 12px 3.97 3Pass
+Input border on ground (UI boundary)
+--rt-field-border on --rt-ground Aa 12px 3.73 3Pass
+Focus ring (brand-strong) on ground
+(UI boundary)
+--rt-brand-strong on --rt-ground
+Aa 12px 5.47 3Pass
+Focus ring on a band (UI boundary)
+--rt-brand-strong on --rt-band Aa 12px 5.13 3Pass
+Focus ring on dark (UI boundary)
+--rt-on-dark on --rt-dark Aa 12px 16.80 3Pass
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 9/191
+PAGE 10
+Raspberry is for primary buttons only.
+Never use it for a tag, a link, a chart or a status. Selected pills, rows and filters use the
+brand-blue tint, not raspberry. Links are brand blue and deepen on hover.
+Type
+Display
+--rt-font-display
+Schibsted Grotesk
+500 and 600. Headings, prices, numbers, card titles. Google Fonts.
+Body
+--rt-font-body
+Mona Sans
+400, 500 and 600. Body, labels, buttons, tables. Google Fonts. Both render the rupee
+sign.
+--rt-
+fs-64 64Desktop hero only
+(phone: 36) Homes
+--rt-
+fs-48 48 Page title Homes inHyderabad
+--rt-
+fs-36 36
+Section title,
+listing price,
+phone hero
+Srias Boat Club
+--rt-
+fs-28 28 Subsection, wide-
+card price What's available
+--rt-
+fs22 22Card title, lead
+figure Hallmark Floresta
+Token SizeUse Specimen
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 10/191
+PAGE 11
+Line height: body 1.55 (--rt-lh-body), title 1.2, heading 1.1, display 1.04. Letter spacing on display:
+−0.03em from 48, −0.02em at 36, −0.01em at 22 to 28. Paragraph measure 65 characters (--rt-
+measure). Two-tone headings (rt-two-tone): at most one per screen. The small-caps eyebrow
+(rt-eyebrow): at most one per section.
+Numbers and prices
+Indian format. Display prices use lining, proportional figures. Tabular figures only for aligned columns.
+rt-price · rt-num · rt-num-tab
+Range: en dash with thin spaces
+₹2.50 Cr – ₹ 7.48 Cr
+Lakh format
+₹79.97 L – ₹ 1.26 Cr
+Per sq ft, with unit
+₹10,999 per sq ft
+Full amount, Indian grouping
+₹1,23,456
+Unknown price
+Price on request
+Estimate, with its tag
+₹2.78 Cr – ₹ 8.09 Cr
+Proportional(displaynumbers)
+fs-22 figure
+--rt-
+fs-18 18 Lead paragraph,
+small prices One advisor stays with you.
+--rt-
+fs-16 16 Body (line height
+1.55)
+Each fact comes from the filing, the developer
+or our visit.
+--rt-
+fs-14 14Secondary text,
+form labels Locality · Villas
+--rt-
+fs-12 12Tags, captions
+(the floor) Declared 3 Sep 2026
+Estimate
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 11/191
+PAGE 12
+Proportional (display numbers)
+1,111 · 4,861 · 2,269 sq ft
+Tabular (aligned columns)
+1,111 · 4,861 · 2,269 sq ft
+Spacing (4px base)
+Section gap on desktop 96 (rt-section--lg), 48 otherwise. Content gutter --rt-gutter =
+clamp(16px, 4.5vw, 64px).
+Radius
+Pill: buttons, chips, tags
+--rt-radius-pill
+Input 12px
+--rt-space-1 4
+--rt-space-2 8
+--rt-space-3 12
+--rt-space-4 16
+--rt-space-6 24
+--rt-space-8 32
+--rt-space-12 48
+--rt-space-16 64
+--rt-space-24 96
+Token Value Bar
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 12/191
+PAGE 13
+--rt-radius-input
+Card 14px
+--rt-radius-card
+Media 20px
+--rt-radius-media
+Frame 28px (8px mat + hairline)
+--rt-radius-frame
+Elevation and frosted glass
+Mostly flat. A hairline does the work.
+--rt-border
+Hairline card One floating shadow
+Photo
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 13/191
+PAGE 14
+Floating shadow: tooltips, price bubbles, key-details card, phone bar
+--rt-shadow-float
+0 8px 28px rgba(16, 24, 32, .12)
+Frosted card: white at 82%, blur 14px. Text inside is ink or ink-soft only. Collapsed or dismissible by default.
+rt-frosted
+Motion
+150 to 250ms, ease-out, for state changes only. Reduced motion collapses every transition. Nothing is
+hidden until an animation runs.
+--rt-dur-fast · --rt-dur-base · --rt-dur-slow · --rt-ease
+Hover or focus the dot
+Grid and breakpoints
+Project photo stands in here
+The filing, at a glance
+TS-RE R A n u m ber
+P o ssessio n
+26 Aug 2028
+H o m es av ailable
+143
+P 02200005072 TS-RE RA
+TS-RE RA
+TS-RE RA
+--rt-dur-fast 150ms hover colour, chip, tab
+--rt-dur-base200ms switch, accordion chevron
+--rt-dur-slow 250ms progress bar, drawer
+--rt-ease cubic-bezier(0, 0, .2, 1)ease-out for everything
+Name Width Rule
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 14/191
+PAGE 15
+Layers (z-index)
+Focus and targets
+A visible 3px brand-blue ring with a 3px offset (2px on inputs), 5.5:1 on every ground. On dark surfaces the
+ring is white. Targets are 44px or more.
+--rt-focus-ring
+Focused input
+Phone 390 16px gutters, one column, bottom action bar or tabs. Holds down
+to 320.
+Tablet 768 Two columns, header actions visible, bottom bars hide.
+Desktop 1280 Full header nav, console sidebar, 70/30 listing split, 7/5 results and
+map.
+Wide 1440 Page maximum (--rt-page-max).
+Content 1200 Content maximum (--rt-content-max). Gutter is --rt-gutter.
+--rt-z-base 0 Page
+--rt-z-raised 10 Card overlays, save button on a photo
+--rt-z-sticky 20 Section anchor bar, advisor rail, table header
+--rt-z-header 30 Sticky header
+--rt-z-dropdown 40 Menus, suggestions, popovers
+--rt-z-bar 50 Bottom action bar, bottom tabs
+--rt-z-drawer 60 Drawer, bottom sheet
+--rt-z-modal 70 Modal, dialog
+--rt-z-toast 80 Toasts
+--rt-z-tooltip 90 Tooltips
+Focused button
+Name Width Rule
+Token Value Layer
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 15/191
+PAGE 16
+Focused on dark
+Writing rules
+DO
+Write from the buyer's side, in plain Indian English: "We share your number with the
+developer only when you say so."
+Name the source: "From the developer's TS-RERA filing, updated 3 Sep 2026."
+Say "Developer" for the role, "Advisor" for our person, "home" for what they buy.
+Use brackets for anything unknown: [ADVISOR NAME], [LEADS THIS WEEK], [CLIENT
+NAME].
+DON'T
+Never use payment-holding language. Never show YouTube.
+No jargon in labels ("Match Relevance Score": say "Recommended").
+No "Photo not yet published". Show the locality map tile.
+No invented stats, names of real people, reviews or ratings. No emoji. No pre-ticked
+consent.
+Legal line (footer): Realtified is a brand of Rudravatar Properties Private Limited, CIN
+U68100TS2025PTC196506, TG RERA registered agent A02400005101.
+3Icons
+WHEN TO USE / RULES
+One inline SVG sprite, drawn on a 24px grid with a 1.75 stroke, round caps and joins,
+currentColor. Use 20px in controls, 16 to 18px beside text, 14px inside tags, 24px as a
+lead icon. Icon-only buttons need an aria-label. The star is for "featured" only. There is
+no sparkle icon. Chat is a generic bubble, not a brand logo.
+Usage
+<svg class="rt-icon rt-icon--16" aria-hidden="true"><use href="#i-pin"/></svg>
+14 16 18 20(default) 24 32 filled"featured"only
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 16/191
+PAGE 17
+14 16 18 20 (default) 24 32 filled, featured only
+logo image, 30px high #i-rt-mark, takes currentColor
+Brand assets: logo, logo on dark, favicon, and the vector
+mark
+Use the production images, never a redrawn wordmark. The logo is 28 to 32px high in headers (26px on
+phones) with clear space of half its height around it. Use the white version on the dark navy surfaces
+(footer, gallery viewer). The vector mark (#i-rt-mark) is for 14 to 20px uses, such as the TS-RERA tag,
+where the image would blur.
+img/logo.png · img/logo-on-dark.png · img/icon.png
+logo.png 1271 × 237, transparent. Headers, sidebars, documents.
+logo-on-dark.png White text. Footer and the gallery viewer.
+icon.png 213 × 220. The favicon and app icon.
+#i-rt-mark A vector redraw of the favicon. It takes currentColor; the default is the
+logo blue, and it becomes brand-strong on a tint.
+All icons
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 17/191
+PAGE 18
+i-search i-pin i-home i-building i-villa
+i-plot i-bed i-area i-calendar i-clock
+i-rupee i-shield i-shield-alert i-document i-eye
+i-eye-off i-approx i-info i-alert i-check
+i-check-circle i-x-circle i-x i-chevron-down i-chevron-up
+i-chevron-left i-chevron-right i-arrow-right i-arrow-left i-arrow-up
+i-arrow-down i-heart i-share i-phone i-chat
+i-mail i-user i-users i-advisor i-filter
+i-sort i-map i-list i-grid i-camera
+i-image i-video i-upload i-download i-edit
+i-trash i-more i-bell i-lock i-settings
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 18/191
+PAGE 19
+i-logout i-menu i-plus i-minus i-star
+i-chart i-table i-copy i-external i-refresh
+i-flag i-tag i-layers i-compass i-school
+i-hospital i-train i-bus i-shopping i-park
+i-office i-key i-bookmark i-link i-columns
+i-rt-mark i-sidebar i-send i-trend-up i-trend-down
+85 icons. Not allowed: a sparkle or "AI" icon, brand logos (use the generic chat bubble), emoji.
+4Actions
+WHEN TO USE / RULES
+One prim ary button per region (raspberry, white text). Secondary is a 1.5px ink outline.
+Quiet is ink text with an arrow, for the third action. Destructive is only for irreversible acts
+and is always behind a confirm dialog. Buttons are pills, 48px high by default (44 small,
+56 large); every target is at least 44px. Icon-only buttons need an aria-label.
+Variants and states
+rt-btn--
+primary Talk to [FIRST NAME] Talk to [FIRST NAME]
+Variant Default Hover
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 19/191
+PAGE 20
+Sizes, icons, block
+44, 48 and 56px; icon beside the label; icon-only (44 and 48); icon on a photo; full-width on phone
+rt-btn--sm · rt-btn--lg · rt-btn--icon · rt-btn--icon-surface · rt-btn--block
+Button group and split button
+Group: related actions with equal weight. Split: one default action plus a menu. Use only where the console
+needs them.
+rt-btn-group · rt-btn-group--attached · rt-split-btn
+ 
+rt-btn--
+secondary
+rt-btn--
+quiet
+rt-btn--
+destructive
+rt-btn--
+destructive-
+quiet
+For a secondary destructive choice besid
+Book a site visit Book a site visit
+See floor plans by BHK See floor plans by BHK
+Unpublish listing Unpublish listing
+Reject with reason
+Small, 44px Default, 48px Large, 56px
+Request a callback
+Book a site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 20/191
+PAGE 21
+Links
+Inline link: brand blue, underlined, deeper blue on hover. Quiet link: semibold with an arrow, 44px target.
+rt-link · rt-link--quiet · rt-link--muted
+Open the filingRead our sourcing rulesClear all
+View on TS-RERA
+Bottom action bar (phone)
+Fixed to the bottom on phones. The same two actions as the advisor card: the primary takes 3 parts, the
+secondary 2. Hidden from 768px up. Shown here in place.
+rt-action-bar
+5Inputs
+WHEN TO USE / RULES
+Every input has a visible label above it (14px, medium), optional help below, and an error
+that names the fix. Inputs are 48px high with a 12px radius and a field border that meets
+3:1. Focus is a 3px brand-blue ring. Consent boxes are never pre-ticked. Use a real
+label for every control.
+Text, number, date, textarea, select
+Edit listing View leadsPreview DayWeek Month
+Approve
+Talk to [FIRST NAME] Site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 21/191
+PAGE 22
+, ,, ,
+Default, with help, with error, disabled
+rt-field · rt-input · rt-select · rt-textarea
+Your name
+[CLIENT NAME]
+Email optional
+you@example.com
+We use it only to send you the cost sheet.
+Size range
+12
+Enter a range, for example 1,650 – 3,200 sq ft.
+RERA number
+P02200005072
+Homes available
+143
+Possession date
+26-08-2028
+Time to call
+Buyer summary
+192 villas on 23.93 acres in Kompally, with possession declared for 26 Aug
+2028.
+80 / 600
+Phone with +91, and OTP
+Any time of day
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 22/191
+PAGE 23
+Indian mobile: ten digits after +91. OTP: six boxes, numeric, one-time-code.
+rt-phone · rt-otp
+Mobile number
++91 98XXXXXXXX
+We send a 6-digit code to confirm it is yours.
+Enter the 6-digit code
+Didn't get it? Send again
+Search with suggestions
+Locality or project. The list is a listbox; arrow keys move, Enter picks, Esc closes.
+rt-search · rt-suggest
+Checkbox, radio, switch, consent
+Native inputs, restyled. Boxes are 24px inside a 44px row. Consent is never pre-ticked and says what
+happens.
+rt-check · rt-radio · rt-switch · rt-consent
+Checkbox
+Locality or project
+LOCALITIES
+Kompally Medchal-Malkajgiri
+Kokapet Hyderabad
+PROJECTS
+Srias Boat Club Kompally
+Kom
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 23/191
+PAGE 24
+TS-RERA filing available
+Villas
+Disabled
+Radio
+Buying to live
+Investing
+Disabled
+Switch
+Email me price changes Weekly market digest
+Disabled
+Share my number with the developer so they can call me.
+Leave this unticked and we will keep it to ourselves. You can change your mind
+any time.
+Multi-select chips and budget range
+Chips are checkboxes underneath; selected is a brand-blue tint. The range is two native sliders over one
+track.
+rt-chip-select · rt-range
+BHK
+Budget
+₹1 Cr ₹4 Cr
+2 BHK 3 BHK 4 BHK 5 BHK
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 24/191
+PAGE 25
+File upload and image upload with crop
+Files show name, size and progress; failed files say why. Images are cropped to 16:10 before saving.
+rt-upload · rt-upload-item · rt-image-upload · rt-crop
+Drop files here, or choose them
+PDF or image, up to 10 MB each
+Srias-Boat-Club-brochure.pdf
+4.2 MB · uploading, 62%
+price-sheet.xlsx
+Could not upload: use a PDF or an image.
+Preview on the card
+Remove
+Your photo, cropped to 16:10
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 25/191
+PAGE 26
+16:10
+Form layout and sections
+Sections are separated by a hairline and a heading; fields sit in a one-column phone grid and two or three
+columns from tablet. One primary action at the foot.
+rt-form · rt-form__section · rt-form__grid · rt-form__actions
+About you
+So your advisor knows who to call.
+Name
+[CLIENT NAME]
+Mobile number
++91 98XXXXXXXX
+What you are looking for
+Locality
+Kompally
+Budget
+Any budget
+Possession
+Flexible
+Save photo Cancel
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 26/191
+PAGE 27
+Share my number with the developer.
+Only when you tick this. We never do it otherwise.
+6Tags and status
+WHEN TO USE / RULES
+Source tags say where a fact came from; status pills say where a thing is in a process.
+Never use one for the other. Both are pills, 28px high (32 on phone), with an icon and a
+label; colour never carries meaning alone. Chips are for choosing and filtering. Choose
+the tag by the fact: TS-RERA for anything in the registration filing; Developer for brochure
+and price-sheet facts; Estimate for any figure Realtified calculates (including distances
+and the all-in price); Visited only when a Realtified person has seen it; Public record for
+records such as IGRS.
+Source tags
+Five sources plus "not yet verified". Opaque tinted fill, so they stay legible over photos.
+rt-tag--rera · --developer · --estimate · --visited · --record · --unverified
+Tag with tooltip (tap, hover or keyboard focus)
+A button with an aria-label; the tooltip is role="tooltip" linked by aria-describedby. Esc or a tap away
+closes it. Shown open here.
+rt-tip · rt-tooltip
+Ask for a callback Cancel
+TS-RERA Developer Estimate Visited Public record
+RERA no. not yet verified
+TSRERA
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 27/191
+PAGE 28
+Hover or focus the tag to open it.
+Hover or focus the tag to open it.
+TS-RERA number: the brand mark and a link to the
+application
+WHEN TO USE / RULES
+Every TS-RERA source tag and every RERA chip carries the Realtified brand mark (#i-
+rt-mark), never a generic shield. The number is a link to that project's application on the
+regulator's site. It opens in a new tab, shows a small external-link icon, is underlined on
+hover and focus, and has the accessible name Open the TS-RERA application for
+P02200005072 (opens TS-RERA website). The number is set in the text face, like every other
+figure. A number that is not yet verified is plain text with the issue tag and never a link.
+The four states of the number link, inside the RERA chip. Brand blue text on the tint (5.2:1); the visited state
+is a quieter navy so it reads as "already opened".
+ t t lik h f iibl iitd
+TS-RERA
+Estimate
+RERA no. not yet verified
+Registered with TS-RERA. Tap the number to open the
+project's application on the TS-RERA website.
+Stated by the developer, in a brochure, price sheet or
+document they gave us.
+A figure Realtified worked out. It is not a quote.
+A Realtified person has seen this on site on [DATE].
+From a public record such as IGRS, linked below.
+TS-RERA
+Developer
+Estimate
+Visited
+Public record
+Tag Tooltip sentence
+TS-RERA
+Registered with TS-RERA. Tap the
+number to open the project's
+application on the TS-RERA
+website.
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 28/191
+PAGE 29
+rt-rera · rt-rera-link · :hover · :focus-visible · :visited
+DEFAULT
+TS-RERA
+Brand blue, no underline. The external-link icon is always there.
+HOVER
+TS-RERA
+Underlined, deeper blue.
+FOCUS
+TS-RERA
+3px brand-blue ring with an offset, and the underline.
+VISITED
+TS-RERA
+Navy ink-soft, so a number already opened looks different.
+Where it appears: the chip on a listing, the fact row, a table cell, running text, and the one case that is not a
+link.
+rt-rera · rt-fact · rt-rera-link
+CHIP
+TS-RERA TS-RERA
+FACT ROW
+TS-RERA number
+RUNNING TEXT
+Srias Boat Club is registered with TS-RERA as
+, and the possession date is the one the
+developer filed.
+NOT YET VERIFIED: PLAIN TEXT, NEVER A LINK
+TS-RERA number
+P02400007210
+TAG WITH ITS TOOLTIP
+P02200005072
+P02200005072
+P02200005072
+P02200005072
+P02200005072 P02200005072
+P02200005072
+P02200005072
+RERA no. not yet verified
+TS-RERA
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 29/191
+PAGE 30
+The link target rule. Prefer the application itself; fall back to the regulator's search for the number.
+href rule
+Preferred: the
+application
+Needs new
+data: store
+the
+application
+link per
+project
+https://rerait.telangana.gov.in/PrintPreview/PrintPreview?
+q=[TOKEN]
+Fallback: the
+search page
+https://rerait.telangana.gov.in/searchlist/search?
+CertficateNo=P02200005072
+Target Address
+TS-RERA
+Registered with TS-RERA. Tap the
+number to open the project's
+application on the TS-RERA
+website.
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 30/191
+PAGE 31
+Always target="_blank" with rel="noopener noreferrer". The link icon is #i-external,
+14px, so a person knows it leaves Realtified.
+Fact rows: tag on the value line, and icon-only in tight grids
+On a fact row the tag sits right-aligned on the value line. In a tight 2×2 grid it becomes icon-only, with an
+aria-label.
+rt-fact · rt-facts-grid · rt-tag--icon
+Price per sq ft
+₹10,999
+All-in estimate
+₹2.78 Cr – ₹ 8.09 Cr
+TS-RERA number
+P02400007210
+TS-RERA no. Possession
+26 Aug 2028
+Homes available
+143
+Distance to metro
+1.9 km
+Status pills: every enum in the code
+Each table lists the exact value stored, the plain-words label to show, and the pill. Tones: neutral,
+draft, review, live, warning, danger, record. Where the team and developer labels differ, both are
+shown. Full detail and file paths: inventory.md section 5.
+ 
+No link None
+Developer
+Estimate
+Not yet verified
+P02200005072
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 31/191
+PAGE 32
+Listing approval
+Listing.approvalStatus (db/schema.ts)
+Construction status and listing kind
+Project.status, statusOnRecord, listingKind
+Pricing (commercial) and price sheet
+ 
+draft Draft Draft Draft
+legal_review In legal review In review In legal review
+pending_approvalPending approval In review Pending approval
+approved Live Live Live
+rejected Rejected
+Rejected (v3
+proposes
+"Changes
+requested")
+Rejected
+registry Public TS-RERA
+record n/a Public TS-RERA record
+Under Construction Under construction Under construction
+Ready to Move Ready to move Ready to move
+(statusOnRecord
+false)
+Construction status not
+filed Construction status not filed
+rera_project New launch
+resale_flat Resale flat
+independent_house Independent house
+villa Villa
+plot Plot
+New launch
+Resale flat
+Independent house
+Villa
+Plot
+Value Team console label Developer label Pill
+Value Label Pill or tag
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 32/191
+PAGE 33
+Listing.commercialStatus, PriceSheetRecord.status
+Leads: developer pipeline, support desk, buyer view
+BuilderLeadStatus, ProjectInterestStatus, BuyerFacingStage
+commercial: none No pricing submitted No pricing submitted
+commercial: pending Pricing in review Pricing in review
+commercial: approved Pricing approved Pricing approved
+commercial: rejected Pricing needs changes Pricing needs changes
+sheet: draft Draft Draft
+sheet: pending Pending review Pending review
+sheet: approved Approved Approved
+sheet: rejected Rejected Rejected
+developer: new New New
+developer: contactedContacted Contacted
+developer:
+site_visit_booked Site visit booked Site visit booked
+developer:
+negotiating Negotiating Negotiating
+developer: booked Booked Booked
+developer:
+not_interested Not interested Not interested
+support: new New New
+support: contacted In progress In progress
+support: closed Closed Closed
+buyer: submitted Sent to Realtified Sent to Realtified
+Value Label Pill
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 33/191
+PAGE 34
+Home search: the nine stages (tracker order)
+CONCIERGE_STAGES, STAGE_LABELS
+buyer: in_review We're reviewing your
+requirements We're reviewing your requirements
+buyer: introduced Shared with the
+developer Shared with the developer
+buyer: contacted The developer
+contacted you The developer contacted you
+buyer:
+site_visit_booked Site visit booked Site visit booked
+buyer: negotiating In discussion with
+the developer In discussion with the developer
+buyer: booked Booked Booked
+buyer: not_interestedThis one didn't work
+out This one didn't work out
+routing: new_launch
+New launch
+(support qualifies
+first)
+routing:
+resale_direct
+Resale (introduced
+directly)
+buyerLinkStatus:
+linked Buyer linked Buyer linked
+buyerLinkStatus:
+invite_pending Invite sent Invite sent
+buyerLinkStatus:
+declined Declined Declined
+buyerLinkStatus: noneNot linked Not linked
+New launch
+Resale
+requirement Understanding what
+you need Understanding what you need
+shortlisting Choosing your
+shortlist Choosing your shortlist
+sitevisits Site visits Site visits
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 34/191
+PAGE 35
+Home search: outcome, developer status
+ConciergeOutcome, DeveloperStatus (staff label | buyer label)
+ _
+negotiation Negotiating the price Negotiating the price
+booking Booking your home Booking your home
+home_loan Home loan Home loan
+agreement_registrationAgreement and
+registration Agreement and registration
+possession Getting your keys Getting your keys
+after_possession After you move in After you move in
+outcome: open Open Open
+outcome: bought Bought through us Bought through us
+outcome:
+bought_elsewhere Bought elsewhere Bought elsewhere
+outcome: paused Paused for now Paused for now
+outcome:
+not_reachable Not reachable Not reachable
+outcome:
+not_serious Not serious Not serious
+outcome: duplicateDuplicate Duplicate
+developer:
+not_contacted
+Not contacted yet (buyer:
+Checking with the developer) Not contacted yet
+developer:
+contacted
+Contacted (buyer: Checking
+with the developer) Contacted
+developer:
+registered
+Registered with developer
+(buyer: Registered with the
+developer)
+Registered with developer
+developer:
+visit_booked
+Visit booked (buyer: Site visit
+booked) Visit booked
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 35/191
+PAGE 36
+Approval of people: identity check (KYC), role request, project claim
+ChannelPartner.kycStatus, AccountRoleRequest.status, ProjectClaimRequest.status
+Bookings, commission, RERA cases
+BookingState.status, commissionStatus, AdminReraDispute, the admin RERA details request
+developer: visitedVisited Visited
+developer:
+negotiating
+Negotiating (buyer:
+Negotiating the price) Negotiating
+developer: booked Booked Booked
+developer: droppedDropped (buyer: Not pursuing) Dropped
+pending Pending review Pending review
+approved (KYC) Verified Verified
+approved (request,
+claim) Approved Approved
+rejected Rejected (with the
+reason) Rejected (with the reason)
+token_pending Token pending Token pending
+token_paid Token paid Token paid
+agreement Agreement stage Agreement stage
+registered Registered Registered
+completed Completed Completed
+cancelled Cancelled Cancelled
+expired Expired Expired
+commission: accrued Accrued Accrued
+commission: released Released Released
+Value Label Pill
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 36/191
+PAGE 37
+Listing Studio and documents
+StudioSectionState, StudioIssue.level, legalDocs[].status
+commission: clawed_back Clawed back Clawed back
+dispute: Received Received Received
+dispute: Assigned_Auditor Assigned to an
+auditor Assigned to an auditor
+dispute:
+Investigation_Active Under investigation Under investigation
+dispute: Resolved Resolved Resolved
+details request: InitiatedRequested Requested
+details request: CompilingBeing compiled Being compiled
+details request:
+Verified_Signed Verified and signed Verified and signed
+details request: Failed Could not be
+completed Could not be completed
+empty Not started Not started
+in_progress In progress In progress
+ready Ready Ready
+needs_review Needs review Needs review
+level: required Required (blocks submit) Required (blocks submit)
+level: recommended Recommended Recommended
+level: review A person's check A person's check
+doc: Verified Verified Verified
+doc: Pending Pending Pending
+doc: Under Review Under review Under review
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 37/191
+PAGE 38
+Intelligence: freshness, claim ladder, confidence, source tier
+SourceHealthChip, ClaimStatus, Confidence, SourceTier
+freshness: fresh Fresh Fresh
+freshness: aging Aging Aging
+freshness: stale Stale Stale
+freshness: never Never run Never run
+claim: announced Announced Announced
+claim: approved Approved Approved
+claim: tendered Tendered Tendered
+claim: awarded Awarded Awarded
+claim: under_constructionUnder construction Under construction
+claim: operational Operational Operational
+claim: disputed Disputed Disputed
+claim: unverified Unverified Unverified
+confidence: high High confidence High confidence
+confidence: medium Medium confidence Medium confidence
+confidence: low Low confidence Low confidence
+tier: official Official source Official source
+tier: licensed Licensed source Licensed source
+tier: reputable Reputable source Reputable source
+tier: community Community source Community source
+tier: fixture Sample data Sample data
+Value Label Pill
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 38/191
+PAGE 39
+Chips: filters and localities
+44px, pill, hairline border. Selected is a brand-blue tint with a brand-blue border (never raspberry). Filter
+chips open a menu; removable chips carry an x.
+rt-chip · rt-chip--filter · aria-pressed
+Popular localitiesGachibowli Kokapet Kompally Bachupally
+Patancheru
+BHK Possession Status Developer Villas
+Clear all
+Category tags, sponsored, test, counts and badges
+"Sponsored" is always labelled and never sits in the hero. The star is "featured" only.
+rt-tag--category · --sponsored · --test · rt-badge · rt-count
+[3] [2] [12] [12] projects
+Role badges and avatars
+The badge in the account menu: Home Buyer, Developer, TS-RERA Agent, Team, Admin. Avatars never use
+a stock face.
+rt-role-badge · rt-avatar
+Home Buyer Developer TS-RERA Agent Team Admin
+[CN][CN][ADVISOR
+PHOTO]
+Villas Gated community New launch Resale flat Sponsored
+Featured TEST
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 39/191
+PAGE 40
+7Navigation
+WHEN TO USE / RULES
+One header for every role; only the right-hand cluster changes. Signed-in people get an
+account menu with a role badge and their console (if any). Consoles use a left sidebar on
+desktop with counts, and bottom tabs on phones. A page has one tab bar or one anchor
+bar, not both at the same level. Do not show features that are not launched (Rent,
+Commercial, Plots) in the header.
+Header for every role
+Signed out (visitor)
+rt-header
+Buyer (role: buyer)
+rt-header
+[CN]
+Developer (role: builder)
+rt-header
+[CN]
+Partner (role: agent)
+rt-header
+[CN]
+Team (legal, sales, support, accounts, catalogue and others)
+rt-header
+[CN]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 40/191
+PAGE 41
+[CN]
+Admin (admin, super_admin)
+rt-header
+[CN]
+Account menu with role badge
+Opened from the account button. The console row depends on the role; the rest is the same. Shown here
+for a developer.
+rt-account · rt-popover · rt-menu
+buyer Home Buyer My Dashboard
+builder Developer Developer
+Console
+agent TS-RERA
+Agent Partner Console
+legal, sales, support, accounts, catalogue
+and others Team Team Console
+admin, super_admin Admin Admin Console
+Role Badge Console row
+[CN][NAME]
+[EMAIL]
+Developer
+Developer Console
+Account settings
+Saved homes
+Email support
+Sign out
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 41/191
+PAGE 42
+Mobile menu
+Full list, 48px rows, grouped. A signed-out person gets "Log in" at the foot; the primary action stays in the
+page.
+rt-mobile-menu
+BROWSE
+Buy
+Projects
+Localities
+RESOURCES
+RERA verification
+How it works
+FOR PARTNERS
+Become a developer partner
+Become a TS-RERA agent
+Console sidebar: expanded and collapsed
+WHEN TO USE / RULES
+Every console (developer, partner, team, admin, and the buyer dashboard where it has a
+sidebar) has two sidebar states: expanded (about 248px, icon and label) and collapsed
+to a rail (72px, icons only), like the desktop apps people already use. A toggle sits at the
+top of the sidebar. The state is remembered per person (a small localStorage value,
+Log in or sign up
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 42/191
+PAGE 43
+p pp ( g
+always inside try and catch, expanded when nothing is stored). Phones never show either:
+they use the bottom tabs.
+The same admin sidebar in both states. In the rail every icon keeps its name (it is the tooltip on hover and
+keyboard focus and the accessible name), counts become a dot, the active item keeps its tint, and the role
+badge and name become the avatar only.
+rt-sidebar · rt-sidebar.is-collapsed · rt-sidebar__toggle
+EXPANDED, 248PX
+[CN]
+[NAME]
+Admin
+Overview [8]
+QUEUES
+Legal review [3]
+Listings [5]
+Approvals [2]
+Clients
+Requests [6]
+SITE
+Homepage spots
+COLLAPSED TO A RAIL, 72PX
+[CN]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 43/191
+PAGE 44
+Hover or focus an icon to see its label. Try the toggle: it works on every sidebar on this
+page.
+Consolesidebarwithcountsexpanded
+Toggle
+Icon button at the top right of the
+account row. aria-
+expanded="true", label "Collapse
+sidebar"
+First item in the rail, centred. aria-
+expanded="false", label "Expand
+sidebar", with a tooltip
+Item Icon and label, 44px high, full
+width
+Icon only in a 48px square; the label
+is the tooltip, shown on hover and
+focus, and stays the accessible
+name
+Count Number badge on the right
+An 8px dot on the icon (red for items
+that need action). The number stays
+in the page for screen readers
+Active
+item
+Brand tint with brand-blue text
+and icon The same tint on the 48px square
+Group
+heading Small caps label A short hairline
+Account
+row Avatar, name, role badge Avatar only
+Motion Column width changes in 250ms ease-out; none when the person prefers
+reduced motion
+Part Expanded Collapsed rail
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 44/191
+PAGE 45
+Console sidebar with counts, expanded
+Admin and Team (queues, site, people), Developer, Partner. Counts are the open items for that person; [n] is
+an example value. A group row with several queues opens the first one this role can reach; a segmented
+control inside the page switches between them.
+rt-sidebar · rt-sidebar__item · rt-badge
+[CN]
+[NAME]
+Admin
+Overview [8]
+QUEUES
+Legal review [3]
+Listings [5]
+Approvals [2]
+Clients
+Requests [6]
+Onboarding [1]
+RERA cases [2]
+Bookings
+SITE
+Homepage
+PEOPLE
+Users & roles
+Org chart
+[CN]
+[NAME]
+Team
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 45/191
+PAGE 46
+Team
+Overview [4]
+QUEUES
+Clients
+Requests [6]
+Onboarding [1]
+[CN]
+[NAME]
+Developer
+Overview
+Listings
+Leads [4]
+Team
+Account
+[CN]
+[NAME]
+TS-RERA Agent
+Projects to sell
+My clients
+Share kit
+Commissions
+Account
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 46/191
+PAGE 47
+A console with the rail collapsed
+The team console overview with the rail collapsed: the page gets 176px more room. This sidebar
+remembers its state; collapse or expand it with the toggle. Values in [brackets] are examples.
+rt-app · rt-sidebar.is-collapsed
+[CN]
+Overview
+What needs your action today.
+Waiting for legal
+[3]
+Waiting for approval
+[2]
+Requests
+[6]
+Live listings
+[N]
+Listings waiting for review
+ 
+Srias IWA
+Gachibowli
+·
+Apartments
+[DEVELOPER] [DATE] In legal review
+Hallmark
+Floresta
+Patancheru
+· Villas
+[DEVELOPER] [DATE] Pending approval
+Srias
+Tiara
+Bachupally
+·
+Apartments
+[DEVELOPER] [DATE] In legal review
+Review
+Review
+Review
+Overview Listings Clients Account
+Project Developer SubmittedStage
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 47/191
+PAGE 48
+Dashboard bottom tabs (phone)
+Up to five items; the fifth is "More", which opens a bottom sheet with the rest. 56px tall. Hidden from 768px
+up. Shown for a developer and for a team member.
+rt-bottom-tabs
+Breadcrumbs
+On listing and locality pages. The last item is the current page and is not a link.
+rt-breadcrumb
+Home/Hyderabad/Kompally/Srias Boat Club
+Tabs and segmented control
+Tabs switch panels in place (arrow keys move). A segmented control switches a view or a period.
+rt-tabs · rt-tab · rt-seg
+192 villas on 23.93 acres in Kompally, with possession declared for 26 Aug 2028.
+List MapDailyWeekly
+Stepper (wizard)
+The developer's RERA listing wizard (steps in the code: TS-RERA number, Review, Documents, Photos &
+ )
+Overview Listings Leads
+[4]
+Account
+Overview Clients Requests
+[6]
+More
+Overview What's availableLocality
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 48/191
+PAGE 49
+submit). On phones only the current label shows.
+rt-stepper
+2Review 3 4
+Section anchor bar (listing)
+Sticky under the header on a listing; highlights the section in view (script optional: without it the links still
+jump). Order follows how a buyer decides.
+rt-anchorbar
+Pagination and load more
+Load more for queues and result lists (keeps place, announces the new count). Numbered pagination for
+tables.
+rt-loadmore · rt-pagination
+Showing [24] of [143] homes
+1 2 3 … 12
+Footer
+The only dark surface in the product: a deep navy ground with light text. Legal line always present.
+rt-footer
+Homes in Hyderabad, checked before you visit.
+You pay us nothing.
+Homes & pricingLocation Plans & amenitiesConstruction & RERADevelope
+Load more homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 49/191
+PAGE 50
+BUY
+Homes
+Projects
+Localities
+COMPANY
+How it works
+RERA verification
+Contact
+LEGAL
+Privacy
+Terms
+Realtified is a brand of Rudravatar Properties Private Limited, CIN U68100TS2025PTC196506, TG
+RERA registered agent A02400005101.
+© [YEAR] Rudravatar Properties Private Limited
+8Cards
+WHEN TO USE / RULES
+There is one ProjectCard. Its slots never change: media, badge layer, title block, price
+block, key facts, source tag, meta row, status pill, actions. A context (rt-card--discover,
+--saved, --owner and so on) decides which slots show and what the meta row carries,
+so the hierarchy follows what that viewer needs first: a buyer's saved card leads with what
+changed since they saved; a developer's card leads with what needs their attention; a
+reviewer's card leads with what they must decide. Never build a second card. In any list of
+cards the buttons are secondary or quiet; the page keeps its single raspberry primary.
+The anatomy: one card, nine slots
+The shared markup. Every context below is this markup with fewer or different slots filled.
+article.rt-card.rt-card--CONTEXT
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 50/191
+PAGE 51
+1Mediart-card__media. A 16:10 photo, or the neutral locality map tile when there is
+no photo. Never a black box, never the words "photo not yet published".
+2Badge layerrt-card__badges. Small opaque tags in the top-left corner: listing kind,
+Sponsored, Test. Empty by default so the photo stays clear. The save button rt-
+card__save sits top-right.
+3Title blockrt-card__title, rt-card__locality. Name in display type, then locality
+and type.
+4Price blockrt-card__price. Range with an en dash and thin spaces, Indian format.
+"Price on request" in ink-muted when there is no published price.
+5Key factsrt-card__facts. Two or three icon facts: BHK, possession, size.
+6Source tagrt-card__source. One tag that says where the card's numbers come
+from, with the RERA number beside it.
+7Meta rowrt-card__meta. Context metadata as label and value pairs. This is where
+contexts differ most.
+8Status pillrt-card__status. A listing, construction or stage pill. Visually moved up
+(CSS order) in contexts where it is the first thing the viewer needs.
+9Actionsrt-card__actions. Context actions, secondary or quiet only.
+The title link stretches over the whole card on navigation contexts, so the card is one big
+tap target. Buttons inside sit above it.
+<article class="rt-card rt-card--CONTEXT">
+  <div class="rt-card__media">[photo stand-in or rt-maptile]
+    <div class="rt-card__badges">[kind / sponsored tags]</div>
+    <button class="rt-btn rt-btn--icon-surface rt-card__save" aria-label="Save Srias 
+  </div>
+  <div class="rt-card__body">
+ h3 l "t d titl" h f"#"Si B tClb/ /h3
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Possession Aug 2028
+TS-RERAP02200005072
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 51/191
+PAGE 52
+ 
+    <h3 class="rt-card__title"><a href="#">Srias Boat Club</a></h3>
+    <p class="rt-card__locality">Kompally · Villas</p>
+    <p class="rt-card__price">₹2.50 Cr – ₹7.48 Cr</p>
+    <ul class="rt-card__facts">…</ul>
+    <div class="rt-card__source">[one rt-tag]</div>
+    <dl class="rt-card__meta"><div><dt>Saved</dt><dd>…</dd></div></dl>
+    <div class="rt-card__status">[status pill]</div>
+    <div class="rt-card__actions">[context actions]</div>
+  </div>
+</article>
+Context by slot matrix
+Read across a row to see what one context shows; read down a column to see how one
+slot changes. Phone: the horizontal contexts (search-list, owner, partner, queue, shortlist,
+featured) stack to a column with the photo on top at 16:10.
+16:10
+photo
+Kind,
+Sponsored
+(rare)
+Name,
+locality ·
+type
+4:3 photo,
+left
+Kind Name,
+locality ·
+type ·
+developer
+16:9
+photo,
+small
+– Name,
+locality
+1:1
+thumbnail
+– Name,
+locality
+4:3 photo Sponsored
+(always)
+Name,
+locality
+16:10
+photo or
+map tile
+Resale flat /
+Plot /
+Independent
+Name,
+locality
+discover
+Everyone
+Homepage rails, search grid
+search-list
+Everyone
+Search, list view with map
+map
+Everyone
+Map pin popup
+compact
+Everyone
+Related, nearby, more by developer
+featured
+Everyone
+One labelled row, never the hero
+resale
+Everyone
+Resale flat, house, plot
+Media Badges Title blockContext
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 52/191
+PAGE 53
+ 
+house
+16:10
+photo
+– Name,
+locality
+4:3 photo,
+120px
+– Name,
+locality
+16:10
+photo,
+small
+– Name,
+locality
+4:3 photo,
+120px
+– Name,
+locality
+4:3 photo,
+120px
+– Name,
+locality
+4:3 photo,
+120px
+Kind, Test Name,
+locality
+Flat block,
+same
+ratio
+– Line
+Locality
+map tile +
+label
+As the
+context
+As the
+context
+saved
+Signed-in buyer
+Dashboard, Saved projects
+shortlist
+Buyer; advisor and team (staff variant)
+Home search tracker; case detail
+compare
+Everyone
+Head of a column in Compare (see section: Compare)
+owner
+Developer
+Developer console, Listings
+partner
+TS-RERA Agent
+Partner console, Projects to sell
+queue
+Legal, catalogue, admin
+Team console queues
+skeleton
+Everyone
+While results load
+no-photo
+Everyone
+Any context with media
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 53/191
+PAGE 54
+Scroll sideways inside the table on phones; the context column stays in view.
+Public contexts
+discover · homepage rails (save only)
+rt-card--discover
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Possession Aug 2028
+TS-RERAP02200005072
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 54/191
+PAGE 55
+Everyone, signed in or not. It is the first card a buyer meets, so it carries only what is
+needed to decide whether to open the project.
+Photo Lets a buyer judge the place before anything else. The save heart sits
+on it so saving never means leaving the page.
+Price The question every buyer has. When there is no published price it
+says so plainly, in muted ink, and never a number we made up.
+BHK, possession The two filters buyers actually apply by eye.
+One tag and
+RERA no.
+Proof that the numbers come from a filing. One tag, not five, to keep
+the card calm; the listing page carries the rest.
+discover · search grid (adds Compare)
+rt-card--discover + rt-chip-select
+Srias IWA
+Gachibowli · Apartments
+Price on request
+3 BHK Possession Sep 2028
+TS-RERAP02400007210
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 55/191
+PAGE 56
+Anyone searching. Compare appears only here, where a buyer is weighing several homes
+at once.
+Compare A checkbox chip, not a button, so it reads as a choice. Up to four; the
+tray in Search shows them.
+Developer tagSrias Tiara's possession is stated by the developer, not read from a
+TS-RERA date, so the tag says Developer and the note says
+"declared".
+Hallmark Floresta
+Patancheru · Villas
+₹3.51 Cr – ₹ 5.99 Cr
+4 BHK Possession Oct 2026
+TS-RERA target dateTS-RERA
+Compare
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHK Possession Mar 2028
+Developer-declared
+Developer
+Compare
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 56/191
+PAGE 57
+TS-RERA target
+date
+Floresta's date is the filing's target, not a promise. The words stay on
+the card.
+search-list · horizontal, with the map
+rt-card--search-list
+Anyone searching in list view, where the map takes the right-hand half and the cards
+have a wide, shallow frame.
+Developer Added to the locality line: when buyers scan a list they compare
+developers as much as places.
+₹  per sq ft The number that lets two prices be compared fairly. Its own icon-only
+Developer tag, since it comes from the price sheet and not the filing.
+Size Added because the wide frame has room, and range of sizes
+explains the range of prices.
+Construction
+status
+An outlined pill, quieter than the source tags, so "Under construction"
+never reads as a source.
+map · pin popup
+rt-card--map
+Srias Boat Club
+Kompally · Villas · by Srias Life Spaces LLP
+₹2.50 Cr – ₹ 7.48 Cr
+₹ 10,999 per sq ft 
+3 / 4 / 5 BHK 2,269 – 6,800 sq ft
+Possession Aug 2028
+Under construction
+TS-RERAP02200005072
+Compare
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 57/191
+PAGE 58
+Anyone who taps a price bubble on the map. It opens above the pin and closes with Esc,
+the map tap or a second tap on the bubble.
+Tiny by design 264px wide, so it never hides more than a fifth of a phone map.
+One fact line BHK and the possession month only; the project page holds the rest.
+No source tagThe bubble it came from already says "from"; the full card on the
+page carries the tag. This is the one context without it.
+compact · related, nearby, more by this developer
+rt-card--compact
+Anyone, lower on a listing page: Related homes, Nearby, and More by the developer. The
+decision is already made about the main project, so these are a glance.
+Thumbnail A square crop, 88px, enough to recognise a place.
+Name, locality,Three lines, nothing else, so four of them fit in a sidebar.
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Aug 2028
+View project
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+Hallmark Skyrena
+Financial District · Apartments
+₹1.15 Cr – ₹ 2.03 Cr
+Srias IWA
+Gachibowli · Apartments
+Price on request
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 58/191
+PAGE 59
+price
+Icon-only tagIn a tight card the source tag shrinks to its icon and keeps an aria-
+label ("Source: TS-RERA").
+No save button A heart on an 88px thumbnail is a mis-tap waiting to happen. Open
+the project to save it.
+featured · a labelled Sponsored row
+rt-card--featured
+Featured by developers Paid placement. Facts still carry their sources.
+Anyone, in one clearly named row further down the homepage (the code's "featured"
+spot). It never sits in the hero.
+Sponsored tagAlways on the photo corner and always spelt out; the row heading
+says "Paid spot" too. Two labels, so nobody mistakes it for a ranking.
+Why am I seeing
+this?
+A quiet link that explains why it is shown in one sentence. Honest
+advertising earns trust.
+Same facts,
+same tags
+Being paid for does not remove the source tag. A sponsored card is
+held to the same rules.
+resale · a flat and a plot (values are [BRACKETED])
+rt-card--resale
+Hallmark Skyrena
+Financial District · Apartments
+₹1.15 Cr – ₹ 2.03 Cr
+2 / 3 BHK Ready to move
+Developer
+Sponsored
+View project Why am I seeing this?
+Resale flat
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 59/191
+PAGE 60
+[PROJECT NAME], [UNIT]
+[LOCALITY] · Resale flat
+Asking price
+[ASKING PRICE]
+[2] BHK [1,180] sq ft
+Listed by Realtified
+Part of
+Photo
+Seller-stated
+[PROJECT NAME]
+Ask about this home
+[PLOT NO.], [LAYOUT NAME]
+[LOCALITY] · Plot
+[LOCALITY]
+Plot
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 60/191
+PAGE 61
+Anyone looking at a resale flat, independent house or plot. These are person-posted, so
+there is no developer and often no TS-RERA filing of their own.
+Asking price Labelled "Asking price", never "Price", because it is what the seller
+wants, not a published rate.
+Listed by "Realtified" when our team listed it (listedByTeam), "The owner" or
+"An agent" otherwise. Enquiries on team listings go to a Realtified
+contact, never the seller.
+Part of A link to the parent project (parentProject) so a buyer can read that
+project's filing.
+Area unit sq ft for flats, sq yd for plots: whatever unit the listing states.
+Plot with no
+photo
+Falls back to the locality tile with the locality name.
+Open question  The five source tags have no "Owner" value. The seller's asking price is shown
+with a neutral "Seller-stated" tag until the planner decides whether to add a sixth source.
+Buyer contexts
+saved · signed-in buyer (what changed since you saved comes first)
+rt-card--saved
+Asking price
+[ASKING PRICE]
+[240] sq yd [LOCALITY]
+Listed by The owner
+Part of
+Seller-stated
+[PROJECT NAME]
+Ask about this plot
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 61/191
+PAGE 62
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+Down ₹ [8] L since you saved
+3 / 4 / 5 BHK Possession Aug 2028
+Saved [SAVED DATE]
+Next site visit [VISIT DATE]
+YOUR NOTE
+[YOUR NOTE: for example, "Ask about the lake-facing plots"]
+TS-RERAP02200005072
+Book a site visit Edit note
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 62/191
+PAGE 63
+Needs new data: price at the time of saving (so the change can be shown)
+Needs new data: buyer note on a saved project
+Needs new data: next site visit on a saved card
+A signed-in buyer returning to homes they saved. They are not discovering any more;
+they are checking whether anything moved.
+Price change
+chip
+Sits straight under the price. Down is brand blue with a down arrow,
+up is amber with an up arrow; the words carry the meaning, not the
+colour. Its source tag says who changed the price.
+Saved date Tells the buyer how old their picture of this home is. Exists in the code
+today.
+Your note Their own reminder, in a grey box so it never reads as our content.
+Next site visit Shown only when a visit is booked (only shortlisted projects have one
+today).
+Nothing
+changed
+The second card has no chip and no note: a card shows only what
+exists.
+shortlist · the buyer's view inside the home search tracker
+rt-card--shortlist
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHK Possession Mar 2028
+Developer-declared
+Saved[SAVED DATE]
+Developer
+Site visit booked
+Hallmark Floresta
+Patancheru · Villas
+Visit[VISIT DATE, TIME]
+[ADVISORFIRSTNAME]'SNOTE
+Book a site visit Add a note
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 63/191
+PAGE 64
+Needs new data: advisor note per shortlisted project (the buyer feed carries status and visit date
+only)
+The buyer, on the home search tracker. These are the homes their advisor and they
+chose together, so the question is "where does each one stand?"
+Developer statusFirst, as a pill, in the buyer's plain words: Checking with the developer,
+Registered with the developer, Site visit booked, Visited, Negotiating
+the price, Booked, Not pursuing. Two staff statuses (not contacted,
+contacted) both read "Checking" to the buyer.
+Visit Date and time when booked (visitAt).
+Advisor's noteThe advisor's one line for this home, written in the buyer's voice.
+Planned; not shipped.
+Message advisorOpens WhatsApp or a call from contact. The only secondary button,
+because the advisor is the next step.
+shortlist · the advisor's view of a client's shortlist (case detail)
+rt-card--shortlist (staff)
+[ADVISOR FIRST NAME]S NOTE
+[ADVISOR NOTE: what to look at on the visit]
+Checking with the developer
+Srias Boat Club
+Kompally · Villas
+VisitNot booked yet
+Visited
+Srias Tiara
+Bachupally · Apartments
+Visited[VISIT DATE]
+View project Message [ADVISOR FIRST NAME]
+View project Message [ADVISOR FIRST NAME]
+View project Message [ADVISOR FIRST NAME]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 64/191
+PAGE 65
+A Realtified advisor or support teammate working a client's case. They need the working
+detail the buyer never sees.
+Status select The eight staff statuses, in staff wording. Changing it also changes
+the buyer's pill.
+Developer
+contact,
+registered
+Who to call and when the buyer was registered with the developer, so
+nothing is registered twice.
+Internal note Labelled "Not shown to the buyer". Case events carry a shared or
+internal visibility; this field is internal.
+Drop project… Destructive-quiet and asks for a reason in a confirm dialog.
+Commission fields exist on the record but never appear here or
+anywhere a buyer can see.
+compare · the card at the head of a comparison column
+rt-card--compare
+Visit booked
+Srias Boat Club
+Kompally · Villas · Srias Life Spaces LLP
+Claimed by developer
+Developer contact [CONTACT NAME], [PHONE]
+Registered with developer [DATE]
+Visit [VISIT DATE, TIME]
+Developer status
+Visit booked
+Internal note Not shown to the buyer
+[NOTE]
+TS-RERAP02200005072
+Save changes Drop project…
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 65/191
+PAGE 66
+A buyer weighing two to four homes. The card is only the column head: photo, name,
+locality, price range and a remove button.
+Remove An icon button on the photo with its own label ("Remove Srias Boat
+Club from compare"). It never deletes the project, only the column.
+Nothing else No facts or source tags on the head. The facts, the "what stands out"
+sentences and the questions for the advisor live in the comparison
+itself.
+See section: Compare
+Workspace contexts (also drawn inside the console screens
+with the same markup)
+owner · developer's own projects
+rt-card--owner
+Srias Boat Club
+Kompally
+₹2.50 Cr – ₹ 7.48 Cr
+Live
+Srias Boat Club
+Kompally · Villas
+Listing completeness
+[86]% All 6 required items done
+Leads this week
+[LEADS THIS WEEK]
+Enquiries
+[ENQUIRIES]
+Site visits Homes available
+RERAP02200005072
+View project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 66/191
+PAGE 67
+[SITE VISITS] [HOMES AVAILABLE]
+Price sheet
+Pricing approved
+In review Submitted [DATE]
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Listing completeness
+[100]% All 6 required items done
+Leads this week
+[LEADS THIS WEEK]
+Enquiries
+[ENQUIRIES]
+Site visits
+[SITE VISITS]
+Homes available
+[HOMES AVAILABLE]
+Price sheet
+Pending review
+Photo
+RERA no. not yet verified
+Changes requested
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Needs your attention
+[REASON FROM THE REVIEWER]. Fix it and submit
+again.
+Listing completeness
+[72]% [1] of 6 required items missing
+Leads this week
+[LEADS THIS WEEK]
+Enquiries
+[ENQUIRIES]
+Site visits
+[SITE VISITS]
+Homes available
+[HOMES AVAILABLE]
+Price sheet
+Photo
+RERA [RERA NO.]
+Edit listing View leadsPreview
+Preview See review history
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 67/191
+PAGE 68
+Needs new data: leads this week, enquiries and site visits per project
+A developer looking at their own projects. They do not need to be persuaded; they need
+to know what is waiting on them.
+Listing status First, above the name. Draft, In review, Live, Changes requested. A
+developer never sees "Rejected": the status is "Changes requested"
+with the reviewer's reason in the box (staff consoles say Rejected).
+CompletenessA number and the count of required items still missing ("[4] of 6
+required items missing"). Six items block submit; the rest are advice.
+Leads, enquiries,
+visits
+The three numbers a developer checks every morning. Per-project
+weekly counts are not stored yet.
+Homes available,
+price sheet
+From inventory and the price sheet, so a developer sees at a glance
+that pricing is approved.
+RERA chip The real number with a check when verified; "RERA no. not yet
+verified" in the issue colour when the developer typed it and we have
+not matched it.
+Actions Edit listing, View leads, Preview. Secondary and quiet only; the
+console's one primary is "Add a listing".
+partner·TS-RERAAgent,projectstosell
+Pricing needs changes
+Draft
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Listing completeness
+[40]% [4] of 6 required items missing
+Price sheet
+No pricing submitted
+Photo
+RERA no. not yet verified
+Edit listing Preview
+Edit listing
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 68/191
+PAGE 69
+pae  S  ge, pojecs o se
+rt-card--partner
+A TS-RERA Agent choosing which projects to sell. Their question is "is it worth my
+effort?", so the money and their own clients lead.
+Promoting Whether they have switched this project on for their clients
+(promoted).
+Developer
+commission
+What the developer pays (commissionPct). Commission is in the
+data model for partner cards, so it is shown.
+Promoting
+Hallmark Floresta
+Patancheru · Villas
+4 BHK Possession Oct 2026
+Developer commission
+[BUILDER COMMISSION %]
+You earn
+[YOUR SHARE %]
+Your clients here
+[CLIENTS REGISTERED]
+TS-RERA
+Not promoting yet
+Hallmark Skyrena
+Financial District · Apartments
+2 / 3 BHK Ready to move
+Developer commission
+[BUILDER COMMISSION %]
+You earn
+[YOUR SHARE %]
+Your clients here
+[CLIENTS REGISTERED]
+Developer
+Promoting
+Share link Register a client
+PromotingStart promoting
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 69/191
+PAGE 70
+You earn The partner's share (cpSharePct). The ledger and payouts live in the
+Commissions tab, not here.
+Your clients hereDerived from their registered clients for this project.
+Share link Copies the WhatsApp-ready link; the actions are the three things an
+agent does with a project.
+queue · staff review, three reviewers, one card
+rt-card--queue
+In legal review
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Owner
+[OWNER EMAIL]
+Submitted
+[SUBMITTED DATE]
+Issues
+[3] required · [2]
+recommended
+Photo
+Imported from TS-RERA
+Live
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Owner
+[OWNER EMAIL]
+Submitted
+[SUBMITTED DATE]
+Issues
+[0] required · [1]
+recommended
+Photo
+Entered by team
+Open for review Clear at legal review
+Reject…
+Edit content Unpublish…
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 70/191
+PAGE 71
+Legal, catalogue and admin staff working a queue. They scan dozens of these, so the
+stage leads and each reviewer sees only the buttons their role may press.
+Review stage First: In legal review, Pending approval, Live, Rejected (with where:
+legal or final). Staff consoles say "Rejected"; the developer sees
+"Changes requested".
+Owner,
+submitted
+Who to ask and how long it has waited. Owner shows an email or
+name, never a raw id.
+Issues Required and recommended counts from the completeness check,
+Pending approval Cleared legal review
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Owner
+[OWNER EMAIL]
+Submitted
+[SUBMITTED DATE]
+Issues
+[0] required · [2]
+recommended
+Photo
+Entered by developer
+Rejectedat legal review
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Owner
+[OWNER EMAIL]
+Submitted
+[SUBMITTED DATE]
+Issues
+[2] required · [0]
+recommended
+REASON
+[REJECTION REASON]
+Photo
+Imported from TS-RERA
+Approve Reject… Seller contact
+Open for review
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 71/191
+PAGE 72
+so a reviewer knows before opening.
+Entered by The source slot says Imported from TS-RERA, Entered by team or
+Entered by developer: how much to trust the first draft.
+Actions By capability, below. Reject and Unpublish are destructive-quiet and
+always open a confirm dialog with a reason.
+Separation of duties: a role that can edit content can never approve. The card never shows a
+button the viewer cannot use; it hides it.
+Loading and no-photo, for every context that has media
+skeleton · same ratio, flat blocks, no shimmer
+rt-card--skeleton
+Edit content listing.edit.content Listings and catalogue
+Clear at legal review;
+verify documents
+listing.approve.legal,
+approval.verify Legal
+Approve or reject
+(final) listing.approve.final Admin
+Unpublish listing.unpublish Listings and catalogue,
+admin
+Seller contact
+(private name and
+phone)
+seller_contact.access Catalogue, sales, admin
+Read the queue only listing.read.queue
+Legal, catalogue, admin (and
+engineering with buyer details
+hidden)
+Action Capability Who holds it
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 72/191
+PAGE 73
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 73/191
+PAGE 74
+The skeleton keeps the exact media ratio of its context, so nothing jumps when the card
+arrives. The region is role="status" with a screen-reader sentence; the blocks are
+aria-hidden. It must not depend on an animation to be visible.
+no-photo · the neutral locality map tile, never a black box
+rt-card--no-photo
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 74/191
+PAGE 75
+The tile is drawn from the map tokens (--rt-map-tile, -block, -water, -street)
+with a pin and the locality name. The fallback ladder is: real photo, then a developer
+render labelled "Developer render", then the locality tile. When there is no coordinate
+either, the tile shows without a pin and the label alone. The words "Photo not yet
+published" are never used.
+Lead and enquiry cards, one per viewer
+article.rt-lead-card.rt-lead-card--developer | team | buyer | partner. Slots: __who
+__project __when __status __source __actions. The same enquiry looks different to each
+person because each asks a different question: the developer asks "who is this and have I
+replied?", the team asks "is it qualified and is the clock running?", the buyer asks "where
+has my enquiry got to?".
+Mypi Villas Constructions Phase 2
+Opp GVK Emri
+Price on request
+Details in the filing
+Opp GVK Emri
+TS-RERAP02200001788
+Mypi Villas Constructions Phase 2
+Opp GVK Emri
+Price on request
+Details in the filing
+Construction status not filed
+Opp GVK Emri
+TS-RERAP02200001788
+Mypi Villas Phase 2
+Opp GVK Emri
+On request
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 75/191
+PAGE 76
+developer view · BuilderLead
+rt-lead-card--developer
+[BN][BUYER NAME]
+[BUYER PHONE]
+[BHK] [BUDGET MIN] – [BUDGET MAX] [TIMELINE]
+[BUYER NOTE]
+ENQUIRED ABOUT
+Srias Boat Club
+Kompally · Villas
+New
+Introduced [DATE]
+Reply within [N] min to keep your response rate
+Consent recorded
+New
+A buyer
+Name and phone shared once the buyer agrees
+[BHK] [BUDGET MIN] – [BUDGET MAX]
+ENQUIRED ABOUT
+Hallmark Floresta
+Patancheru · Villas
+New
+Introduced [DATE]
+Consent not yet recorded
+A developer working their enquiries. Who and how to reach them come first; the clock is
+the only urgency we add.
+New launch
+Call [BUYER NAME] Add a note
+See timeline
+New launch
+Why can't I see their number?
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 76/191
+PAGE 77
+Who Name, phone and note appear only when contactVisible is true,
+after the buyer says so. Until then the card shows a lock and says
+why. There is never a pre-ticked box.
+Requirement Configuration, budget and timeline, from the buyer's own words.
+Status The six developer statuses in one select, so a lead can be moved
+without opening it.
+Routing tag"New launch" (our team qualifies first) or "Resale" (introduced
+directly).
+Response timerCounts toward the developer's response rate (fetchMyLeadMetrics);
+the wording is a nudge, not a penalty.
+team view · ProjectInterestLead (sales and support)
+rt-lead-card--team
+[BN][BUYER NAME]
+[BUYER PHONE]Handled by [TEAMMATE]
+[BHK] [BUDGET MIN] – [BUDGET MAX] [TIMELINE]
+[PREFERRED LOCALITIES]
+[QUALIFICATION NOTES]
+ENQUIRED ABOUT
+Srias Boat Club
+Source: [CALLBACK REQUEST]
+In progress Developer: Contacted
+Received [DATE]
+Developer reply overdue by [N] min
+Consent recorded Developer has claimed this project
+Close with a reason…
+Sales and support working the callback desk. They triage: is this real, is it qualified, has
+the developer answered in time?
+SLA timer The response timer and its breach (responseTimerMinutes,
+slaBreached) are the loudest thing, in the issue colour with an icon
+and words; the card border follows.
+New launch
+QualifyClaim
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 77/191
+PAGE 78
+Qualification Requirement, preferred localities and notes, so the first call asks the
+right questions.
+Two statuses Our desk status (New, In progress, Closed) and the developer's
+status side by side, so a gap between them is obvious.
+Consent,
+claimed
+Whether the buyer consented (consentAt) and whether the
+developer has claimed the project (builderClaimed) decide who
+gets introduced.
+Close reasonsDuplicate, Not reachable, Not interested, Spam. Closing always
+needs one.
+buyer view · My enquiries
+rt-lead-card--buyer
+Photo
+Srias Boat Club
+Kompally · Villas · Srias Life Spaces LLP
+We're reviewing your requirements. [ADVISOR FIRST NAME] will call you [WHEN].
+We're reviewing your requirements
+You asked on [ENQUIRY DATE]
+3, 4 / 5 BHK · up to [BUDGET] · [TIMELINE]
+Photo
+Hallmark Floresta
+Patancheru · Villas
+Site visit booked for [VISIT DATE, TIME].
+Sitevisitbooked
+RERAP02200005072
+View project Message [ADVISOR FIRST NAME]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 78/191
+PAGE 79
+Site visit booked
+You asked on [ENQUIRY DATE]
+Photo
+Srias Tiara
+Bachupally · Apartments
+This one didn't work out. [ADVISOR FIRST NAME] can look for similar homes.
+This one didn't work out
+You asked on [ENQUIRY DATE]
+The buyer who sent an enquiry, in Account, Enquiries and site visits. They want to know it
+was not lost and what happens next.
+Project first With its thumbnail: the buyer remembers homes, not enquiry
+numbers.
+Stage in plain
+words
+One of the eight buyer stages, with a sentence saying what happens
+next. Their contact number is never shown back to them as a "lead".
+No names of
+developer staff
+The card says "the developer"; the advisor is the voice.
+Dead ends are
+kind
+"This one didn't work out" with a way forward, not a red failure state.
+partner view · CpLead (TS-RERA Agent, My clients)
+rt-lead-card--partner
+TS-RERA
+View project Message [ADVISOR FIRST NAME]
+Developer
+Find similar homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 79/191
+PAGE 80
+[CN]
+[CLIENT NAME]
+[CLIENT PHONE]
+REGISTERED FOR
+Hallmark Floresta
+Patancheru · Villas
+[STATUS] Invite sent
+Site visit [VISIT DATE]
+Your share [YOUR SHARE %]
+Booking claim: pending
+An agent following a client they registered. The Partner console uses this card too.
+Buyer link Linked, Invite sent, Declined or Not linked: whether the client has
+agreed to connect their account to yours.
+Booking claim Pending, confirmed or rejected, and the commission state once a
+booking exists.
+Client status The code stores this as free text, so it is shown as given.
+Stat cards per role
+Base rt-stat with a role modifier. Same anatomy (label, value, sub, optional change,
+optional link), different voice: buyer stat cards are friendly links into a tab; developer stat
+cards put the thing that needs attention first; admin stat cards are dense, and the queue
+is written as sentences.
+buyer · friendly links into the dashboard
+rt-stat--buyer rt-stat--link
+Saved homes
+[N]
+Homes you saved. We tell you if a
+My enquiries
+[N]
+Where each one stands.
+Check in at siteUpdate status
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 80/191
+PAGE 81
+price changes.
+Needs new data: "we tell you if a price changes" depends on saved-card price history
+developer · attention first
+rt-stat--developer · rt-stat--attention
+Leads
+[N]
+[N] not responded yet
+Response time
+[N] min
+Median first reply. Response rate
+[N]%.
+Available units
+[N]
+Ready for booking
+Blocked units
+[N]
+Under discussion
+The one card that needs the developer has an ink border and a flag with an icon and
+words. The others stay calm. Optional rt-stat__change shows a trend ("+[N] vs last
+week") with an arrow icon and text, never colour alone.
+admin and team · dense counts, queue written as sentences
+rt-stat--admin · rt-queue-list
+TOTAL PROJECTS
+[N]
+LIVE
+[N]
+WAITING FOR APPROVAL
+[N]
+TOTAL LEADS
+[N]
+[N]listings are waiting for final approval
+Listings queue
+[N]callback requests have no owner yet
+Requests
+pricesheetsarewaitingforapproval
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 81/191
+PAGE 82
+[N]price sheets are waiting for approval
+Approvals
+The sentences come from the server's queue-count rows (QueueCountRow.sentence);
+rows with a zero count are hidden, so a clear desk shows an empty state and not zeros.
+People cards
+advisor · buyer side (name and photo are placeholders until the data exists)
+rt-person--advisor
+[PHOTO][ADVISOR NAME]
+Your Realtified advisor
+I check the paperwork, take you to the site and stay with you to the
+keys.
+We share your number with the developer only when you say so.
+[PHOTO][ADVISOR FIRST NAME]
+Your Realtified advisor
+Most of what a buyer sees today: a first name.
+Needs new data: advisor profile beyond first name: name, photo, phone, one-line promise
+A buyer, in the listing rail, the home search tracker and the callback confirmation. One
+advisor from first enquiry to the keys is the whole product.
+Photo
+placeholder
+A dashed circle labelled "[PHOTO]" until a real photo exists. Never a
+stock face.
+Primary action "Talk to [FIRST NAME]" is the one raspberry button; WhatsApp is
+secondary (the link comes from contact.whatsappLink).
+Fine print The consent promise sits under the buttons where the decision is
+made.
+Talk to [FIRST NAME] WhatsApp
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 82/191
+PAGE 83
+developer · public card and the staff row
+rt-person (developer)
+[LOGO]Srias Life Spaces LLP
+Developer · [N] projects on Realtified
+Srias Boat Club Kompally
+Srias Tiara Bachupally
+[LOGO]Hallmark Hampton Projects
+Staff view · Developers
+Projects
+[N]
+Claimed by developer
+[N]
+Buyers shortlisted
+[N]
+Buyers registered
+[N]
+Public: a buyer reading about who builds a home. Staff: a sales or support teammate
+deciding which developers to invite to claim their projects.
+Public card Name, project count and the real project names. No rating, review or
+score appears unless the data holds one; none does today.
+Staff row Project, claimed, shortlisted and registered counts (DeveloperRow)
+and one action: Invite to claim.
+agent (TS-RERA Agent) and the admin user row
+rt-person (agent) · rt-userrow
+TS-RERA
+Invite to claim
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 83/191
+PAGE 84
+[PHOTO][AGENT NAME]
+[AGENCY NAME]
+TS-RERA Agent Verified
+TS-RERA agent no.
+[AGENT RERA NO.]
+Referral code
+[REFERRAL CODE]
+[UN][USER NAME]
+[EMAIL]
+[PHONE]Joined [DATE]
+Home Buyer
+[UN][USER NAME]
+[EMAIL]
+Joined [DATE]
+Admin
+The partner card shows verification status (Pending review, Verified, Rejected) and
+partner type (RERA-Registered Agent, Referrer / Affiliate). The user row is for staff with
+user.read; the inline role select needs user.role.assign, and granting Admin is a
+super admin action, so it is not offered in the list.
+Notification item
+the bell menu and its items (a design for sources that exist today)
+rt-notif-menu · rt-notif
+Notifications [3]
+RERA-Registered Agent
+TEST
+Mark all as read
+Account
+Verify your email
+We sent a link to [EMAIL]. Verify it so we
+can send you updates about your
+enquiries.
+Today
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 84/191
+PAGE 85
+See all notifications
+Needs new data: a notification centre (a user_notifications table with kind, read state, link)
+Any signed-in person, from the bell in the header. Today the product has toasts, the
+email verification banner, review banners and intelligence alerts; there is no inbox to keep
+them in.
+Kind line A small label (Account, Saved homes, Site visits, Your watchlist) so a
+buyer can tell at a glance whose message it is.
+Unread A dot before the title plus a ground-coloured row; both. Read items
+go white.
+One link Each item ends in one link that does the thing: send the link again,
+see the project, see the evidence.
+Sources Email verification (exists), price change and visit reminders (need the
+data above), and intelligence alerts with their unread, read and
+dismissed states (exist).
+Insight card and report card
+insight card · rail, row and feature
+Send the link again
+Saved homes
+Price changed on Srias Boat Club
+Now ₹ [NEW PRICE]. It was ₹ [PRICE
+WHEN SAVED] when you saved it.
+See the project
+[TIME]
+Site visits
+Your site visit is tomorrow
+Hallmark Floresta, [TIME]. [ADVISOR
+FIRST NAME] will meet you there.
+See the visit
+[TIME]
+Your watchlist
+New on [LOCALITY]
+[EVENT TYPE]: [EVENT HEADLINE]
+See the evidence
+[DATE]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 85/191
+PAGE 86
+rt-insight-card · --row · --feature
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader will learn, written plainly.]
+[READ TIME] min read
+[CATEGORY]
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader will learn, written plainly.]
+[READTIME]minread
+[CATEGORY]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 86/191
+PAGE 87
+[READ TIME] min read
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader will learn, written plainly.]
+[READ TIME] min read
+[CATEGORY]
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader
+will learn, written plainly.]
+[READ TIME] min read
+[CATEGORY]
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader
+will learn, written plainly.]
+[READ TIME] min read
+[CATEGORY]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 87/191
+PAGE 88
+Insight cards are for market notes and guides. Text only is real content: titles, dates and
+read times are placeholders until the articles exist. The whole card is one link (the title link
+stretches). The Content section shows them in context.
+report card · market report
+rt-report-card
+Cover
+[REPORT TITLE]
+[PERIOD] · [N] pages · PDF
+[WHAT THE REPORT COVERS, in one line.]
+Cover
+[REPORT TITLE]
+[PERIOD] · [N] pages · PDF
+Anyone reading the homepage reports row. Reports are sent to a signed-in person's
+email; signed-out visitors are asked to sign in first (as the code does).
+Cover and metaA cover stand-in, period and size, so the person knows what they will
+get.
+[DATE]
+[ARTICLE TITLE]
+[ARTICLE EXCERPT: two or three lines that say what the reader will learn, written plainly.]
+[READ TIME] min read
+[CATEGORY]
+Request this report
+Sign in to request
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 88/191
+PAGE 89
+One action Request when signed in; Sign in to request when not. The request
+form is in the Content section.
+ACTIVITY, TIMELINES AND TABLES
+Case events, the audit log and listing history use the timeline in section 15 (Data display);
+they are workspace components. Notifications above are the only activity surface a
+buyer sees.
+9Search
+WHEN TO USE / RULES
+Search is where a buyer decides what to open, so every control is a real input with a
+visible label, and results always say how many there are and how they are sorted. Filters
+apply as chips; the count updates; "Clear all" is always one tap. The map is illustrative
+and never replaces the list: every price bubble is a button with the project name in its
+label. A card in the grid and its pin on the map are the same project and select each
+other. No result is ever hidden by an animation.
+Hero search
+The homepage hero: headline, one search bar with three labelled fields, one primary, popular locality chips.
+No photo behind the search, no gradient.
+rt-hero-search · rt-searchbar
+HYDERABAD
+Homes in Hyderabad,checked before you visit.
+Each fact com es from  the TS-RERA filing, the developer or our own
+site visit, and the page says which. One advisor stays with you from
+first enquiry to keys. You pay us nothing.
+Locality or project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 89/191
+PAGE 90
+Budget
+Home type
+Popular localities
+Gachibowli Kokapet Financial District Narsingi Tellapur
+Kondapur Kompally Bachupally Miyapur
+Phone: fields stack, the primary is full width, chips scroll sideways inside their own row.
+rt-searchbar
+390 wide
+Homes inHyderabad, checkedbefore you visit.
+Locality or project
+Budget
+Home type
+Locality, project or developer
+Any budget
+Apartment or villa
+Search hom es
+Locality, project or developer
+Any budget
+Apartment or villa
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 90/191
+PAGE 91
+ 
+Gachibowli Kokapet Financial District
+Suggestion dropdown
+Three result types in a fixed order: Projects, Localities, Developers. Each row has a type icon on the left and
+a type and place on the right, so two things with the same name are never confused.
+rt-search · rt-suggest
+Search hom es
+Locality or project
+PROJECTS
+Srias Boat Club Project · Kompally
+Srias IWA Project · Gachibowli
+Srias Tiara Project · Bachupally
+DEVELOPERS
+Srias Life Spaces LLP Developer
+Srias MGNA JV Developer
+sri
+Locality or project
+LOCALITIES
+Kokapet Locality
+Kompally Locality
+ko
+Locality or project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 91/191
+PAGE 92
+How it works
+Combobox pattern: arrow keys move through options, Enter picks one, Esc
+closes. Matching letters are bold, not coloured. A group with no matches is left
+out. With no matches at all the list says "No homes or places match that. Try a
+locality name." and offers the popular localities.
+Source of the list
+Projects, localities and developers come from the live catalogue (
+SearchSuggestInput
+). Picking a locality or developer sets a filter; picking a project opens it.
+Filter bar and filter drawer
+Desktop: the three search fields, then one row of filter chips. A chip with a selection turns ink and shows a
+clear (x). Listing type is a segmented control: All, New launch, Resale.
+rt-filterbar · rt-chip · rt-seg
+Locality or project
+Budget
+Home type
+RECENT SEARCHES
+[RECENT SEARCH] Search
+[RECENT SEARCH] Search
+POPULAR LOCALITIES
+Gachibowli Locality
+Kokapet Locality
+Locality, project or developer
+Gachibowli, Kompally, Bachupally
+Any budget
+Apartmentorvilla
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 92/191
+PAGE 93
+BHK Possession Status Developer
+Villas All New launch Resale
+TS-RERA filing availableClear all
+BHK CHIP, OPEN
+BHK
+STATUS CHIP, OPEN
+Status
+Any
+Ready to move
+Under construction
+The filters are the ones the code applies: BHK, home type, locality, budget, status (ready
+or under construction), developer, and New launch or Resale. Possession filters by year.
+"TS-RERA filing available" reads the RERA query.
+Phone: filters open as a bottom sheet from the "Filters" button. Chips become options; the one primary
+shows the live count.
+rt-sheet
+Apartment or villa
+Update results
+1 BHK 2 BHK 3 BHK
+3.5 BHK 4 BHK 5+ BHK
+Clear Apply
+Clear Apply
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 93/191
+PAGE 94
+390 wide · filter drawer
+Budget range and sort
+Filters
+Budget
+Home type
+BHK
+Status
+Any
+Ready to move
+Under construction
+Developer
+TS-RERA filing available
+₹ 50 L – ₹ 1 Cr ₹ 1 Cr – ₹ 2 Cr
+₹ 2 Cr – ₹ 4 Cr ₹ 4 Cr and above
+Apartment Villa Plot
+Independent house
+1 2 3 3.5 4 5+
+Any developer
+Clear all Show [N] homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 94/191
+PAGE 95
+Budget: preset chips for the common bands, plus a two-handle range for anything else. Values use Indian
+format with an en dash.
+rt-range · rt-chip-select
+Sort by
+Four sorts, the ones the code supports. "Recommended" replaces "Match Relevance
+Score": plain words, and it does not pretend to be a score. "Price on request" homes sort
+last under either price sort and the list says so.
+Results header, view toggle and count
+The count sits next to the sort, always. Active filters repeat below as removable chips.
+rt-results-head
+Homes in Hyderabad
+[N] homes · every card says where its facts come from.
+Grid List Map
+Sort by
+Villas ₹ 2 Cr – ₹ 4 Cr Clear all
+Phone results header
+Homes in Hyderabad
+Budget
+₹1 Cr ₹4 Cr
+Any budget ₹ 50 L – ₹ 1 Cr ₹ 1 Cr – ₹ 2 Cr ₹ 2 Cr – ₹ 4 Cr
+₹ 4 Cr and above
+Recommended
+Recommended
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 95/191
+PAGE 96
+[N] homes
+Results page: grid with map, list with map, phone
+Grid view with the map beside it (desktop 1280 and up). The map is sticky; the grid scrolls. One column of
+cards under 1024.
+rt-results rt-results--map
+Homes in Hyderabad
+[N] homes · every card says where its facts come from.
+Grid List Map
+Filters2 Recommended
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK
+Possession Aug 2028
+TS-RERAP02200005072
+Compare
+Srias IWA
+Gachibowli · Apartments
+Price on request
+3 BHK Possession Sep 2028
+TS-RERAP02400007210
+Compare
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 96/191
+PAGE 97
+Hallmark Floresta
+Patancheru · Villas
+₹3.51 Cr – ₹ 5.99 Cr
+4 BHK Possession Oct 2026
+TS-RERA target date
+TS-RERA
+Compare
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHK
+Possession Mar 2028
+Developer-declared
+Developer
+Compare
+Mypi Villas Constructions
+Phase 2
+Opp GVK Emri
+Price on request
+Details in the filing
+Opp GVK Emri
+TS-RERAP02200001788
+Compare
+Bachupally
+Kompally
+₹79.97 L+
+Search this area
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 97/191
+PAGE 98
+List view with the map: the wide search-list card, one per row, so size and ₹  per sq ft are visible without
+opening anything.
+rt-results--map · rt-card--search-list
+If nothing matches
+No homes match all of that. Try fewer filters or a nearby locality.
+Clear filters
+Patancheru
+Gachibowli
+₹3.51 Cr+
+On request
+Illustrative map
+₹2.50 Cr+
+Srias Boat Club
+Kompally · Villas · by Srias Life Spaces LLP
+₹2.50 Cr – ₹ 7.48 Cr
+₹ 10,999 per sq ft 
+3 / 4 / 5 BHK 2,269 – 6,800 sq ft
+Possession Aug 2028
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 98/191
+PAGE 99
+Under construction
+TS-RERAP02200005072
+Compare
+Hallmark Skyrena
+Financial District · Apartments · by Hallmark Housing
+Infra
+₹1.15 Cr – ₹ 2.03 Cr
+₹ 8,999 per sq ft 
+2 / 3 BHK 1,280 – 2,255 sq ft
+Ready to move
+Ready to move
+Developer
+Compare
+Srias Tiara
+Bachupally · Apartments · by Srias Life Spaces LLP
+₹79.97 L – ₹ 1.26 Cr
+₹ 6,199 per sq ft 
+2 / 3 / 3.5 BHK 1,290 – 2,035 sq ft
+Possession Mar 2028
+Developer-declared
+Under construction
+Developer
+Compare
+Kompally
+Srias Boat Club
+Kompally · Villas
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 99/191
+PAGE 100
+The selected card gets an ink outline and its pin turns ink with the popup open. Selecting
+either one selects the other.
+Phone results: single column, a floating "Map" button, filters and sort in the header row.
+rt-results · rt-action-bar
+390 wide · results
+[N] homes
+Bachupally
+ py
+Patancheru
+Gachibowli
+₹79.97 L+
+₹3.51 Cr+
+On request
+Illustrative map
+₹2.50 Cr+
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Aug 2028
+View project
+Filters2 Sort
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 100/191
+PAGE 101
+Map: price bubbles, cluster, selected pin
+Each bubble is a button: price, then "+" because it is the lowest price in the project. "On request" when there
+is none. Selected is ink-filled. A cluster shows a count and zooms in when pressed.
+rt-map · rt-pin · rt-pin--cluster
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Possession Aug 2028
+TS-RERAP02200005072
+Compare
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHK Possession Mar 2028
+Developer-declared
+Developer
+Compare
+Map
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 101/191
+PAGE 102
+DEFAULT, WITH A CLUSTER
+SELECTED PIN AND POPUP (KEYBOARD FOCUS ON THE PIN SHOWS THE RING)
+Bachupally
+Kompally
+Patancheru
+Gachibowli
+₹79.97 L+
+₹2.50 Cr+
+[4]
+On request
+Illustrative map
+Search this area
+Bachupally
+Kompally
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 102/191
+PAGE 103
+"Search this area" appears only after the person pans or zooms, so the list never
+changes under them. Zoom buttons are real buttons; the map itself can be panned with
+arrow keys. The tile is the neutral token map, labelled "Illustrative map"; locality names
+are plain text, not links.
+Map: nearby places for a selected home
+Selecting a result and pressing "Nearby places" shows what is around that home in the same map
+language as the listing page (see Listing blocks): the project pin is navy with the brand mark, each place is
+a round pin with its group icon on a group colour, and pressing a place draws the road route in brand blue
+with a white casing and a route card. The group colours have no green and never match the action
+raspberry or the issue red.
+rt-lmap · rt-proj-pin · rt-poi-pin · rt-route__line · rt-routecard
+SELECTED RESULT WITH ITS NEARBY PLACES
+Patancheru
+Gachibowli
+₹79.97 L+
+On request
+Illustrative map
+₹2.50 Cr+
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK Aug 2028
+View project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 103/191
+PAGE 104
+ 
+All
+ Tech & Business
+ Education
+ Healthcare
+Same pins, same chips, same route as the Location block. The places list sits under the
+map on the result card, so the map is never the only way to read the places. Price
+bubbles and place pins never share a map view: the toggle switches the layer.
+Compare tray
+Appears when one home is ticked, fixed to the bottom of the results. Up to four slots; Compare needs at
+least two and opens the Compare screen (section 10), which also shows what stands out between the
+homes.
+rt-tray · a[href="#compare"]
+Compare
+2 of 4 homes
+Srias Boat Club
+ Hallmark Floresta
+Add a home Add a home
+Compare
+1 of 4 homes
+© OpenStreetMap contributors
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+Estimate
+Open in Google Maps
+Prices Nearby places
+8
+1
+2
+1
+ClearCompare 2 homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 104/191
+PAGE 105
+Srias Boat Club Add a home
+Add a home Add a home
+Pick one more
+Phone tray
+Compare
+2 of 4
+No results, loading, error and load more
+No results says what to do, in order: loosen filters, try a nearby locality, ask the advisor. Loading keeps the
+card shapes. An error offers one retry.
+rt-empty · rt-card--skeleton · rt-error-state · rt-loadmore
+No homes match all of that
+Try fewer filters or a nearby locality.
+Kokapet Narsingi Kondapur
+ClearCompare
+Compare 2 homes
+Clear filtersAsk an advisor
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 105/191
+PAGE 106
+We could not load homes
+Check your connection and try again. Your filters are saved.
+Try again
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 106/191
+PAGE 107
+Showing [12] of [N] homes
+10Compare
+WHEN TO USE / RULES
+Compare answers one question: which of these homes should I look at first? It shows the
+key facts side by side and, above them, what stands out, so a buyer sees the differences
+without reading every row. Every value carries its source tag; an unknown value says "Not
+on file" in muted ink and is never guessed. "What stands out" is worked out from the rows
+by code, names the project and its source, and is written as a fact, not advice. A quiet
+chip (Lowest, Earliest, Largest, Most) marks the stronger value in a row, only when two or
+more homes have a value and one is clearly ahead; it is never green and never a trophy.
+Rows where every home matches, or is "Not on file", can be hidden with "Show differences
+Load more homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 107/191
+PAGE 108
+only". Up to four homes. One primary action for the whole screen: "Talk to [FIRST NAME]
+about these homes".
+Three homes side by side, desktop
+Srias Boat Club, Hallmark Floresta and Srias Tiara. The project header stays pinned while the rows scroll.
+Rows are grouped (Price, Homes, Timeline, Project, Location, Legal, Developer) and the stronger value
+carries a quiet chip. The switch hides the rows where nothing differs (here, the rows that are "Not on file" for
+every home). Try it.
+rt-cmp · rt-cmp__head · rt-cmp__table · rt-cmp__chip · rt-cmp-stand
+The side-by-side table shows from 768px up. On a phone, the layout below is used
+instead.
+Values are as filed or declared, with the source on each one. A figure we worked out
+(homes per acre, the all-in estimate) is tagged Estimate. The photos are the developers'
+own.
+Needs new data: open space share, TS-RERA extensions and the developer's other projects
+(three rows that are empty for every home)
+Phone: swipe in pairs
+Phone: differences only, first two homes
+Comparing 3 homes3 of 4
+Show differences only
+What stands out
+Worked out from the rows below. Facts, not
+advice.
+Add a project
+Srias Tiara has the lowest price per sq ft
+( ₹ 6,199, Developer). Hallmark Floresta has the
+highest ( ₹ 12,999, Developer).
+Hallmark Floresta has the earliest possession
+(18 Oct 2026, TS-RERA proposed completion).
+Srias Boat Club has the largest homes, up to
+6,800 sq ft (TS-RERA).
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 108/191
+PAGE 109
+ 
+
+
+₹ 2.50 Cr – ₹ 7.48
+Cr
+₹ 3.51 Cr – ₹ 5.9
+Cr
+₹ 10,999 ₹ 12,999
+₹ 2.78 Cr – ₹ 8.09
+Cr
+Not on file
+Questions to ask your advisor
+Ask for Hallmark Floresta's construction
+progress (not on file).
+Hallmark Floresta's possession date (18 Oct
+2026) is the earliest. Ask whether homes are
+ready to move in and what is still being
+finished.
+AskforSriasTiara'sfullcostsheet:ithasthe
+Srias Boat Club is further along: 18% complete,
+against 11% for Srias Tiara (TS-RERA).
+Srias Boat Club is the least dense at 8.0 homes
+per acre and Srias Tiara the most dense at
+142.8 (Estimate, from total units and land area).
+Srias Boat Club and Srias Tiara are by the
+same developer, Srias Life Spaces LLP
+(Developer).
+PRICE
+Price range
+Price per sq
+ft
+All-in
+estimate
+Srias Boat Club
+Kompally · Villas
+₹ 2.50 Cr – ₹ 7.48
+Cr
+Hallmark
+Floresta
+Patancheru ·
+Villas
+₹ 3.51 Cr – ₹ 5.99
+Cr
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 109/191
+PAGE 110
+Ask for Srias Tiaras full cost sheet: it has the
+lowest price per sq ft, and an all-in estimate
+is not on file.
+Ask for the open space, extensions on file
+and other projects on TS-RERA (not on file
+for any of these homes).
+How it works on a phone
+Two homes show at a time. Swipe sideways and the next pair (here, the third
+home) snaps into place.
+The row labels stay pinned on the left, and the project header stays pinned at
+the top of the table as it scrolls.
+Source tags become icon-only with an aria-label. "Not on file" stays in words.
+"What stands out" and "Questions to ask your advisor" are plain lists above
+and below the table, so nothing important is only inside the swiping part.
+The one primary action is the fixed bottom bar: "Talk to [FIRST NAME]".
+The table is its own scrolling region (keyboard focusable) so the page itself
+never scrolls sideways.
+Adding and removing homes
+"Add a project" opens a small picker that suggests the buyer's saved homes and searches the rest; the
+same picker as the buyer dashboard's Compare tab. At four homes the button is disabled and says why.
+With one home there is nothing to compare yet, so the screen says so.
+rt-popover · rt-empty · rt-cmp__toolbar
+PICKER
+FOUR HOMES
+FROM YOUR SAVED HOMES
+Srias IWA
+Gachibowli · Apartments
+Hallmark Skyrena
+Financial District · Apartments
+Search a project or locality
+Talk to [FIRST NAME]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 110/191
+PAGE 111
+You can compare up to 4 homes.
+ONE HOME
+Add one more home to compare
+Pick a second home and the differences show up here.
+Where else Compare shows up
+One component, three doors. The compare tray in Search links here; the buyer dashboard's Compare tab
+(ComparisonWorkspace) is this screen with the buyer's saved homes pre-selected; the project card's
+compare context is the header card above (photo, name, locality and type, price range, remove).
+rt-tray · rt-cmp-card
+SEARCH COMPARE TRAY
+Compare
+3 of 4 homes
+BUYER DASHBOARD, COMPARE TAB
+Opens with the saved homes, most recently saved first, up to four. A home arriving from
+"Compare this home" goes first. The selection is remembered for the browser session.
+HEADER CARD (THE CARD'S COMPARE CONTEXT)
+11Listing blocks
+WHEN TO USE / RULES
+Add a project
+Add a project
+Compare 3 homes
+Srias Tiara
+Bachupally · Apartments
+₹ 79.97 L – ₹ 1.26 Cr
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 111/191
+PAGE 112
+A listing page opens with its photos. The gallery is the first component, full width and
+edge to edge under the site header on desktop and on phones; the name and the rest of
+the details follow below it. Every fact has a source tag on the value line, the photo is never
+covered by default (the key-details pill is collapsed until pressed), and one advisor rail
+holds the only raspberry button on the page. Blocks keep one order on every project so a
+buyer learns where things are: gallery, name, facts, price, homes, plans, construction,
+location, honest notes, developer, documents, where this came from, FAQ. A block with
+no data is left out; it never shows an empty frame or "not available". Section titles are
+plain nouns; the anchor bar mirrors them.
+Page anatomy and anchors
+Desktop: the gallery runs the full width first, then a 7/3 split from 1280 up. The rail is sticky and holds the
+advisor card. On phones the gallery is a full-bleed carousel first, the rail becomes the fixed bottom action
+bar and the blocks run in this order.
+rt-hgal · rt-split · rt-rail-sticky · rt-anchorbar
+1. Gallery, full width and first
+Edge to edge under the site header. A hero photo (or a hero plus two photos), Save
+and Share at the top right, the key-details pill collapsed at the bottom left, and
+"Photos 8 · Videos 8 · Floor plans 11 · Brochure 39 · View all" at the bottom right
+2. Breadcrumb · name · status
+The name with its construction status pill, then the RERA chip (brand mark,
+number as a link), the location line and a one-sentence summary
+3. Facts strip
+Four facts, each with its source tag
+Section anchor bar (sticky)
+Homes & pricing · Location · Plans & amenities · Construction & RERA · Developer ·
+Realtified's read · Documents · Sources
+Homes and pricing
+Price block, configuration table (BHK first)
+Location
+Map with the project pin, group chips, the places list and the road route
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 112/191
+PAGE 113
+Plans and amenities
+Floor plan cards, amenities, specs
+Construction and RERA
+Progress, milestones, RERA profile, notices
+Developer
+Developer block, more by this developer, resale homes in this project
+Realtified's read
+Shown only when the data supports it
+Documents · Where this came from · FAQ
+Papers on record; a table of every number and its source; accordion
+The top of the page: gallery first, then the name
+Desktop at rest. The gallery sits edge to edge under the site header. Nothing covers the photo: the key-
+details pill is collapsed at the bottom left, the gallery sections sit in one pill bar at the bottom right, and
+Save and Share are at the top right. Below it, in order: breadcrumb, name and status, RERA chip, location,
+one sentence, facts strip.
+rt-lp · rt-hgal · rt-keypill · rt-mediabar
+Login
+Advisor rail (sticky)
+Photo placeholder, [ADVISOR NAME], promise, Talk to [FIRST NAME], Book a site
+visit, consent line
+Callback and visit forms
+Open from the rail buttons
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 113/191
+PAGE 114
+Home/Hyderabad/Kompally/Srias Boat Club
+Srias Boat ClubUnder construction
+TS-RERA
+Villas in Kompally, Medchal-Malkajgiri · by Srias Life Spaces LLP
+192 villas on 23.93 acres in Kom pally, in 3, 4 and 5 BHK, with
+possession declared for 26 Aug 2028.
+TS-RERA number Possession
+26 Aug 2028
+Homes available
+143
+Construction
+18% complete
+The hero is the first photo and two more fill the right column. With one photo the hero
+runs the full width; with none it is the locality map tile, never an empty frame. A video can
+lead instead of a photo and starts only when pressed. Photo credits use the source tags
+(Developer, or Visited for a Realtified photo).
+New launch
+P02200005072
+P02200005072TS-RERA TS-RERA
+TS-RERA TS-RERA
+Save Share
+Srias Bo at  C lu b · 4 ch eck ed det ails Sh o w
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 114/191
+PAGE 115
+The same page with the key-details pill opened. The pill is a native details, so it works without script
+and by keyboard. "Hide" closes it in the same place. Text sits on a frosted white card (contrast checked
+against the worst case in Foundations) and each fact has an icon-only source tag with an aria-label.
+rt-keypill[open]
+Login
+Phone: photo first, full bleed
+Hyderabad/Kompally/SriasBoatClub
+Save Share
+Srias Bo at  C lu b · 4 ch eck ed det ails H ide
+TS-RE R A n u m ber P o ssessio n
+26 Aug 2028
+₹  per sq ft
+₹ 10,999
+H o m es av ailable
+143
+See det ails
+P 02200005072
+Srias Bo at  C lu b · 4 ch eck ed … Sh o w
+1 / 8
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 115/191
+PAGE 116
+Hyderabad/Kompally/Srias Boat Club
+Srias Boat Club
+Under construction
+TS-RERA
+Villas in Kompally, Medchal-Malkajgiri · by Srias
+Life Spaces LLP
+192 villas on 23.93 acres in Kompally, in 3, 4 and
+5 BHK, with possession declared for 26 Aug
+2028.
+TS-RERA number Possession
+26 Aug 2028
+Homes available
+143
+Construction
+18% complete
+Phone: a full-bleed carousel with a counter (it opens the viewer), Save and Share on the photo
+and the same collapsed key-details pill. Swipe moves between photos. The name and details
+start right under the photo, and the fixed bottom bar (see Advisor rail) keeps "Talk to [FIRST
+NAME]" in reach.
+RERA chip in the name row
+The chip carries the brand mark. The number is a link to the project's TS-RERA application and opens in a
+new tab. A number that is not yet verified is not a link.
+rt-rera · rt-rera-link
+VERIFIED, WITH ITS TOOLTIP TEXT
+TS-RERA
+Needs new data: the application link per project, stored from the TS-RERA search row  Until
+then the link opens the regulator's search page for the number.
+New launch
+P02200005072
+P02200005072
+P02200005072
+TS-RERA
+Registered with TS-RERA. Tap the
+number to open the project's
+application on the TS-RERA
+website.
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 116/191
+PAGE 117
+p g pg
+NOT YET VERIFIED
+The developer entered a number we have not matched to the records. It uses the issue
+colour and words, and there is nothing to open.
+Notices and the section anchor bar
+Notices sit under the title row and are quiet: tinted panels with an icon and one next step, never a left-
+border accent. Five exist in the code.
+rt-alert · rt-banner
+You are previewing a draft
+Buyers cannot see this page yet. Submit it for review when the required items
+are done.
+This listing is under review
+The facts below are as the developer entered them. We have not finished
+checking them against the TS-RERA filing.
+From the TS-RERA records
+This page was built from the public filing. The developer has not claimed it yet,
+so there is no price sheet or brochure.
+The declared possession date has passed
+The developer declared [POSSESSION DATE]. Ask [FIRST NAME] for the latest
+before you plan around it.
+Reviewed by Realtified on [DATE]
+The review chip replaces the banner once a listing is reviewed. The Test tag shows only to
+staff and test accounts.
+Sticky below the header. Links scroll to the block and the current one is ink with an underline. The order is
+fixed.
+rt-anchorbar
+RERA no. not yet verified
+Back to editing
+TEST
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 117/191
+PAGE 118
+rtanchorbar
+Gallery viewer: the opened gallery
+The opened gallery is an immersive viewer on deep navy (--rt-dark), not pure black. Header: grid
+button, project name, Save, Share, the one raspberry "Enquire now" and Close. Tabs carry counts. The
+photo is large with round previous and next buttons, zoom in and out, the counter "Photos · 3 of 8" and a
+thumbnail strip with the selected thumbnail outlined in brand blue.
+rt-viewer · rt-viewer__tabs · rt-viewer__thumbs
+The wide viewer shows from 768px up. On a phone the phone viewer below is used.
+The sample photos repeat the three real Boat Club photos; the product shows the
+project's own [N]. Text on the navy is --rt-on-dark and --rt-on-dark-muted, and the
+focus ring on this surface is white (--rt-focus-ring-on-dark).
+Grid view: the grid button shows every item in the active tab as a grid, with the one you were on outlined.
+Pressing a tile returns to the large photo on that item. Pressing the grid button again also returns.
+rt-viewer__grid · rt-viewer__tile
+Phone viewer
+Srias Boat Club
+Photos (8)Videos (8)Floor plans (11)Brochure (3
+Homes & pricingLocation Plans & amenitiesConstruction & RERADeve
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 118/191
+PAGE 119
+How the phone viewer works
+Swipe the photo left or right to move; the previous and next buttons stay for
+people who do not swipe.
+The counter and the thumbnail strip follow the swipe. Tabs scroll sideways
+inside their own row.
+Header icons are 44px targets: grid, Save, Share, Close. "Enquire now" sits in a
+bar at the bottom, so the header stays calm.
+Pinch or the plus and minus buttons zoom; double tap resets.
+KEYBOARD AND SCREEN READERS
+The viewer is a dialog with aria-modal. Left and right arrows move between items,
+Home and End jump to the first and last, Esc closes, and the plus and minus keys zoom.
+Focus is trapped inside while it is open and returns to the control that opened it (the
+photo, "View all" or the counter) on close. The tabs follow the tablist pattern: arrow keys
+move, the panel is labelled by its tab. The counter is a polite live region. Every photo has
+alt text that says what it shows; the project name is the dialog's label. Page behind it does
+not scroll.
+Video and reels. Hero video starts only when pressed (no autoplay with sound). Reels are a vertical viewer
+opened from a clip strip. There is no YouTube; clips are the developer's or ours.
+rt-video · rt-clips · rt-reel
+HERO VIDEO POSTER
+Photos · 3 of 8
+ 
+Enquire now
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 119/191
+PAGE 120
+CLIP STRIP
+Walkthrough Amenities Site progress
+REEL VIEWER
+Facts strip
+Four facts under the name and summary. Label above, value in display type, the source tag right-aligned
+on the value line. Missing facts drop out instead of showing a dash.
+rt-facts-strip · rt-fact
+[M:SS]
+Vertical clip, 9:16
+[CLIP TITLE]
+Srias Boat
+Club
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 120/191
+PAGE 121
+TS-RERA number Possession
+26 Aug 2028
+Homes available
+143
+Construction
+18% complete
+Configurations
+3 BHK
+Total units
+878
+Land area
+6.36 acres
+Possession
+14 Sep 2028
+TS-RERA number
+[RERA
+NO.]
+Possession
+[DATE]
+Homes available
+[N]
+Construction
+Construction
+status not filed
+Row two: a project with a different shape of facts (Srias IWA). Row three: a developer-
+entered RERA number we have not matched yet uses the issue colour and says so in
+words.
+Phone facts: a tight 2 by 2, tags become icon-only with aria-
+labels
+TS-RERA number Possession
+26 Aug 2028
+Homes available
+143
+Construction
+18% complete
+Price block
+Range first, then ₹  per sq ft (Developer), the all-in estimate (Estimate, wider than the developer price) and
+the EMI line. One secondary action: the cost sheet comes from the advisor, not a form.
+rt-pricebox
+P02200005072 TS-RERA TS-RERA
+TS-RERA TS-RERA
+TS-RERA TS-RERA
+TS-RERA TS-RERA
+RERA no. not yet verified Developer
+Developer Developer
+P02200005072
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 121/191
+PAGE 122
+Price range
+₹2.50 Cr – ₹ 7.48 Cr
+Price per sq ft
+₹10,999
+All-in estimate
+₹2.78 Cr – ₹ 8.09 Cr
+EMI
+From about ₹ [EMI]/month*
+* [EMI ASSUMPTION NOTE: rate and years, as the code states them].
+How this estimate is built
+Price
+Price on request
+The developer has not published a price sheet for Srias IWA yet. [ADVISOR FIRST
+NAME] can ask for it.
+Configuration table, BHK first
+One row per configuration. Plan thumbnail opens the floor plan lightbox. Phone: rows become cards
+(below); do not scroll a table sideways on a phone.
+rt-config
+Developer
+Estimate
+Estimate
+Ask [FIRST NAME] for the cost sheet
+Ask [FIRST NAME] for the price
+Home Plan Size From Available Source
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 122/191
+PAGE 123
+See floor plans by BHK
+Phone: configuration cards
+3 BHK villa
+2,269 sq ft · 4 available
+From ₹ 2.50 Cr
+4 BHK villa
+3,869 sq ft · 1 available
+From ₹ 4.26 Cr
+5 BHK villa
+6,800 sq ft · 12 available
+From ₹ 7.48 Cr
+Sizes, prices and availability come from the TS-RERA filing; availability is the filing's
+count, so each row says "available" and the header says nothing stronger.
+Floor plan card and plan lightbox
+Plans are chosen by BHK with a segmented control; the card shows one plan, its size and source. "Open
+plan" goes full size with zoom.
+rt-planbox · rt-lightbox--plan
+3 BHK 4 BHK 5 BHK
+3 BHK
+Villa 2,269 sq ft ₹2.50 Cr 4 available
+4 BHK
+Villa
+3,869 sq ft ₹4.26 Cr 1 available
+5 BHK
+Villa 6,800 sq ft ₹7.48 Cr 12 available
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 123/191
+PAGE 124
+3 BHK Villa · 2,269 sq ft
+[PLAN NAME, for example "East facing"]
+The drawn plan is a stand-in. Real plans are the developer's images; pinch or the zoom
+buttons enlarge them, and Esc closes.
+Developer
+Open plan
+3 BHK Villa
+Plan as filed or supplied Developer
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 124/191
+PAGE 125
+Construction progress
+A progress bar with the percent in words, the milestone count and the declared date. Possession is always
+labelled a declared date. When a status is not on record it says "Construction status not filed", never a
+guess.
+rt-construction · rt-progress
+Construction progress
+18% com plete, 345 of 2,112 milestones Declared 3 Sep 2026
+Milestones from the filing
+Construction status
+Ready to movePossession is ready now, as declared in the filing.
+Construction status not filed
+This developer has not filed a status for the project, so we do not show one.
+Amenities and specifications
+Amenities are a plain icon grid; specifications are rows with a source. Both are the developer's statements,
+so the tag says Developer. Real names replace the bracketed examples.
+rt-amenities · rt-dl
+Amenities
+[Amenity] [Amenity]
+[Amenity] [Amenity]
+[Amenity] [Amenity]
+[Amenity] [Amenity]
+TS-RERA
+TS-RERA
+Developer
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 125/191
+PAGE 126
+Specifications
+[SPECIFICATION] [VALUE]
+[SPECIFICATION] [VALUE]
+[SPECIFICATION] [VALUE]
+Location: map, groups, places list and the road route
+HOW THE LOCATION BLOCK WORKS
+The list is the way to explore; the map supports it. Pressing a place (click, tap or Enter)
+does three things: highlights its row and its pin, draws the road route from the project to
+that place, and opens a route card on the map. Hovering or focusing a row previews its
+pin; Esc or the × clears the route. The project pin is always visible and the map re-centres
+on it. The product opens with the nearest place already selected. The product draws the
+map with Leaflet and OpenStreetMap tiles and the route with OSRM; it has no satellite
+view, so there is no satellite toggle. The tiles drawn here are an illustrative stand-in; a light
+basemap in these cool neutrals (a Positron-style tile) is recommended so the pins and
+the route sit on a quiet ground.
+Desktop, the product default: the nearest place (CMR Institute of Technology) is already selected, so the
+road route and the route card show at once. Chips filter the list and the pins together; "All" groups the list
+under group headings, each sorted by distance, and "Show all [N]" ends it. Distances and drive times are
+Estimates, so each row has that tag.
+rt-loc · rt-lmap · rt-poirow · rt-lchip · rt-routecard
+Location and connectivity
+Kompally, Medchal-Malkajgiri
+Show all [N] amenities
+Developer
+CMR Institute of Technology · 1.4 km
+Explore map
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 126/191
+PAGE 127
+The three named places are Srias Boat Club's real nearby places from its live page; the
+other pins and rows are bracketed examples. Drive time is a rule of thumb in the code
+(distance times 2.2 plus 2 minutes), so it is always shown as "about" and tagged
+Estimate.
+Needs new data: a place source and stated distance when the team adds one in Listing Studio
+(the code already carries it)
+The three route states. While the road route loads, a dashed straight line and "Finding the road route…".
+When it arrives the line becomes the road: brand-strong blue with a white casing so it reads on the tiles, a
+start dot beside the project pin and an end ring around the place. If it fails, the dashed line stays, in muted
+ink, and the card says so and keeps the straight-line distance.
+rt-route__line · rt-route__line--dash · rt-routecard
+© OpenStreetMap contributors
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+Estimate
+Open in Google Maps
+All
+ Tech & Business
+ Education
+ Healthcare
+Transit
+ Retail
+ Recreation
+ Landmark
+
+
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+HEALTHCARE1
+Sri Anagha Children's Clinic
+Healthcare · 1.5 km · about 5 min drive
+TRANSIT1
+8
+1
+2
+1
+1
+1
+1
+1
+Estimate
+Estimate
+Estimate
+Estimate
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 127/191
+PAGE 128
+LOADING
+ROAD ROUTE SHOWN
+ROAD ROUTE UNAVAILABLE
+© OpenStreetMap contributors
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+Finding the road route…
+A straight line is shown for now.
+© OpenStreetMap contributors
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+Estimate
+Open in Google Maps
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 128/191
+PAGE 129
+Group filter and hover. Choosing a group chip filters the list and dims the other groups' pins (they stay
+visible, only quieter) so the project and the place names stay readable. On the right, hovering or focusing a
+row previews its pin with its name and distance; the route is only drawn on selection.
+rt-lchip[aria-pressed] · rt-poi-pin.is-dim · rt-poi-pin.is-hover
+EDUCATION CHOSEN
+Location and connectivity
+Kompally, Medchal-Malkajgiri
+© OpenStreetMap contributors
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+Road route unavailable; straight-line distance shown
+1.4 kmstraight line, about 5 min drive
+Not a road route
+Estimate
+Open in Google Maps
+© OpenStreetMap contributors
+Srias Boat Club
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 129/191
+PAGE 130
+ROW HOVERED, ROUTE NOT YET DRAWN
+Location and connectivity
+Kompally, Medchal-Malkajgiri
+All
+ Tech & Business
+ Education
+ Healthcare
+Transit
+ Retail
+ Recreation
+ Landmark
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+8
+1
+2
+1
+1
+1
+1
+1
+Estimate
+Estimate
+Show all [N]
+© OpenStreetMap contributors
+[OFFICE OR TECH PARK] · [1.6] km
+Srias Boat Club
+All
+ Tech & Business
+ Education
+ Healthcare
+Transit
+ Retail
+ Recreation
+ Landmark
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+8
+1
+2
+1
+1
+1
+1
+1
+Estimate
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 130/191
+PAGE 131
+The pin set. The project pin is the largest thing on the map: navy with the brand mark, a soft halo and its
+name; it is never dimmed and always on top. Each place is a small round pin with its group icon on a group
+colour; the icon always carries the meaning, so colour is never the only cue. Other groups dim when one is
+chosen. At low zoom pins merge into a count bubble that zooms in when pressed.
+rt-proj-pin · rt-poi-pin · rt-pin--cluster · rt-route__start · rt-route__end
+Project pin
+Place pins, one per group
+Place pin: default
+Hover or focus: name and distance appear
+
+EDUCATION 2
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+HEALTHCARE1
+Sri Anagha Children's Clinic
+Healthcare · 1.5 km · about 5 min drive
+TRANSIT1
+Estimate
+Estimate
+Estimate
+C M R  In stit u t e o f Tech n o lo gy · 1.4  k m
+Srias Boat Club
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 131/191
+PAGE 132
+Selected: brand-blue ring and label
+Dimmed: another group is chosen
+Cluster at low zoom
+Road route: shown, loading, unavailable
+Route start dot and end ring
+The category palette. No green, nothing equal to the action raspberry or the issue red, and the groups differ
+in lightness as well as hue (L is CIE lightness). Dark fills take a white icon, light fills take navy ink. Every pin
+has a white 2px ring and a 1px ink outline, so even the lightest fill is a visible shape on the map tile.
+--rt-poi-tech … --rt-poi-land · --rt-poi-edge
+ Tech & Business #3B34A3White 9.52 8.15
+ Education #7A3FD0 White 6.09 5.22
+ Healthcare #D18AE6 Ink 6.47 2.12
+ Transit #F08A2E Ink 6.39 2.15
+ Retail #F2C230 Ink 9.55 1.44
+[12]
+C M R  In stit u t e o f Tech n o lo gy · 1.4  k m
+Group Fill Icon Icon on fill Fill on tileHu
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 132/191
+PAGE 133
+Reference: action raspberry is hue 336°, L 38; issue red is hue 357°, L 42. The group
+nearest in hue to raspberry is Healthcare, 50° away and 30 lightness steps apart. The
+group nearest in hue to the issue red is Transit, 31° away and 25 lightness steps apart.
+Icon on fill needs 4.5 or more. The light fills are under 3 against the map tile on their own,
+so every pin also carries the 1px ink outline (4.11 against the tile, above the 3 that WCAG
+1.4.11 asks for) and a white ring. The route line is brand-strong and no pin uses that hue
+and lightness together.
+Map controls and "Explore map"
+Controls: zoom in, zoom out and "Re-centre on Srias Boat Club" are round buttons at the top right of the
+map; "Explore map" is at the top left. "Explore map" opens the fullscreen mode: the map fills the page, the
+group chips sit on top and the list becomes a side panel. Esc or "Close map" returns to the page with the
+same selection.
+rt-explore · rt-explore__panel
+ 
+ Recreation #5BB8EE Ink 7.27 1.89
+ Landmark #4A5B6E White 6.97 5.97
+Nearby places [N] places, nearest first
+© OpenStreetMap contributors
+CMR Institute of Technology · 1.4 km
+Srias Boat Club
+Srias Boat ClubCMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+Estimate
+Open in Google Maps
+All
+ Tech  &  Bu sin ess
+ E du catio n
+8
+1
+2 C lo se m ap
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 133/191
+PAGE 134
+Fullscreen keeps focus inside (it is a modal dialog), the chips and the list work exactly as
+in the page, and the route card stays at the bottom left of the map.
+Phone: the map is on top (about 280px), the chips scroll sideways under it and the list follows. Pressing a
+row scrolls the map back into view with the route drawn and the route card across its foot. Source tags
+become icon-only with an aria-label. Fullscreen on a phone is a map with a bottom sheet.
+rt-loc--phone · rt-lmap--phone · rt-explore--phone
+Phone: nearest place selected
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+HEALTHCARE1
+Sri Anagha Children's Clinic
+Healthcare · 1.5 km · about 5 min drive
+TRANSIT1
+TGSRTC Medchal Bus Station
+Transit · 1.9 km · about 6 min drive
+RETAIL1
+[MALL OR MARKET]
+Retail · [2.1] km
+RECREATION 1
+[PARK]
+Recreation · [2.0] km
+LANDMARK1
+[LANDMARK]
+Landmark · [2.2] km
+Show all [N]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 134/191
+PAGE 135
+Location and connectivity
+Kompally, Medchal-Malkajgiri
+ 
+All
+ Tech & Business
+ Education
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+HEALTHCARE1
+Sri Anagha Children's Clinic
+Healthcare · 1.5 km · about 5 min drive
+TRANSIT1
+TGSRTC Medchal Bus Station
+Transit · 1.9 km · about 6 min drive
+RETAIL1
+[MALL OR MARKET]
+Retail · [2.1] km
+RECREATION 1
+[PARK]
+© OpenStreetMap contributors
+Explore map
+Srias Boat ClubCMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+8
+1
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 135/191
+PAGE 136
+Recreation · [2.0] km
+LANDMARK1
+[LANDMARK]
+Landmark · [2.2] km
+Phone: a place pressed in the list
+Location and connectivity
+Kompally, Medchal-Malkajgiri
+ 
+All
+ Tech & Business
+ Education
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+CMR Institute of Technology
+Education · 1.4 km · about 5 min drive
+[SCHOOL]
+Education · [2.4] km
+HEALTHCARE1
+Sri Anagha Children's Clinic
+Healthcare · 1.5 km · about 5 min drive
+Show all [N]
+© OpenStreetMap contributors
+Explore map
+Srias Boat ClubTGSRTC Medchal Bus Station
+1.9 km· about6 mindrive
+Road route from OpenStreetMap
+8
+1
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 136/191
+PAGE 137
+TRANSIT1
+TGSRTC Medchal Bus Station
+Transit · 1.9 km · about 6 min drive
+RETAIL1
+[MALL OR MARKET]
+Retail · [2.1] km
+RECREATION 1
+[PARK]
+Recreation · [2.0] km
+LANDMARK1
+[LANDMARK]
+Landmark · [2.2] km
+Phone: Explore map with a bottom sheet
+Show all [N]
+© OpenStreetMap contributors
+Srias Boat Club
+CMR Institute of Technology
+1.4 km· about5 mindrive
+Road route from OpenStreetMap
+All
+ Tech  &  Bu sin ess
+ E du cati
+8
+1
+Nearby places [N], nearest first
+TECH & BUSINESS1
+[OFFICE OR TECH PARK]
+Tech & Business · [1.6] km
+EDUCATION 2
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 137/191
+PAGE 138
+ACCESSIBILITY
+The list is the accessible way to explore; the map is supplementary, so everything on the
+map is also a row in the list, and the map has a text alternative: "Map showing Srias Boat
+Club and [N] nearby places". Every pin has a label (name, group, distance), and rows are
+real buttons with aria-pressed. The route card is a polite live region that repeats the
+distance and the time, so the route is never only a line. Keyboard: Tab through the chips
+and rows, Enter or Space selects, Esc clears the route, the arrow keys pan the map and
+plus and minus zoom. Pins and rows are 44px targets. Colour is never the only cue: each
+group has its own icon and a text label in the list. Moving pins and animated zooms
+respect reduced motion.
+Honest locality notes
+Two short lists. "Good to know" says what helps; "Worth checking" says what the buyer should ask about.
+Every line has a source tag, including notes we have not yet written.
+rt-notes
+Good to know
+CMR Institute of Technology, 1.4 km, about 5 min drive
+Sri Anagha Children's Clinic, 1.5 km
+TGSRTC Medchal Bus Station, 1.9 km, about 6 min drive
+Worth checking
+Under construction: 345 of 2,112 milestones complete (18%), as
+declared on 3 Sep 2026. Possession is a declared date.
+Theallinestimateisoursandiswiderthanthedeveloperprice
+
+EDUCATION 2
+CMR Institute of
+Technology
+Education · 1.4 km · about 5 min
+drive
+[SCHOOL]
+Education · [2.4] km
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 138/191
+PAGE 139
+The all-in estimate is ours and is wider than the developer price.
+Ask for the full cost sheet before you decide.
+[LOCALITY NOTE: to be written after the Realtified site visit]
+Documents and "Where this came from"
+Documents list the papers on record with their review state. The "Where this came from" table is the
+answer to "how do you know?": every number, its value, its source and the date we read it.
+rt-doc-row · rt-source-table
+Documents
+[DOCUMENT NAME]
+[DOCUMENT DATE]
+Verified
+[DOCUMENT NAME]
+[DOCUMENT DATE]
+Under review
+[DOCUMENT NAME]
+[DOCUMENT DATE]
+Pending
+Statuses are the three the code uses: Verified, Under review, Pending.
+Where this came from
+Think something here is wrong? Tell us
+Open
+Open
+Open
+TS-RERA number 3 Sep 2026
+Possession 26 Aug 2028 3 Sep 2026
+Construction 18% complete 3 Sep 2026
+Price per sq ft ₹ 10,999 [DATE]
+All-in estimate ₹ 2.78 Cr – ₹ 8.09 Cr [DATE]
+Locality notes [NOTE] [VISIT DATE]
+P02200005072 TS-RERA
+TS-RERA
+TS-RERA
+Developer
+Estimate
+Visited
+Fact Value Source As of
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 139/191
+PAGE 140
+Developer block, more by this developer, resale in this
+project
+The developer is a person card with its real project list; other projects and resale homes are compact
+cards. No rating or score appears because none exists in the data.
+rt-person · rt-card--compact
+[LOGO]Srias Life Spaces LLP
+Developer
+Projects on TS-RERA
+[N]
+On Realtified
+[N]
+More by Srias Life Spaces LLP
+Resale homes in this project
+Shown only when the score is confident (the code checks this); otherwise the block is not drawn. It states a
+reading, its reasons and that it is an Estimate.
+rt-read
+TS-RERA
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+[UNIT], [PROJECT NAME]
+[LOCALITY] · Resale flat
+[ASKING PRICE]Photo
+[UNIT], [PROJECT NAME]
+[LOCALITY] · Resale flat
+[ASKING PRICE]Photo
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 140/191
+PAGE 141
+Realtified's read
+[VERDICT SEN TEN CE, in plain words]
+[REASON 1, with the number it rests on]
+[REASON 2]
+[REASON TO CHECK]
+This is our reading, not advice. Ask [FIRST NAME] to go through it.
+FAQ accordion
+Built from the listing's own fields. A question whose data is missing is left out; nothing is answered with a
+placeholder. The same list feeds the page.
+rt-accordion
+What is the TS-RERA registration number?
+The TS-RERA registration number on record for this project is
+.
+When is possession?
+What configurations are available?
+What is the price?
+Who is the developer?
+What approvals are on record?
+How do I book a site visit?
+Estimate
+P02200005072
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 141/191
+PAGE 142
+Advisor rail and the fixed phone bar
+The rail holds the one raspberry button on the page. It is sticky on desktop; on phones the same two
+actions become a fixed bottom bar (3 to 2 split) that does not cover the content end.
+rt-advisor-rail · rt-action-bar
+Phone: fixed bottom bar
+…page content…
+Callback form
+Name, mobile with +91, time of day and one consent box that is never pre-ticked. The button stays active
+so the errors can be read; a loading state replaces the label.
+rt-form · rt-consent
+Ask [FIRST NAME] to call you
+You pay nothing. We call at a time you choose.
+[ADVISOR
+PHOTO]
+[ADVISOR NAME]
+Your Realtified advisor
+I check the paperwork, take you to the
+site and stay with you to the keys.
+We share your number with the developer only
+when you say so. You pay Realtified nothing.
+Talk to [FIRST NAME]
+Book a site visit
+Talk to [FIRST NAME] Site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 142/191
+PAGE 143
+Your name
+Mobile number
++91
+Ten digits, starting with 6, 7, 8 or 9.
+Best time to call
+Realtified may call me about Srias Boat Club. My number goes
+to the developer only when I say so.
+Ask [FIRST NAME] to call you
+You pay nothing. We call at a time you choose.
+Your name
+Mobile number
++91 98765
+Enter a ten-digit Indian mobile number.
+Best time to call
+Realtified may call me about Srias Boat Club. My number goes
+to the developer only when I say so.
+Any time of day
+Ask [FIRST NAME] to call me
+Any time of day
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 143/191
+PAGE 144
+Tick this so we know we can call you.
+Request sent
+[FIRST NAME] will call you [TIME WINDOW]. You can change the time from
+your enquiries.
+Ask [FIRST NAME] to call you
+You pay nothing. We call at a time you choose.
+Your name
+Mobile number
++91
+Ten digits, starting with 6, 7, 8 or 9.
+Best time to call
+Realtified may call me about Srias Boat Club. My number goes
+to the developer only when I say so.
+Left to right: default, errors, and success above a form that is sending.
+Book a site visit, save and share
+Visit booking asks for a day and a time of day, not an exact slot; the advisor confirms by call. It opens as a
+Ask [FIRST NAME] to call me
+Any time of day
+Ask [FIRST NAME] to call me
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 144/191
+PAGE 145
+modal on desktop and a bottom sheet on phones.
+rt-modal · rt-sheet
+Visit requested for [DAY], [TIME OF DAY]
+[FIRST NAME] will call to confirm. Nothing is booked with the developer until
+you say so.
+Save toggles a heart and confirms with a toast. Share uses the phone's share sheet where it exists, and
+otherwise this small menu.
+rt-popover · rt-toast
+Book a site visit to Srias Boat
+Club
+Preferred day
+dd-mm-yyyy
+Time of day
+Your name
+Mobile number
++91
+Realtified may call me to confirm this visit.
+My number goes to the developer only
+when I say so.
+Any time of day
+Cancel Request a site visit
+Save Saved
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 145/191
+PAGE 146
+Saved. Find it in Saved homes.
+12Buyer area
+WHEN TO USE / RULES
+The buyer area is calm and answers one question per screen: what is happening with my
+search? It never asks for payment and never mentions fees, because buyers pay nothing.
+Anything we do not store yet is drawn as the target design with a "Needs new data"
+marker and [BRACKETED] values. Contact details are shared with a developer only when
+the buyer says so, and the consent boxes are never pre-ticked. Tabs, in order: Saved
+projects, Enquiries and site visits, Compare, Legal review, Account, Settings.
+The buyer dashboard shell
+Desktop: a left sidebar with the six tabs; phone: five bottom tabs plus More. The role badge reads "Home
+Buyer". There is no console button: the header says "My Dashboard".
+rt-console · rt-sidebar · rt-bottom-tabs
+[CN]
+[NAME]
+Home Buyer
+Saved projects [N]
+Enquiries & site visits
+Compare
+Undo
+Copy link
+Send in a message
+Email this
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 146/191
+PAGE 147
+Legal review
+Account
+Settings
+Enquiries and site visits
+Your home search, your enquiries and your visit notes.
+Phone: bottom tabs
+More holds Legal review and Settings.
+Compare
+The buyer's Compare tab opens the same comparison as the public Compare section: the same header
+cards, the same "what stands out" sentences, the same rows and the same source tags. Only the saved
+projects can be added here.
+rt-card--compare · rt-sidebar__item
+SriasBoatClub
+SavedEnquiriesCompareAccount More
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 147/191
+PAGE 148
+Srias Boat Club
+Kompally
+₹2.50 Cr – ₹ 7.48 Cr
+Hallmark Floresta
+Patancheru
+₹3.51 Cr – ₹ 5.99 Cr
+Srias Tiara
+Bachupally
+₹7997L ₹ 126Cr
+View project
+View project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 148/191
+PAGE 149
+See section: Compare
+Home search tracker, the nine stages
+The stages are the ones the code stores, in the buyer's words. The current stage is stated first in large type
+with what happens next; the nine-step bar gives the whole journey. Done steps show a check; the current
+one is announced to screen readers.
+rt-tracker · rt-homesearch
+[PHOTO][ADVISOR FIRST NAME] is your advisor
+One advisor from your first enquiry to the keys.
+STEP 3 OF 9
+Site visits
+W hat happens next: [N EXT STEP, in one plain sentence]
+Understanding what you need
+Choosing your shortlist
+3Site visits
+4Negotiating the price
+5Booking your home
+6Home loan
+7Agreement and registration
+8Getting your keys
+₹79.97 L – ₹ 1.26 Cr
+WhatsApp Call
+View project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 149/191
+PAGE 150
+9After you move in
+Open Paused for now Bought through us Bought elsewhere
+A closed case shows its outcome in place of the step. Staff-only outcomes (Not
+reachable, Not serious, Duplicate) read "Paused for now" to the buyer.
+Phone: the same nine steps as a vertical list
+STEP 3 OF 9
+Site visits
+[NEXT STEP]
+Understanding what you need
+Choosing your shortlist
+3Site visits
+4Negotiating the price
+5Booking your home
+6Home loan
+7Agreement and registration
+8Getting your keys
+9After you move in
+Under the tracker: the shortlist (the ProjectCard shortlist context), then the updates the advisor chose to
+share.
+rt-card--shortlist · rt-timeline
+Your shortlist Suggest a home
+Site visit booked
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 150/191
+PAGE 151
+Updates from [ADVISOR FIRST NAME]
+Only events marked "shared" appear. Internal notes never reach the buyer.
+No advisor yet: "Tell us what you need". One short form; your advisor writes it down once so you never
+repeat yourself. Consent is a separate box, never pre-ticked.
+rt-form · rt-chip-select
+Tell us what you need
+Takes about a minute. You pay nothing.
+Are you buying to live in, or to invest?
+Buy to liveInvest
+Hallmark Floresta
+Patancheru · Villas
+Visit[VISIT DATE, TIME]
+Checking with the developer
+Srias Boat Club
+Kompally · Villas
+VisitNot booked yet
+Visit booked
+[NOTE: for example, which gate to meet at]
+[DATE]
+Project added
+[NOTE]
+[DATE]
+Stage changed: Choosing your shortlist
+[DATE]
+View project
+View project
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 151/191
+PAGE 152
+Budget from ( ₹  Cr)
+[MIN]
+Budget up to ( ₹  Cr)
+[MAX]
+BHK
+Localities you like
+For example Kompally, Bachupally
+When do you want to move in?
+I may need a home loan
+Anything else
+Realtified may call me about this. My number goes to a
+developer only when I say so.
+Saved homes
+1 BHK 2 BHK 3 BHK 3.5 BHK 4 BHK 5+ BHK
+Ready to Move ~1 Year~2 Years Flexible
+Send to [ADVISOR FIRST NAME]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 152/191
+PAGE 153
+The Saved projects tab: the saved ProjectCard in a three-up grid, with the empty state and the signed-out
+prompt. The header heart opens the same list as a drawer.
+rt-card--saved · rt-drawer
+Saved projects [N] homes
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+Down ₹ [8] L since you saved
+3 / 4 / 5 BHK Possession Aug 2028
+Saved[SAVED DATE]
+TS-RERAP02200005072
+Book a site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 153/191
+PAGE 154
+Hallmark Floresta
+Patancheru · Villas
+₹3.51 Cr – ₹ 5.99 Cr
+4 BHK Possession Oct 2026
+TS-RERA target date
+Saved[SAVED DATE]
+TS-RERA
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHK Possession Mar 2028
+Developer-declared
+Developer
+Book a site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 154/191
+PAGE 155
+Needs new data: price change since saved, your note, next visit (see Cards)
+No saved homes yet
+Tap the heart on any home to keep it here. We will tell you if its price
+changes.
+My enquiries
+One lead card per enquiry in the buyer voice (see Cards). The eight stages are Sent to Realtified, We're
+reviewing your requirements, Shared with the developer, The developer contacted you, Site visit booked, In
+discussion with the developer, Booked, This one didn't work out.
+rt-lead-card--buyer
+Saved[SAVED DATE]
+Browse homes
+Saved homes
+Sign in to keep your saved homes
+Homes you save now stay on this device until you
+sign in.
+Log in
+Book a site visit
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 155/191
+PAGE 156
+Photo
+Srias Boat Club
+Kompally · Villas
+We have your enquiry. [ADVISOR FIRST NAME] will read it today.
+Sent to Realtified
+You asked on [ENQUIRY DATE]
+Photo
+Hallmark Floresta
+Patancheru · Villas
+The developer has been in touch. [ADVISOR FIRST NAME] can sit in on the call.
+The developer contacted you
+You asked on [ENQUIRY DATE]
+No enquiries yet
+When you ask about a home, it appears here with where it stands.
+RERAP02200005072
+View project Message [ADVISOR FIRST NAME]
+TS-RERA
+View project Message [ADVISOR FIRST NAME]
+Browse homes
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 156/191
+PAGE 157
+Site visit journal
+A place to write down what you saw while it is fresh: three ratings that are yours alone, free notes, and what
+family members thought. Ratings are the buyer's own and never shown to anyone else.
+rt-visit · rt-rating · rt-vote
+Add a visit note
+Project
+Natural light and fresh air
+Peace and quiet
+Balcony view and privacy
+Your notes
+Location, clubhouse, sample home, the sales team…
+Hallmark Floresta [VISIT DATE]
+Light 4 of 5 · Quiet 3 of 5 · View 4 of 5
+[YOUR NOTES]
+[NAME, for example Spouse] Liked[COMMENT]
+[NAME] Maybe
+Srias Boat Club
+Save note
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 157/191
+PAGE 158
+Add a family member's view
+Name
+For example Spouse, Father
+Their view
+YesMaybeNo
+No visit notes yet
+After a site visit, add a note here. It stays private to you.
+Account settings
+One page, one card per thing a person asked for: name, mobile, email, sign-in methods, delete. The
+contact summary at the top shows what is verified. The server decides what is verified; the page never
+claims it.
+rt-set-card · rt-dl
+Contact summary
+Name [FULL NAME]
+Mobile +91 [MOBILE] Verified
+Email [EMAIL] Not verified
+Sign-in Mobile OTP, Google
+Verify your email
+We sent a link to [EMAIL]. Click it, then come back.
+I have clicked the link Send it again
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 158/191
+PAGE 159
+Your name
+Full name
+Add an email
+Add an email to get updates about your requests and to sign in with email and
+password too. We will send a link to confirm it is yours.
+Email address
+Choose a password
+At least 8 characters. You can use it with your email to sign in.
+Mobile number
++91 [MOBILE] Verified
+Change it in two steps: enter the new number, then the 6-digit code we send to it.
+New mobile number
++91
+Enter the 6-digit code sent to +91 [MOBILE]
+Save name
+Add email and send verification
+Send code
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 159/191
+PAGE 160
+Sign-in methods
+Mobile number (OTP) Linked
+Google
+Email and password
+Delete account
+This removes your saved homes, enquiries and notes. We cannot undo it.
+Reason (optional)
+Role request status card and partner invite
+VerifySend the code again
+Link Google
+Add email and password
+Delete my account…
+Delete your account?
+Your saved homes, enquiries and notes will be
+removed. This cannot be undone.
+Keep my account Delete account
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 160/191
+PAGE 161
+q p
+Shown on the Account tab only while a request exists. The card states what the server holds: Pending
+review, Approved, or Not approved with the reason. The role itself changes only when staff change it.
+rt-reqcard
+Your requests
+Developer access · [COMPANY NAME] Pending review
+Request received. Our team reviews developer and agent requests, usually
+within 1 business day. We will notify you when it is approved.
+Submitted [DATE]
+Agent registration · [AGENCY NAME] Not approved
+Reason from our team: [REASON]
+Submitted [DATE]
+Developer access · [COMPANY NAME] Approved
+Your workspace is open.
+A TS-RERA Agent wants to link with you
+[AGENT NAME], [AGENCY NAME], registered you as a client for Hallmark
+Floresta. If you link, they can see your enquiries for that home. If you decline,
+nothing is shared.
+Invite sent
+Notifications
+The bell in the header opens a short menu; "See all" opens this page. All, Unread. Same item anatomy as in
+Cards. It is a target design: the product has no inbox yet.
+Account settings
+Open the Developer Console
+Link with [AGENT NAME] Decline
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 161/191
+PAGE 162
+g g p y
+rt-notif-menu · rt-notif
+Notifications All Unread
+You are all caught up
+We will tell you here when a price changes or a visit is near.
+Needs new data: a notification centre
+Account overview
+The Account tab opens with two friendly stat links, then what has happened (the activity timeline), then
+any open requests. Nothing here sells anything.
+rt-stat--buyer · rt-timeline
+Saved homes
+[N]
+My enquiries
+[N]
+Account
+Verify your email
+We sent a link to [EMAIL].
+Send the link again
+Today
+Saved homes
+Price changed on Srias Boat Club
+Now ₹ [NEW PRICE]. It was ₹ [PRICE WHEN SAVED] when you
+saved it.
+See the project
+[TIME]
+Your watchlist
+New on [LOCALITY]
+[EVENT TYPE]: [EVENT HEADLINE]
+See the evidence
+[DATE]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 162/191
+PAGE 163
+[]
+Homes you saved.
+[]
+Where each one stands.
+Recent activity
+13Developer console
+WHEN TO USE / RULES
+The Developer console is for the builder role, always called Developer (never "Builder").
+Five areas: Overview, Listings, Leads, Team, Account. One primary action per screen:
+"Add listing" on lists, "Save draft" in the Studio, "Submit for review" on release.
+Status words are the developer's own: Draft, In review, Live, Changes requested. A staff
+"Rejected" always arrives with its reason. Any number a developer types needs a source,
+or buyers do not see it. Counts shown as [BRACKETED] are examples; per-project "leads
+this week" is not stored yet.
+Composed screens
+Overview, desktop. Sidebar of five areas, stat strip, the "what needs your attention" list, activity, and the
+claim card. The workspace button in the header says "Developer Console".
+rt-app · rt-pagehead · rt-stat-row · rt-needs · rt-panel
+[CN]
+Overview
+Your listings, new leads, and what needs your attention.
+Listings
+[3]
+[1]li[1]ii
+New leads
+[4]
+N t t lidt
+You asked about Hallmark Floresta
+[DATE]
+You saved Srias Boat Club
+[DATE]
+Add listing
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 163/191
+PAGE 164
+[1] live, [1] in review Not yet replied to
+Available units
+[48]
+Ready for booking
+Blocked units
+[6]
+Under discussion / soft block
+What needs your attention
+Srias Tiara was sent back at legal review
+Reason: [REASON FROM THE REVIEWER]
+Srias Boat Club: [2] of 6 required items missing
+Open the Listing Studio to finish them
+[4] new leads have not had a reply
+Reply within [N] minutes to keep your response rate [4]
+Srias IWA price sheet is waiting for admin approval
+Buyers see it once it is approved
+Recent activity
+Claim request pending review
+Your request to claim [PROJECT NAME] is with the Realtified team.
+Pending review
+Phone layout (390): the sidebar becomes bottom tabs (Overview, Listings, Leads, Team, Account). The
+page keeps one primary action and the same data.
+rt-app--phone · rt-bottom-tabs
+You submitted Srias IWA for review
+[DATE]
+A new enquiry came in for Srias Boat Club
+[DATE] · Contact shared once the buyer agrees
+Legal cleared Srias Boat Club
+[DATE] · by [NAME], Legal
+Overview Listings Leads
+[4]
+Team Account
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 164/191
+PAGE 165
+[CN]
+Overview
+Your listings, new leads, and what needs your attention.
+Listings
+[3]
+[1] live
+New leads
+[4]
+Not yet replied to
+Available units
+[48]
+Ready for booking
+Blocked units
+[6]
+Soft block
+What needs your attention
+Srias Tiara was sent back at legal
+review
+Reason: [REASON FROM THE REVIEWER]
+Srias Boat Club: [2] of 6 required
+items missing
+Open the Listing Studio to finish them
+[4] new leads have not had a reply
+Reply within [N] minutes to keep your
+response rate
+[4]
+[CN]
+Listings
+Overview Listings Leads
+[4]
+Team Account
+Add listing
+Search your listings
+New launch
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 165/191
+PAGE 166
+My projects: the owner-context project card
+WHEN TO USE / RULES
+The same rt-card anatomy as everywhere, in the owner context: listing status,
+completeness, leads, homes available and price sheet in the meta row; Edit listing, View
+leads and Preview as actions. No save heart. The card never shows buyer-only facts it
+does not have.
+Four statuses, drawn with real project facts where the filings give them. Anything not stored yet is
+bracketed and marked.
+rt-card rt-card--owner
+Live, with changes waiting for review (the live page still shows the approved version)
+Live Changes waiting for review
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHKPossession Aug 2028
+Completeness[92]% 
+Leads this week
+[12] 
+ Needs new data: leads this week
+Homes available[24]Price sheetApproved
+TS-RERA
+Overview Listings Leads
+[4]
+Team Account
+Edit listing View leadsPreview
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 166/191
+PAGE 167
+In review (legal first, then an admin)
+Changes requested (a staff "Rejected" shows to developers as this, with the reason)
+Live Changes waiting for review
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHKPossession Aug 2028
+Completeness[92]% 
+Leads this week[12] 
+ Needs new data: leads this week
+Homes available[24]Price sheetApproved
+TS-RERA
+In review With legal. Legal reviews it next, then an admin.
+Srias IWA
+Gachibowli · Apartments
+Price on request
+3 BHKPossession Sep 2028
+Completeness[100]%
+Leads this week[12] 
+ Needs new data: leads this week
+Homes available[48]
+Price sheetWaiting for admin approval
+TS-RERA
+Changes requested
+Sent back at legal review. Reason: [REASON FROM
+THE REVIEWER]
+New launch
+Edit listing View leadsPreview
+New launch
+Edit listing View leadsPreview
+New launch
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 167/191
+PAGE 168
+Draft, started from a TS-RERA number the team has not verified
+Developer-facing status words. The same stored value reads differently to a developer and to staff. Buyers
+never see "rejected".
+rt-status
+Srias Tiara
+Bachupally · Apartments
+₹79.97 L – ₹ 1.26 Cr
+2 / 3 / 3.5 BHKPossession Mar 2028
+Completeness[71]%
+Leads this week[12] 
+ Needs new data: leads this week
+Homes available[0]Price sheetRejected: [REASON]
+Developer
+Draft [4] of 6 required items missing. Not on the site yet.
+[PROJECT NAME]
+[LOCALITY] · [TYPE]
+Price on request
+[BHK]Possession [DATE]
+Completeness[38]%
+Leads this week[12] 
+ Needs new data: leads this week
+Homes available[0]Price sheetNo price sheet yet
+Project photo
+RERA no. not yet verified
+draft Draft Draft Not on the site
+legal_review In review In legal review Tooltip: "In
+legalreview"
+Fix and resubmit Preview
+New launch
+Edit listing Preview
+Stored value Developer sees Staff console saysWhy
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 168/191
+PAGE 169
+Add a listing: start from a TS-RERA number
+WHEN TO USE / RULES
+Four steps: TS-RERA number, Review, Documents, Photos and submit. Step 2 will not
+continue without a map pin and a size range. A value read from the filing carries the TS-
+RERA tag; a number the developer types needs a source before buyers see it. The
+stepper is the phase 1 rt-stepper.
+Step 1: enter the number. The primary button is "Fetch".
+rt-stepper · rt-rera-input
+Add a new-launch (RERA) project
+Enter a TS-RERA number and we fetch the filing for you.
+1TS-RERA
+number
+2 3 4
+TS-RERA number
+TS-RERA registration number (starts with P0…)
+P02400011233
+We read the filing, so you do not retype it.
+legal review
+pending_approval In review Pending approval
+Tooltip:
+"Cleared legal,
+awaiting final
+approval"
+approved Live Live
+Saved edits go
+to review first
+(see the
+banner)
+rejected Changes requested Rejected
+Always shown
+with the
+reason and
+"Sent back at
+legal review" or
+"at final
+approval"
+Fetch
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 169/191
+PAGE 170
+Already on Realtified? Claim an existing project or list a resale home.
+Step 1, other outcomes: the project already exists (open it, or ask to claim it), a field error, and the loading
+line.
+rt-alert--warning · rt-field.is-error
+1TS-RERA
+number
+2 3 4
+Srias IWA is already on Realtified (Gachibowli).
+You can open it, or ask to claim it if it is yours.
+TS-RERA registration number (starts with P0…)
+P0240000
+[ERROR FROM THE FETCH, e.g. "We could not find that number on TS-RERA."]
+ Fetching the TS-RERA filing… (shown while the fetch runs; the button keeps its label
+and shows the loading state)
+Step 2: review what we found. Source tags on every value read from the filing; "Continue" stays disabled
+until the pin and size range are set.
+rt-fgrid · rt-pinpicker
+2Review 3 4
+Review what we found
+Each value keeps its source tag until the team confirms it.
+Project name
+Srias IWA
+Location
+Gachibowli
+District
+[DISTRICT]
+Pincode
+[PINCODE]
+Open it Ask to claim it
+TS-RERA TS-RERA
+TS-RERA TS-RERA
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 170/191
+PAGE 171
+Status Possession date
+[DD/MM/YYYY]
+From the filing. Change it only if you
+have a newer document.
+Size range (shown on the listing card)
+e.g. 1,450 - 1,800 sq ft
+Pick where this number comes from in the next step. Without a source it stays
+hidden from buyers.
+Map pin
+Set the map pin before continuing.
+Listing Studio
+WHEN TO USE / RULES
+The Studio is one editing spine for developers and the team: eight sections, each with a
+computed state and a count of items that need attention. The states come from the
+same checks that block submit; nobody sets them by hand.
+On a phone the section list becomes a horizontal scroll of chips. A live listing edited by its
+developer shows the Changes waiting for review banner with a before and after list; the
+live page keeps the approved version until the team approves.
+Availability & pricing, on a live listing: the pending-changes banner, "Numbers shown to buyers" with a
+source select under each typed number, and the price sheet line. Desktop width.
+rt-studio · rt-studio__item · rt-banner-card · rt-diff · rt-factcard
+LISTINGSTUDIO
+Under construction
+TS-RERA
+Needs a source
+Drop the pin on the project
+Cancel Continue
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 171/191
+PAGE 172
+ 
+LISTING STUDIO
+Srias Boat Club
+Project #[ID]
+Identity
+Ready
+Buyer summary
+Needs review 2 Availability & pricing
+In progress 3
+AVAILABILITY & PRICING
+Towers, homes, price sheets and all-in costs
+Live listing · saved changes show on the site
+Changes waiting for review
+The live page keeps showing the approved version until the Realtified team
+approves your changes. You can withdraw them.
+Price range
+₹ 2.50 Cr – ₹ 7.48 Cr
+[NEW PRICE RANGE]
+Possession date Aug 2028 [NEW DATE]
+Numbers shown to buyers
+A number someone typed shows on the listing page only with a source. Without one it is
+hidden from buyers. Numbers read from the TS-RERA filing already carry that source.
+[2] facts need a source.
+Hidden from buyers until you add one.
+Size range:[1,450 – 1,800 sq ft]Hidden from buyers until a source is added
+Price range:[ ₹2.50 Cr – ₹ 7.48 Cr] Shown to buyers with its source
+Preview Save draft
+Withdraw my changes
+Source: choose (buyers see it)
+Source: Developer document Confirm
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 172/191
+PAGE 173
+Possession date:[DD/MM/YYYY] Shown to buyers with its source
+Price sheet
+Waiting for admin approval An admin approves it before buyers see it.
+Computed section states, and what feeds each section.
+rt-studio__state--empty · --in_progress · --ready · --needs_review
+Source: TS-RERA filing Confirmed by [NAME], [DATE] Withdraw
+Save sources
+Open the price sheet
+Identity RERA registration number Ready
+Buyer
+summary
+Summary text; values not yet confirmed
+(review items)
+Needs review
+Availability
+& pricing
+Possession date, size range, price range,
+approved price sheet, price sheet phases and
+charges, homes available; numbers without a
+source (review)
+In progress
+Media
+gallery
+Photos in the gallery, brochure pages,
+walkthrough clips
+In progress
+Plans Unit types, unit types with an area, floor plans;
+unit numbers without a source (review) Not started
+Trust &
+legal
+RERA application profile, documents and
+approvals, construction progress; approvals
+legal has not verified (review)
+Needs review
+Location &
+POIs
+Map pin, nearby places; places not confirmed
+(review)
+Ready
+Preview &
+release
+The release itself: draft, with legal, awaiting
+approval, live, sent back
+In progress
+Section Fed by (completeness checks) Example state
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 173/191
+PAGE 174
+Rule for the four states: Not started when nothing in the section passes; Needs review
+when a required item fails or a person's check is waiting; In progress when only
+recommended items fail; Ready when everything passes. The amber number on a
+section is its count of missing items plus values waiting for a check.
+Source select under a typed number, and how each choice reads to a buyer.
+rt-select--sm · rt-factcard__ctrl
+Estimate is never a choice: only Realtified calculates estimates (all-in cost, EMI,
+distances).
+Preview & release: status, preview link and the checklist in three groups (Required to submit, Worth adding,
+Waiting for a check). "Go to section" jumps to the section that can fix it.
+rt-release · rt-checklist
+ 
+LISTING STUDIO
+[PROJECT NAME]
+Project #[ID]
+Identity
+Ready
+Buyer summary
+Needs review 2 Availability & pricing
+In progress 3
+PREVIEW & RELEASE
+Buyer-page preview, checks and publish workflow
+Draft · not on the site yet
+TS-RERA filing
+Developer document · Developer
+brochure · Developer statement
+Realtified site visit
+Public record
+Other (the person names it, up to 80
+characters)
+Nothing chosen The number is hidden from buyers (it
+never shows without a source)
+TS-RERA
+Developer
+Visited
+Public record
+The name they typed
+Preview Savedraft
+The person picks The buyer sees
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 174/191
+PAGE 175
+y
+Status
+Draft, not on the site
+Submit it when the required items are done. Legal reviews it first, then an admin
+approves it.
+[2] required items still missing.
+Preview
+Opens the real listing page, with a banner saying it is a preview. Only your team and
+the listing owner can open it while the listing is not live. It is never indexed by search
+engines.
+Checklist
+Required to submit ([2])
+Missing: Map pin.Location & POIs
+Missing: Photos in the gallery.Media gallery
+Worth adding ([3])
+Missing: Brochure pages.Media gallery
+Missing: Realtified evaluation report.Added in the listing wizard
+Waiting for a check ([1])
+[1] approval waiting for legal to verify.Trust & legal
+Release status by review stage. Staff on the catalogue team can submit but never approve, so an approve
+action is only ever a link to the queue, and only for a role that can review.
+ ee Sae da
+Submit for review
+Open the buyer page in a new tab
+Go to section
+Go to section
+Go to section
+Go to section
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 175/191
+PAGE 176
+rt-release
+Draft, not on the site
+Submit it when the required items are done. Legal reviews it first, then an admin
+approves it.
+[2] required items still missing.
+With legal for review
+Legal reviews it next, then an admin gives final approval. It is not on the site until
+then.
+Reviews next: Legal
+Sent back at legal review
+Reason: [REASON FROM THE REVIEWER]
+Live on the site
+Saved changes show on the site at once.
+Public TS-RERA record
+Shown to buyers as an unreviewed TS-RERA record. It has not been through
+Realtified review.
+When the team sends changes back, the developer sees why, and can dismiss the note.
+rt-banner-card--danger
+Submit for review
+Fix and resubmit
+Open the live page
+Open the public page
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 176/191
+PAGE 177
+Your changes were sent back
+Reason: [REASON FROM THE REVIEWER]. The live page still shows the
+approved version. Edit and save again to send new changes for review.
+Price sheet editor and status
+WHEN TO USE / RULES
+A price sheet is plans, charges and taxes, approved by an admin before buyers see it (ops
+sheets need admin approval too). The right column is a live check of one home. Money
+values are examples in brackets. Basis choices: per sq ft, flat, per unit, government
+charge. Due: at booking, at handover, at registration.
+Price sheet status, as the Studio and the lists say it.
+rt-status
+No price sheet yet Draft, not sent for approval Waiting for admin approval
+Approved · Live Rejected: [REASON FROM THE REVIEWER]
+The editor: plans with milestones, charges, taxes, and a working preview of one home (marked Estimate).
+rt-ps · rt-ps-block · rt-ps-charge · rt-breakdown
+Price sheet · Srias Boat Club
+Payment plans, conditional charges and taxes. An admin approves it before buyers
+see it.
+Draft, not sent for approval
+Payment plans
+Plan name
+[PLAN NAME]
+Dismiss
+Save and send for approval
+Add plan
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 177/191
+PAGE 178
+Charges
+Name
+Corpus fund
+Basis
+Amount ( ₹ )
+[AMOUNT]
+Due
+Condition
+e.g. floor>=5
+Note
+Refundable
+Name
+Registration
+Basis
+Amount ( ₹ )
+Set by the government, no amount
+here.
+Due
+Condition
+e.g. floor>=5
+Note
+Refundable
+[STAGE] [TRIGGER] [10]
+[STAGE] [TRIGGER] [90]
+Add milestone
+Add charge
+Flat
+At handover
+Government charge
+At registration
+Stage Trigger %
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 178/191
+PAGE 179
+Taxes
+GST %
+[GST]
+Check one home
+Enter a home to see what the numbers add up to. This is a working preview, not a
+quote.
+Saleable area (sq ft)
+[AREA]
+Floor
+[FLOOR]
+Facing
+[FACING]
+Config
+[BHK]
+Plan
+Base consideration [ ₹  BASE]
+Charges total [ ₹  CHARGES]
+GST ([GST]%) [ ₹  GST]
+Grand total [ ₹  TOTAL]
+DUE AT BOOKING
+[CHARGE NAME] [ ₹ ]
+GOVERNMENT CHARGES
+Registration At actuals
+Approved price sheet.
+Ask an admin to change it. (Shown instead of the editor once a sheet is
+approved: the fields lock and the lock icon replaces the send button.)
+Estimate
+[PLAN NAME]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 179/191
+PAGE 180
+Inventory
+Homes by status. Available, Blocked and Sold are the only three values.
+rt-unit-bar · rt-table
+Homes available · Srias Boat Club
+Mark each home Available, Blocked or Sold. Buyers see only the count that is
+available.
+Available
+[24]
+Ready for booking
+Blocked
+[6]
+Under discussion / soft block
+Sold
+[18]
+AvailableBlockedSold
+Leads, developer view
+WHEN TO USE / RULES
+Leads use the shared rt-lead-card--developer markup (styled with the card family). The
+Add homes
+ 
+[A-
+101] [1] [3] [SIZE] Available None
+[A-
+102] [1] [3] [SIZE] Blocked [LEAD NAME]
+[A-
+201] [2] [4] [SIZE] Sold [LEAD NAME]
+HomeFloorBHKSize (sq ft)Status Assigned lead
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 180/191
+PAGE 181
+buyer's name and mobile show only after the buyer agreed to share them; before that the
+card says so. There is never a pre-ticked consent box. Timeline events are "shared" with
+the developer; internal notes stay with Realtified.
+Response metrics, quick filters (All, New, Not responded, Today), status and project filters, three lead cards
+(including one with consent not yet recorded), the consent line and the lead timeline.
+rt-lead-card--developer · rt-chip · rt-timeline
+Leads
+Buyers Realtified has introduced to you. Reply fast: your response rate is shown to the
+team.
+Introduced
+[N]
+Total
+Replied
+[N]
+Responded
+Response rate
+[N]%
+Median first reply
+[N] min
+All New Not responded Today
+[BUYER NAME]3 BHK · ₹ [MIN] – ₹ [MAX] · Timeline: 3 to 6 months
+Srias Boat Club
+Introduced [DATE]
+New
+[BUYER NAME]4 BHK · Timeline: Ready to move
+Srias Boat Club
+Introduced [DATE]
+All statuses
+All projects
+New launch
+New Add note
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 181/191
+PAGE 182
+Site visit booked
+A buyer is
+interested
+Name and mobile show once the buyer agrees to share
+them.
+Srias Boat Club
+Introduced [DATE]
+New
+The buyer agreed to share their details with you.
+Consent recorded [DATE]. Contact details are visible only because of this.
+Lead timeline
+What happened with [BUYER NAME]. Internal notes from the Realtified team are
+never shown here.
+Registered by Realtified
+Site visit booked Add note
+New launch
+Add note
+Enquiry created
+[DATE]
+Qualified by Realtified support
+[DATE]
+Buyer consent recorded
+[DATE]
+Introduced to you
+[DATE]
+Status changed to Contacted
+You: [NOTE]
+[DATE]
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 182/191
+PAGE 183
+Claim an existing project
+Ask to claim, and the list of requests with their status. A rejected claim shows the reviewer's reason.
+rt-form · rt-status
+Ask to claim Srias IWA
+The Realtified team checks your request before you can edit this project.
+Company name
+The company you are claiming for
+How are you connected to this project?
+For example: I am a director of the promoter company, or I handle
+sales for this project.
+A line or two is enough.
+[0] / [MAX] characters
+A link that shows you are connected (optional)
+https://your-company-website.com/projects/this-project
+Your claims
+Srias IWA
+Sent [DATE] Pending review
+[PROJECT NAME]
+Reviewed [DATE] Approved
+[PROJECT NAME]
+Reviewed [DATE] Rejected
+Send request Cancel
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 183/191
+PAGE 184
+Reason: [REASON FROM THE REVIEWER]
+14Partner console
+WHEN TO USE / RULES
+The Partner Console is for the agent role, shown as TS-RERA Agent. Five areas:
+Projects to sell, My clients, Share kit, Commissions, Account. Until the agent's TS-RERA
+verification is approved, adding leads and promoting are locked, with one banner at the
+top and the tooltip "Available once your agent verification is approved."
+Partner cards show the developer commission and what the partner earns: both exist in
+the data. A buyer is linked to a lead only after the buyer accepts an invite; nothing is pre-
+linked. Commission words are Accrued, Released, Clawed back.
+Composed screens
+Projects to sell, desktop, while verification is pending: the banner, and partner cards with the "Approval
+required" lock.
+rt-app · rt-card--partner · rt-alert--warning
+[CN]
+Projects to sell
+Browse approved projects and promote the ones you will sell.
+Verification under review
+Your TS-RERA agent verification is under review. You can add leads and run
+promotions once it's approved.
+Pending review
+Promoting
+Promoting
+Srias Boat Club
+Kompally·Villas
+New launch
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 184/191
+PAGE 185
+Locked while verification is pending
+Phone layout: bottom tabs for the five areas.
+rt-app--phone
+[CN]
+Projects to sell
+Verification under review
+Your TS-RERA agent verification is under
+review. You can add leads and run
+promotions once it's approved.
+P di i
+Kompally  Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHKPossession Aug 2028
+Developer commission[X]%You earn[Y]%
+TS-RERA
+Hallmark Floresta
+Patancheru · Villas
+₹3.51 Cr – ₹ 5.99 Cr
+4 BHKPossession Oct 2026
+Developer commission[X]%You earn[Y]%
+TS-RERA
+Projects Clients Share kit Commissions Account
+Promoting Share
+New launch
+Approval required
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 185/191
+PAGE 186
+Pending review
+Projects to sell: the partner-context project card
+Verified agent. "Promote" is the one primary action; once promoting, it becomes a secondary "Promoting"
+toggle. Commission values are examples.
+rt-card rt-card--partner
+Promoting
+Srias Boat Club
+Kompally · Villas
+₹2.50 Cr – ₹ 7.48 Cr
+3 / 4 / 5 BHK
+Developer commission[X]%You earn[Y]%
+TS-RERA
+ProjectsClientsShare kit CommissionsAccount
+Promoting
+Srias Boat Club
+Kompally · Villas
+₹250Cr– ₹ 748Cr
+New launch
+Approval required
+New launch
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 186/191
+PAGE 187
+Not promoting yet (verified agent: one primary "Promote")
+Identity check (KYC) and onboarding
+Partner type, details, and the three verification states in plain words (Pending review, Rejected, Verified).
+rt-choice · rt-alert
+Become a Channel Partner
+Tell us who you are. The Realtified team verifies agents against TS-RERA.
+What kind of partner are you?
+₹2.50 Cr  ₹ 7.48 Cr
+3 / 4 / 5 BHKPossession Aug 2028
+Developer commission[X]%You earn[Y]%
+TS-RERA
+Hallmark Floresta
+Patancheru · Villas
+₹3.51 Cr – ₹ 5.99 Cr
+4 BHKPossession Oct 2026
+Developer commission[X]%You earn[Y]%
+TS-RERA
+RERA-Registered Agent
+Hold a valid TS-RERA agent licence. Earn full CP commission.
+Referrer / Affiliate
+No licence needed. Earn referral commission on bookings.
+Promoting Share
+New launch
+Promote
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 187/191
+PAGE 188
+Your name
+[NAME]
+Agency name (optional)
+[AGENCY NAME]
+TS-RERA agent number
+[AGENT NUMBER]
+Needed for RERA-registered agents.
+Mobile
++91 [MOBILE]
+Verification status
+Verification under review
+Your TS-RERA agent verification is under review. You can add leads and run
+promotions once it's approved.
+Pending review
+Verification not approved
+Your TS-RERA agent verification was not approved. Contact support to sort it
+out. You cannot add leads or run promotions until it is approved.
+Rejected
+TS-RERA agent verified
+You can add leads and promote projects.
+Verified
+Partner profile and referral code.
+rt-refcode · rt-dl
+Partner profile
+Name [NAME]
+Partner type RERA-Registered Agent
+Agency [AGENCY NAME]
+Send for verification
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 188/191
+PAGE 189
+Verification Verified
+Your referral code
+[CODE]
+Clients, leads and invites
+Client list with the buyer-link chip (Linked, Invite pending, Declined; nothing when never asked), the invite
+step list, and the booking claim.
+rt-link-chip · rt-steps-list
+My clients
+Register clients, book site visits and claim bookings.
+Linkabuyer
+Copy code
+Add client
+ 
+[CLIENT
+NAME
+1]
+[MOBILE]
+[PROJECT
+NAME]
+Linked [DATE] Token paid
+[CLIENT
+NAME
+2]
+[MOBILE]
+[PROJECT
+NAME] Invite pending Not
+booked None yet
+[CLIENT
+NAME
+3]
+[MOBILE]
+[PROJECT
+NAME]
+Declined [DATE] None yet
+[CLIENT
+NAME
+4]
+[MOBILE]
+[PROJECT
+NAME] Not linked Not
+booked None yet
+Client Project Buyer link Site visit Booking
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 189/191
+PAGE 190
+Link a buyer
+To turn a lead into a booking, the buyer links it in their own Realtified account.
+1Send the invite to [CLIENT EMAIL]. The buyer gets an email.
+2The buyer accepts in their account. Nothing is linked before that.
+3Then you can submit a booking claim.
+Invite sent. The buyer confirms in their Realtified account before this lead
+is linked.
+Booking claim
+After the buyer is linked.
+Booking Agreement stage
+Agreement value [ ₹  VALUE]
+Claim Pending
+Share kit
+WhatsApp-ready links that carry the referral code.
+rt-sharelink
+Share kit
+Links that carry your referral code.
+[SHARE LINK FOR SRIAS BOAT CLUB]
+[SHARE LINK FOR HALLMARK FLORESTA]
+G tdlik tiA il bl t ifi ti i d
+Invite [CLIENT EMAIL]
+Submit booking claim
+Copy WhatsApp
+Copy WhatsApp
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 190/191
+PAGE 191
+Gated like promotions: Available once your agent verification is approved.
+Commissions
+Booking status and commission status on each row. Only the commission and booking states the
+product shows appear here.
+rt-stat-row · rt-table · rt-status
+10/5/26, 12:38 PM Realtified Design System
+https://claude.ai/artifact/ENY1vWU9T8BrvwwXSxdg1f 191/191
