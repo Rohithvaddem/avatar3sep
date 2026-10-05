@@ -3772,20 +3772,7 @@ function initLeafletMap() {
     localRoadsGroup = L.layerGroup().addTo(leafletMap);
     projectMarkersGroup = L.layerGroup().addTo(leafletMap);
     
-    // Bind our custom map controls to Leaflet
-    document.getElementById('zoomInBtn').addEventListener('click', (e) => {
-        if (isSatelliteActive && leafletMap) {
-            e.stopPropagation();
-            leafletMap.zoomIn();
-        }
-    });
-    
-    document.getElementById('zoomOutBtn').addEventListener('click', (e) => {
-        if (isSatelliteActive && leafletMap) {
-            e.stopPropagation();
-            leafletMap.zoomOut();
-        }
-    });
+    // Shared map controls already route satellite zoom to Leaflet.
     
     // Satellite Layer (Esri World Imagery with maxNativeZoom to auto-scale tiles when zooming close)
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -3806,25 +3793,23 @@ function initLeafletMap() {
             options: {
                 rotation: 0
             },
+            _applyLayoutRotation: function () {
+                if (!this._image || !this.options.rotation) return;
+                // Leaflet scales from the top-left. Rotate around the image centre
+                // using translations instead of changing that zoom pivot.
+                this._image.style.transformOrigin = '0 0';
+                var halfWidth = parseFloat(this._image.style.width) / 2;
+                var halfHeight = parseFloat(this._image.style.height) / 2;
+                this._image.style.transform += ' translate(' + halfWidth + 'px,' + halfHeight + 'px) rotate(' +
+                    (-this.options.rotation) + 'deg) translate(' + (-halfWidth) + 'px,' + (-halfHeight) + 'px)';
+            },
             _reset: function () {
                 L.ImageOverlay.prototype._reset.call(this);
-                if (this._image && this.options.rotation) {
-                    this._image.style.transformOrigin = '50% 50%';
-                    var currentTransform = this._image.style.transform || '';
-                    if (!currentTransform.includes('rotate(')) {
-                        this._image.style.transform = currentTransform + ' rotate(' + (-this.options.rotation) + 'deg)';
-                    }
-                }
+                this._applyLayoutRotation();
             },
             _animateZoom: function (e) {
                 L.ImageOverlay.prototype._animateZoom.call(this, e);
-                if (this._image && this.options.rotation) {
-                    this._image.style.transformOrigin = '50% 50%';
-                    var currentTransform = this._image.style.transform || '';
-                    if (!currentTransform.includes('rotate(')) {
-                        this._image.style.transform = currentTransform + ' rotate(' + (-this.options.rotation) + 'deg)';
-                    }
-                }
+                this._applyLayoutRotation();
             }
         });
 
