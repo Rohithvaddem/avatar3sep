@@ -245,4 +245,33 @@ body:has(#adminBanner) .main-content { height:100%!important; }
 body.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:none!important; }
 
 #dealSimulatorBody #btnApplyDealToQuote,#dealSimulatorBody #btnApplyDealToQuote * { color:#FFFFFF!important; background-color:#0A6AA3!important; }
+
+/* Keep director actions reachable inside the map's shorter viewport. */
+#plotModal {
+ display:flex;
+ flex-direction:column;
+ box-sizing:border-box;
+ max-height:calc(100% - 32px)!important;
+ overflow:hidden!important;
+}
+#plotModal .modal-header { flex-shrink:0; }
+#plotModal #modalBody {
+ flex:1 1 auto;
+ min-height:0;
+ overflow-y:auto;
+ overscroll-behavior-y:contain;
+ touch-action:pan-y;
+ -webkit-overflow-scrolling:touch;
+ scrollbar-gutter:stable;
+ scrollbar-width:auto;
+ scrollbar-color:#879DAF #F1F6FA;
+ padding-right:8px;
+ padding-bottom:24px;
+}
+#plotModal #modalBody::-webkit-scrollbar { width:10px; }
+#plotModal #modalBody::-webkit-scrollbar-track { background:#F1F6FA; border-radius:8px; }
+#plotModal #modalBody::-webkit-scrollbar-thumb { background:#879DAF; border:2px solid #F1F6FA; border-radius:8px; }
+@media(max-width:820px) {
+ #plotModal { max-height:75dvh!important; }
+}
 #dealSimulatorBody #simMarginBadge { color:#056348!important; background:#E0F3EB!important; border-color:#8DBBA8!important; }
