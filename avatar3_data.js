@@ -83,7 +83,7 @@
         "plot_no":  "6",
         "plot_size":  "464.00",
         "extent_sq_mtrs":  "554.94",
-        "facing":  "North (Cross)",
+        "facing":  "North-West",
         "plot_status":  "AVAILABLE",
         "raw_status":  "Open",
         "customer_name":  "",

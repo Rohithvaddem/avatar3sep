@@ -2645,3 +2645,14 @@ button,
  .project-name { font-size:17px; }
  .header-stats { width:100%; justify-content:space-between; }
 }
+
+/* The drawer must remain above the backdrop to stay readable and interactive. */
+.sidebar { position: relative; z-index: 1100; }
+.sidebar-backdrop { z-index: 1000; }
+@media (max-width: 992px) {
+    .sidebar { position: fixed; top: 0; bottom: 0; left: 0; }
+}
+@media (min-width: 993px) {
+    .sidebar-backdrop.active { opacity: 0; pointer-events: none; }
+}
+.plot-dot.facing-highlighted { box-shadow: 0 0 0 3px #fff, 0 0 12px #38bdf8; }

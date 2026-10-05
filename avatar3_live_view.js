@@ -73,9 +73,58 @@
     const LAYOUT_HEIGHT = 140.6;
 
     const CAMERA_PRESETS = {
-        isometric: { pos: [110, 95, 110], target: [0, 0, 0] },
+        isometric: { pos: [0, 180, 100], target: [0, 0, 0] },
         topDown: { pos: [0, 190, 0.01], target: [0, 0, 0] }
     };
+
+    function layoutBounds() {
+        layoutWorldGroup.updateMatrixWorld(true);
+        const box=new THREE.Box3();
+        Object.values(plotGroups).forEach(group=>box.expandByPoint(group.getWorldPosition(new THREE.Vector3())));
+        if (plotGroups[1]) box.expandByPoint(parkEntranceEdge());
+        if (plotGroups[206]) box.expandByPoint(parkFourEdge());
+        box.expandByScalar(8*Math.max(calibration.scale,1)); return box;
+    }
+    function parkEntranceEdge() {
+        const offset=new THREE.Vector3(28*calibration.scale*calibration.width,0,8*calibration.scale*calibration.depth);
+        offset.applyAxisAngle(new THREE.Vector3(0,1,0),THREE.MathUtils.degToRad(calibration.rotation));
+        return plotGroups[1].getWorldPosition(new THREE.Vector3()).add(offset);
+    }
+    function parkFourEdge() {
+        const offset=new THREE.Vector3(-16*calibration.scale*calibration.width,0,-10*calibration.scale*calibration.depth);
+        offset.applyAxisAngle(new THREE.Vector3(0,1,0),THREE.MathUtils.degToRad(calibration.rotation));
+        return plotGroups[206].getWorldPosition(new THREE.Vector3()).add(offset);
+    }
+    function layoutFocusCenter() {
+        if (renderer && renderer.domElement.clientWidth <= 600) {
+            const points=Object.entries(plotGroups).filter(([no])=>Number(no)>6).map(([,group])=>group.getWorldPosition(new THREE.Vector3()));
+            if(points.length) return new THREE.Box3().setFromPoints(points).getCenter(new THREE.Vector3());
+        }
+        return layoutBounds().getCenter(new THREE.Vector3());
+    }
+    function fittedCameraPosition(preset) {
+        const viewport=document.getElementById('threeCanvasContainer');
+        camera.aspect=viewport.clientWidth/Math.max(viewport.clientHeight,1); camera.updateProjectionMatrix();
+        const target=layoutFocusCenter();
+        const points=Object.values(plotGroups).flatMap(group=>{
+            const p=group.getWorldPosition(new THREE.Vector3());
+            // Include the plan's park/entrance edges beyond the last plot centres.
+            return [[-6,-6],[-6,6],[6,-6],[6,6]].map(([x,z])=>p.clone().add(new THREE.Vector3(x*calibration.scale,0,z*calibration.scale)));
+        });
+        points.push(parkEntranceEdge());
+        points.push(parkFourEdge());
+        const direction = new THREE.Vector3(...preset).normalize();
+        let distance=60;
+        const probe=camera.clone();
+        for(let i=0;i<40;i++) {
+            probe.position.copy(target).addScaledVector(direction,distance); probe.lookAt(target); probe.updateMatrixWorld();
+            const fits=points.every(point=>{
+                const p=point.clone().project(probe);return Math.abs(p.x)<.9&&Math.abs(p.y)<.88;
+            });
+            if(fits) break; distance*=1.07;
+        }
+        return target.clone().addScaledVector(direction, distance * (renderer.domElement.clientWidth <= 600 ? .65 : .9));
+    }
 
     /**
      * Helper to get plot details from avatar3_data.js
@@ -100,48 +149,45 @@
     }
 
     function getPlotStatus(detail, plotNo) {
-        const pNum = parseInt(plotNo, 10);
-        if (pNum >= 177 && pNum <= 206) return 'MORTGAGE';
-        if ([61, 62, 63, 64, 65].includes(pNum)) return 'SOLD';
-        if (detail && detail.plot_status) {
+                if (detail && detail.plot_status) {
             const s = String(detail.plot_status).toUpperCase();
             if (s.includes('SOLD') || s.includes('BOOKED')) return 'SOLD';
-            if (s.includes('MORTGAGE')) return 'MORTGAGE';
+            if (s.includes('MORTGAGE') || s.includes('MORTAGAGE')) return 'MORTGAGE';
         }
         return 'AVAILABLE';
     }
 
     function getStatusColorHex(status) {
         switch (status) {
-            case 'AVAILABLE': return '#059669'; // Green
-            case 'SOLD': return '#1d4ed8';      // Blue
-            case 'MORTGAGE': return '#ea580c';  // Orange
-            default: return '#059669';
+            case 'AVAILABLE': return '#0A6AA3'; // Project inventory, not verification
+            case 'SOLD': return '#55667A';      // Neutral status
+            case 'MORTGAGE': return '#85530A';  // Amber status
+            default: return '#0A6AA3';
         }
     }
 
     /**
-     * Create crisp Circular Plot Button Texture for each plot
+     * Create compact plot number labels
      */
     function createPlotNumberSprite(plotNo, hexColor) {
         const canvas = document.createElement('canvas');
         canvas.width = 128;
-        canvas.height = 128;
+        canvas.height = 80;
         const ctx = canvas.getContext('2d');
 
-        // Compact circular marker: readable number, subtle dark fill and a status rim.
+        // Light marker with dark type and a subtle status rim.
         ctx.beginPath();
-        ctx.arc(64, 64, 52, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+        ctx.roundRect(6, 6, 116, 68, 12);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
         ctx.fill();
         ctx.lineWidth = 4;
         ctx.strokeStyle = hexColor || '#38bdf8';
         ctx.stroke();
-        ctx.fillStyle = '#e2e8f0';
-        ctx.font = '700 43px "Plus Jakarta Sans", Outfit, Arial, sans-serif';
+        ctx.fillStyle = '#10283B';
+        ctx.font = '600 60px Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(String(plotNo), 64, 65);
+        ctx.fillText(String(plotNo), 64, 41);
         const texture = new THREE.CanvasTexture(canvas);
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
@@ -163,7 +209,27 @@
         return sprite;
     }
 
-    function scalePlotLabel(label) { label.scale.set(2, 2, 1); }
+    function scalePlotLabel(label) {
+        if (!camera || !renderer) return;
+        const world = new THREE.Vector3();
+        label.getWorldPosition(world);
+        // Compact at overview distance; enlarge smoothly for close inspection.
+        const depth = Math.max(.1, -world.clone().applyMatrix4(camera.matrixWorldInverse).z);
+        const worldPerPixel = 2 * depth * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
+            / Math.max(renderer.domElement.clientHeight, 1);
+        const projectedWidth = 2.4 * calibration.scale / worldPerPixel;
+        const selected = selectedPlotNo === label.userData.plotNo;
+        const pixels = THREE.MathUtils.clamp(projectedWidth, selected ? 22 : 13.5, selected ? 42 : 36);
+        const size = pixels * worldPerPixel;
+        label.scale.set(size / Math.max(calibration.scale * calibration.width, .01),
+            size * .625 / Math.max(calibration.scale, .01), 1);
+    }
+    function updatePlotLabels() {
+        Object.values(plotButtons).forEach(label => {
+            scalePlotLabel(label);
+            label.visible = !isLayoutOnly && label.parent.visible;
+        });
+    }
 
     /**
      * Initialize Three.js Scene, Camera, Renderer, Controls
@@ -234,9 +300,21 @@
 
         // 12. Interaction Listeners
         setupEventListeners(container);
+        new ResizeObserver(() => {
+            if (!isActive || !container.clientWidth || !container.clientHeight) return;
+            camera.aspect=container.clientWidth/container.clientHeight; camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth,container.clientHeight);
+            if (!selectedPlotNo && !isCameraAnimating) {
+                const preset=document.querySelector('.btn-cam-preset.active')?.dataset.preset || 'isometric';
+                controls.target.copy(layoutFocusCenter()); camera.position.copy(fittedCameraPosition(CAMERA_PRESETS[preset].pos));
+            }
+        }).observe(container);
 
         // Restore the user’s placement before rendering.
         applyCalibration();
+        const initialPreset = renderer.domElement.clientWidth <= 600 ? 'topDown' : 'isometric';
+        document.querySelectorAll('.btn-cam-preset').forEach(button=>button.classList.toggle('active',button.dataset.preset===initialPreset));
+        controls.target.copy(layoutFocusCenter()); camera.position.copy(fittedCameraPosition(CAMERA_PRESETS[initialPreset].pos)); camera.lookAt(controls.target);
         // Start Animation Loop
         startAnimationLoop();
     }
@@ -251,11 +329,11 @@
         lights.sun = new THREE.DirectionalLight(0xffffff, 1.05);
         lights.sun.position.set(120, 220, 100);
         lights.sun.castShadow = true;
-        lights.sun.shadow.mapSize.width = 1024;
-        lights.sun.shadow.mapSize.height = 1024;
+        lights.sun.shadow.mapSize.width = 2048;
+        lights.sun.shadow.mapSize.height = 2048;
         lights.sun.shadow.camera.near = 10;
         lights.sun.shadow.camera.far = 700;
-        const d = 160;
+        const d = 320;
         lights.sun.shadow.camera.left = -d;
         lights.sun.shadow.camera.right = d;
         lights.sun.shadow.camera.top = d;
@@ -312,6 +390,45 @@
         if (aerialGround) aerialGround.material.color.set(palette.ground);
         updateStreetLightGlow();
     }
+
+    // NOAA fractional-year approximation. Coordinates are the existing project bounds;
+    // world +X is east and -Z north. This models the sun, not surveyed building shadows.
+    function solarPosition(dateString, hour) {
+        const date = new Date(dateString + 'T12:00:00Z');
+        if (!Number.isFinite(date.getTime())) return null;
+        const year = date.getUTCFullYear();
+        const day = (Date.UTC(year,date.getUTCMonth(),date.getUTCDate())-Date.UTC(year,0,0))/86400000;
+        const days = (Date.UTC(year+1,0,1)-Date.UTC(year,0,1))/86400000;
+        const g = 2*Math.PI/days*(day-1+(hour-12)/24);
+        const eq = 229.18*(.000075+.001868*Math.cos(g)-.032077*Math.sin(g)-.014615*Math.cos(2*g)-.040849*Math.sin(2*g));
+        const dec = .006918-.399912*Math.cos(g)+.070257*Math.sin(g)-.006758*Math.cos(2*g)+.000907*Math.sin(2*g)-.002697*Math.cos(3*g)+.00148*Math.sin(3*g);
+        const lat = 16.931355*Math.PI/180;
+        const ha = (hour*60+eq+4*78.538005-60*5.5)/4*Math.PI/180-Math.PI;
+        const east = -Math.cos(dec)*Math.sin(ha);
+        const north = Math.cos(lat)*Math.sin(dec)-Math.sin(lat)*Math.cos(dec)*Math.cos(ha);
+        const up = Math.sin(lat)*Math.sin(dec)+Math.cos(lat)*Math.cos(dec)*Math.cos(ha);
+        return {east,north,up,elevation:Math.asin(up)*180/Math.PI,azimuth:(Math.atan2(east,north)*180/Math.PI+360)%360};
+    }
+    let sunMarker;
+    window.disableAvatar3Sun = () => { if (sunMarker) sunMarker.visible=false; if(scene && lights.sun) applyLightingMode('day'); };
+    window.setAvatar3Sun = (date, hour) => {
+        if (!scene || !lights.sun) return null;
+        const position = solarPosition(date,hour); if (!position) return null;
+        currentLightingMode = 'day';
+        const center = new THREE.Vector3(calibration.east,0,-calibration.north);
+        lights.sun.target.position.copy(center); scene.add(lights.sun.target);
+        lights.sun.position.copy(center).add(new THREE.Vector3(position.east,position.up,-position.north).multiplyScalar(220));
+        lights.sun.intensity = position.up > 0 ? 1.2 : 0;
+        lights.sun.color.set(0xffffff); lights.ambient.intensity=.4; lights.hemi.intensity=.3;
+        if (!sunMarker) {
+            sunMarker = new THREE.Mesh(new THREE.SphereGeometry(12,16,12),new THREE.MeshBasicMaterial({color:0xf6bc44})); scene.add(sunMarker);
+        }
+        sunMarker.userData.direction = new THREE.Vector3(position.east,position.up,-position.north);
+        sunMarker.position.copy(camera.position).addScaledVector(sunMarker.userData.direction,1800);
+        sunMarker.visible = position.up>0;
+        renderer.shadowMap.needsUpdate=true;
+        return position;
+    };
 
     /**
      * Helper to load textures safely from Base64 or external file
@@ -408,6 +525,10 @@
         groundMesh.position.set(0, 0.02, 0);
         groundMesh.renderOrder = 10;
         layoutWorldGroup.add(groundMesh);
+        const shadowSurface = new THREE.Mesh(layoutGeo.clone(), new THREE.ShadowMaterial({opacity:.4, depthWrite:false}));
+        shadowSurface.rotation.x = -Math.PI/2; shadowSurface.position.y=.04;
+        shadowSurface.receiveShadow=true; shadowSurface.renderOrder=11;
+        layoutWorldGroup.add(shadowSurface);
 
         // Load transparent layout cutout
         const layoutB64 = (typeof AVATAR3_LAYOUT_TEXTURE_B64 !== 'undefined') ? AVATAR3_LAYOUT_TEXTURE_B64 : null;
@@ -1344,6 +1465,8 @@
             }
 
             if (controls) controls.update();
+            updatePlotLabels();
+            if (sunMarker && sunMarker.visible) sunMarker.position.copy(camera.position).addScaledVector(sunMarker.userData.direction,1800);
             updateHouseDetailLevels();
             updateStreetLightDetail();
             if (renderer && scene && camera) {
@@ -1419,6 +1542,10 @@
         }
 
         populateReferenceDrawer(u.detail, plotNo, u.status, u.statusHex);
+        document.getElementById('threeInspectDrawer')?.classList.remove('open');
+        showPlotModal(u.detail, plotNo, u.status, u.statusHex);
+        const appearance=document.querySelector('#threeInspectDetailsBody .house-style-section');
+        if(appearance) { const fold=document.createElement('details'); fold.className='rt-appearance'; const title=document.createElement('summary'); title.textContent='Illustrative house style'; fold.append(title,appearance); document.getElementById('modalBody').appendChild(fold); }
     }
 
     /**
@@ -1519,7 +1646,7 @@
             let match = false;
             if (activeFilterStatus === 'ALL') {
                 match = true;
-            } else if (activeFilterStatus === plotStatus) {
+            } else if (activeFilterStatus === plotStatus || (activeFilterStatus === 'AVAILABLE' && ['MORTGAGE', 'RESALE'].includes(plotStatus))) {
                 match = true;
             }
 
@@ -1924,7 +2051,7 @@
             };
         }
 
-        drawer.classList.add('open');
+        // Used only to assemble the optional appearance controls; details open directly.
     }
 
     function rebuildPlotModel(plotNo, styleKey, animate = true, persist = true) {
@@ -1993,7 +2120,7 @@
         });
 
 
-        const center = () => new THREE.Vector3(calibration.east, 0, -calibration.north);
+        const center = layoutFocusCenter;
         const factor = () => Math.max(1, calibration.scale);
         document.querySelectorAll('.btn-cam-preset').forEach(button => {
             button.addEventListener('click', () => {
@@ -2002,7 +2129,7 @@
                 document.querySelectorAll('.btn-cam-preset').forEach(b => b.classList.remove('active'));
                 button.classList.add('active');
                 const preset = (CAMERA_PRESETS[button.dataset.preset] || CAMERA_PRESETS.isometric).pos;
-                animateCameraTo(center().clone().add(new THREE.Vector3(...preset).multiplyScalar(factor())), center());
+                animateCameraTo(fittedCameraPosition(preset), center());
             });
         });
         document.getElementById('threeToggleLayoutBtn')?.addEventListener('click', event => {
@@ -2096,9 +2223,11 @@
     };
     window.reset3DCamera = () => {
         if (!camera) return;
-        const preset = CAMERA_PRESETS.isometric;
-        const target = new THREE.Vector3(calibration.east, 0, -calibration.north);
-        animateCameraTo(target.clone().add(new THREE.Vector3(...preset.pos).multiplyScalar(Math.max(1, calibration.scale))), target);
+        const presetName = renderer.domElement.clientWidth <= 600 ? 'topDown' : 'isometric';
+        document.querySelectorAll('.btn-cam-preset').forEach(button=>button.classList.toggle('active',button.dataset.preset===presetName));
+        const preset = CAMERA_PRESETS[presetName];
+        const target = layoutFocusCenter();
+        animateCameraTo(fittedCameraPosition(preset.pos), target);
     };
     window.getAvatar3SceneState = () => ({
         active: isActive, plotCount: Object.keys(plotGroups).length,
@@ -2141,6 +2270,3 @@
     window.download3DModelGLB = download3DModelGLB;
 
 })();
-
-
-

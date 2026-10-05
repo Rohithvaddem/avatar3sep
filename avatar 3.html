@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="style.css?v=5">
     <link rel="stylesheet" href="avatar3_page_design.css?v=3">
     <link rel="stylesheet" href="avatar3_reference_design.css?v=2">
+    <link rel="stylesheet" href="avatar3_light.css?v=1">
+    <link rel="stylesheet" href="avatar3_rds.css?v=1">
 </head>
 
 <body data-project="avatar3">
@@ -46,7 +48,7 @@
                 <div class="logo-container">
                     <img src="aspirealty_label.png" class="brand-logo-full" alt="Aspirealty Logo">
                 </div>
-                <button class="sidebar-close" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+                <button class="sidebar-close" aria-label="Close search and filters" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- Scrollable Sidebar Menu Content -->
@@ -72,6 +74,7 @@
                         <input type="text" class="search-input" id="searchInput" placeholder="Enter Plot No. (e.g. 125)" autocomplete="off">
                         <button id="searchClearBtn" class="clear-btn search-clear-btn"><i class="fa-solid fa-circle-xmark"></i></button>
                     </div>
+                    <button id="searchPlotBtn" class="smart-finder-btn-header" style="width:100%;justify-content:center;margin-top:8px;" type="button"><i class="fa-solid fa-magnifying-glass"></i> <span>Search</span></button>
                     <button id="openPlotFinderSidebarBtn" class="smart-finder-btn-header"
                         style="width: 100%; justify-content: center; margin-top: 8px;">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Smart Plot Finder</span>
@@ -143,7 +146,7 @@
             <!-- Top Dashboard Header -->
             <header class="dashboard-header">
                 <div class="header-left">
-                    <button class="sidebar-toggle" id="sidebarToggleBtn"><i class="fa-solid fa-bars"></i></button>
+                    <button class="sidebar-toggle" aria-label="Open search and filters" id="sidebarToggleBtn"><i class="fa-solid fa-bars"></i></button>
                     <div class="header-project-info">
                         <h2 class="project-name">Layout View</h2>
                         <span class="badge approved-badge">
@@ -176,7 +179,7 @@
                     </div>
                     <div class="stat-card">
                         <span class="stat-num text-success" id="statAvailablePlots">-</span>
-                        <span class="stat-label">Available</span>
+                        <span class="stat-label" title="Includes mortgage plots">Available</span>
                     </div>
                     <div class="stat-card">
                         <span class="stat-num text-danger" id="statBookedPlots">-</span>
@@ -331,9 +334,6 @@
                             <!-- Dynamic details injected by three_avatar3.js -->
                         </div>
                         <div class="three-drawer-actions">
-                            <button class="three-drawer-btn three-btn-primary" id="threeOpenFullPlotModalBtn">
-                                <i class="fa-solid fa-up-right-from-square"></i> Open Full Details
-                            </button>
                             <button class="three-drawer-btn three-btn-secondary" id="threeViewIn2DBtn">
                                 <i class="fa-solid fa-map-location-dot"></i> View on 2D / Satellite Map
                             </button>
@@ -409,8 +409,8 @@
 
                 <!-- Float Controls -->
                 <div class="map-controls">
-                    <button class="map-btn" id="zoomInBtn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
-                    <button class="map-btn" id="zoomOutBtn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
+                    <button class="map-btn" aria-label="Zoom in" id="zoomInBtn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
+                    <button class="map-btn" aria-label="Zoom out" id="zoomOutBtn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
                 </div>
 
                 <!-- Floating Recenter Action Button at Bottom Center -->
@@ -618,7 +618,7 @@
                                         style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
                                         <option value="Aspirealty Avatar 1">Aspirealty Avatar 1 (Kadthal)</option>
                                         <option value="Aspirealty Avatar 2">Aspirealty Avatar 2 (Karkalpahad)</option>
-                                        <option value="Aspirealty Avatar 3">Aspirealty Avatar 3 (Pre-Launch)</option>
+                                        <option value="Aspirealty Avatar 3">Aspirealty Avatar 3</option>
                                     </select>
                                 </div>
 
@@ -667,7 +667,7 @@
 
                                 <label
                                     style="display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-secondary); cursor: pointer; margin-top: 2px;">
-                                    <input type="checkbox" id="visitCabPickup" checked
+                                    <input type="checkbox" id="visitCabPickup"
                                         style="accent-color: var(--accent); width: 15px; height: 15px;">
                                     <span>Request complimentary AC cab pick-up &amp; drop</span>
                                 </label>
@@ -680,7 +680,7 @@
 
                                 <button type="submit" class="admin-login-btn"
                                     style="background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%); color: #fff; border: none; font-weight: 700; padding: 11px; font-size: 13px; margin-top: 4px; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);">
-                                    <i class="fa-solid fa-paper-plane"></i> Confirm Site Visit Booking
+                                    <i class="fa-solid fa-paper-plane"></i> Continue in WhatsApp
                                 </button>
                             </form>
                         </div>
@@ -718,7 +718,7 @@
                                 <div class="finder-options-grid" id="finderSizeOptions">
                                     <button class="finder-chip active" data-value="all">Any Size</button>
                                     <button class="finder-chip" data-value="150-200">150 - 200 Sq.Yds</button>
-                                    <button class="finder-chip" data-value="201-300">201 - 300 Sq.Yds</button>
+                                    <button class="finder-chip" data-value="201-300">200+ - 300 Sq.Yds</button>
                                     <button class="finder-chip" data-value="301+">300+ Sq.Yds</button>
                                 </div>
                             </div>
@@ -805,12 +805,9 @@
                 <script src="downloaded_house_data.js?v=3"></script>
                 <script src="downloaded_house_far_data.js"></script>
                 <script src="downloaded_streetlight_data.js?v=1"></script>
-                <script src="avatar3_live_view.js?v=17"></script>
+                <script src="avatar3_live_view.js?v=21"></script>
                 <script src="app.js?v=29"></script>
+<script src="avatar3_rds.js"></script>
 </body>
 
 </html>
-
-
-
-

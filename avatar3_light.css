@@ -1,0 +1,141 @@
+/* Avatar 3: a light, responsive customer workspace. Loaded after legacy styles. */
+:root { color-scheme:light; --rt-legacy-eef3f9:#eef3f9; --bg-primary:var(--rt-ground); --bg-secondary:var(--rt-surface); --bg-tertiary:var(--rt-legacy-eef3f9); --bg-glass:var(--rt-frosted-bg); --text-primary:var(--rt-ink); --text-secondary:var(--rt-ink-muted); --text-muted:var(--rt-ink-muted); --border-color:var(--rt-hairline); --accent:var(--rt-brand-strong); }
+body,.dashboard-container { height:100dvh; width:100%; }
+.main-content { min-width:0; min-height:0; }
+.sidebar { width:280px; background:var(--rt-surface); box-shadow:2px 0 12px var(--rt-shadow-ink); }
+.sidebar-brand { min-height:104px; padding:18px 24px; }
+.logo-container { width:100%; display:flex; justify-content:center; }
+.brand-logo-full { width:100%; max-width:232px; max-height:76px; height:auto; object-fit:contain; }
+.sidebar-section { padding:22px 20px; }
+.sidebar-footer { background:var(--rt-ground); }
+.section-title,.section-header,.filter-pill,.admin-login-btn,.sidebar-close { color:var(--rt-ink-soft); }
+.search-box,.search-input-wrapper,#searchInput,.filter-pill { background:var(--rt-ground); color:var(--rt-ink); border-color:var(--rt-hairline); }
+#searchInput::placeholder { color:var(--rt-ink-muted); }
+.smart-finder-btn-header { min-height:44px; background:var(--rt-brand-tint); color:var(--rt-brand-strong); border:1px solid var(--rt-brand-tint-border); box-shadow:none; }
+#searchPlotBtn,.filter-pill.active,.finder-chip.active { background:var(--rt-brand-strong); color:var(--rt-surface); border-color:var(--rt-brand-strong); }
+.filter-pill { min-height:44px; }
+.dashboard-header { position:relative; display:grid; grid-template-columns:minmax(130px,1fr) auto; height:auto; min-height:120px; flex-shrink:0; padding:16px 24px; gap:12px 24px; background:var(--rt-surface); }
+.header-left { grid-column:1; }
+.header-project-info { display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
+.project-name { color:var(--rt-ink); font-size:24px; white-space:nowrap; }
+.header-center-actions { grid-column:2; grid-row:1; position:static!important; transform:none!important; margin:0; }
+.view-switch-container { position:static!important; transform:none!important; display:flex; background:var(--rt-band); border:1px solid var(--rt-hairline); padding:4px; gap:4px; box-shadow:none; }
+.view-switch-btn { min-height:44px; color:var(--rt-ink-muted); padding:8px 14px; }
+.view-switch-btn span { display:inline!important; }
+.view-switch-btn.active { background:var(--rt-brand-strong); color:var(--rt-surface); box-shadow:none; }
+.header-stats { grid-column:1 / -1; display:grid!important; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; width:100%; }
+.stat-card { align-items:flex-start; padding:0 12px 0 0; border-right:1px solid var(--rt-hairline); }
+.stat-card:last-child { border:0; }
+.stat-label { color:var(--rt-ink-muted); font-size:10px; line-height:1.4; letter-spacing:.3px; }
+.stat-num { font-size:21px; }
+.map-viewport { flex:1; min-height:0; background:var(--rt-ground); }
+.map-controls { position:absolute!important; bottom:92px!important; right:20px!important; z-index:30; }
+.map-controls button { width:44px; height:44px; background:var(--rt-surface); color:var(--rt-ink); border:1px solid var(--rt-hairline-strong); box-shadow:0 3px 12px var(--rt-shadow-ink); }
+.floating-site-visit-btn { position:fixed; right:20px!important; bottom:max(18px,env(safe-area-inset-bottom))!important; min-height:44px; padding:12px 20px!important; border-radius:12px; background:var(--rt-brand-strong); box-shadow:0 4px 16px var(--rt-shadow-ink); }
+.floating-site-visit-btn::after { display:none; }
+.floating-recenter-btn { position:absolute!important; bottom:20px!important; left:20px!important; transform:none!important; min-height:44px; background:var(--rt-surface); color:var(--rt-ink); border:1px solid var(--rt-hairline-strong); border-radius:12px; box-shadow:0 3px 12px var(--rt-shadow-ink); padding:10px 16px; }
+#mapTip { display:none!important; }
+.floating-legend-card { top:16px!important; right:16px!important; bottom:auto!important; left:auto!important; width:210px; min-width:0; max-height:260px; height:auto!important; background:var(--rt-surface); color:var(--rt-ink); box-shadow:0 4px 20px var(--rt-shadow-ink); border:1px solid var(--rt-hairline); z-index:20; }
+.floating-legend-header { color:var(--rt-ink-soft); border-color:var(--rt-hairline); min-height:30px; }
+.floating-legend-card.collapsed { max-height:60px; }
+.floating-legend-card.collapsed .floating-legend-body { display:none!important; }
+.floating-legend-body { max-height:200px; overflow:auto; }
+.floating-legend-item,.legend-item { color:var(--rt-ink-soft); background:var(--rt-ground); }
+.floating-legend-count,.legend-count { color:var(--rt-ink-soft); background:var(--rt-band); }
+#plotModal,#loginModal,#dealSimulatorModal,.site-visit-modal,.modal-header,.modal-body,.detail-card,.suggestions-dropdown { background:var(--rt-surface)!important; color:var(--rt-ink)!important; border-color:var(--rt-hairline); }
+.modal-title,.detail-label,.detail-val,.modal-close,.site-visit-modal h3,.site-visit-modal label,.site-visit-modal p,.site-visit-modal button:not(.active),.finder-chip { color:var(--rt-ink-soft)!important; }
+.site-visit-modal input,.site-visit-modal select,.site-visit-modal textarea,#loginModal input { background:var(--rt-ground)!important; color:var(--rt-ink)!important; border-color:var(--rt-field-border)!important; min-height:44px; }
+.site-visit-modal-backdrop { z-index:2200; padding:16px; }
+.site-visit-modal { max-height:calc(100dvh - 32px); overflow:auto; width:min(480px,100%); }
+.site-visit-modal button[type=submit],#runSmartFinderBtn { background:var(--rt-brand-strong)!important; color:var(--rt-surface)!important; min-height:44px; }
+.finder-chip { background:var(--rt-ground); border-color:var(--rt-hairline-strong); min-height:44px; }
+.finder-chip.active { color:var(--rt-surface)!important; }
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible { outline:3px solid var(--rt-brand-strong); outline-offset:3px; }
+#threeMapContainer .modal-3d-header,#threeMapContainer .modal-3d-toolbar,#threeMapContainer .modal-3d-controls { background:var(--rt-surface); color:var(--rt-ink); border-color:var(--rt-hairline); }
+#threeMapContainer .modal-3d-title,#threeMapContainer .modal-3d-btn { color:var(--rt-ink); }
+@media(max-width:1100px) { .dashboard-header { padding:12px 16px; gap:12px; } .view-switch-btn { padding:8px 10px; } }
+@media(max-width:992px) { .sidebar { width:min(320px,calc(100vw - 48px)); position:fixed; height:100dvh; } .sidebar-toggle,.sidebar-close { min-width:44px; min-height:44px; } }
+@media(max-width:600px) {
+ .dashboard-header { grid-template-columns:1fr; padding:10px 12px 12px; gap:10px; }
+ .header-left { grid-column:1; grid-row:1; gap:8px; }
+ .header-project-info { flex-direction:row; align-items:center; gap:10px; }
+ .project-name { font-size:21px; }
+ .approved-badge { font-size:10px; }
+ .header-center-actions { grid-column:1; grid-row:2; width:100%; }
+ .view-switch-container { width:100%; }
+ .view-switch-btn { flex:1; padding:8px 4px; font-size:12px; justify-content:center; }
+ .header-stats { grid-row:3; gap:6px; }
+ .stat-label { font-size:9px; }
+ .stat-card { padding-right:4px; }
+ .stat-num { font-size:19px; }
+ .floating-legend-card { top:12px!important; right:12px!important; width:190px; }
+ .map-controls { bottom:88px!important; right:12px!important; }
+ .floating-recenter-btn { left:12px!important; bottom:18px!important; font-size:12px; padding:10px 12px; }
+ .floating-site-visit-btn { right:12px!important; padding:12px!important; font-size:12px; }
+ #plotModal { width:100%!important; max-height:75dvh!important; overflow:auto; }
+ .site-visit-modal { padding:20px!important; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+
+.header-stats::after { content:"* Includes mortgage plots"; grid-column:1 / -1; color:var(--rt-ink-muted); font-size:10px; }
+.stat-label { white-space:normal; overflow:visible; text-overflow:clip; }
+.finder-result-banner { top:auto!important; bottom:84px!important; left:16px!important; transform:none!important; max-width:calc(100% - 84px); background:var(--rt-surface); color:var(--rt-ink); box-shadow:0 3px 16px var(--rt-shadow-ink); border-color:var(--rt-field-border); }
+@media(max-width:600px) { .floating-legend-card { width:188px; } }
+
+/* Keep view navigation in the document flow in satellite and 3D modes. */
+body.immersive-view .dashboard-header { display:grid!important; }
+body.immersive-view .dashboard-header > .header-left,body.immersive-view .dashboard-header > .header-stats { display:flex!important; }
+body.immersive-view .dashboard-header > .header-stats { display:grid!important; }
+body.immersive-view .header-center-actions { position:static!important; inset:auto!important; transform:none!important; background:none!important; padding:0!important; border:0!important; box-shadow:none!important; }
+body.immersive-view .main-content { height:100dvh; }
+body.immersive-view #mapViewport { height:auto; }
+#threeMapContainer .modal-3d-header { flex-direction:column!important; flex-wrap:nowrap!important; align-items:flex-start!important; height:176px; padding:12px 16px; gap:10px; overflow:auto; }
+#threeMapContainer .modal-3d-title-group { min-width:0; max-width:100%; flex-shrink:0; }
+#threeMapContainer .modal-3d-title { white-space:normal; }
+#threeMapContainer #threeMapToolbar { width:100%; min-width:0; max-width:100%; flex-shrink:0; gap:6px; flex-wrap:wrap; }
+#threeMapContainer .toolbar-group { background:var(--rt-band); border-color:var(--rt-hairline); flex-shrink:0; }
+#threeMapContainer .toolbar-btn { min-height:36px; background:var(--rt-band); color:var(--rt-ink-soft); border-color:var(--rt-hairline); }
+#threeMapContainer .toolbar-btn.active { background:var(--rt-brand-strong); color:var(--rt-surface); }
+#threeMapContainer #threeCanvasContainer { top:176px!important; height:calc(100% - 176px)!important; }
+#threeMapContainer .three-hud-filters { top:188px!important; background:var(--rt-surface); color:var(--rt-ink-soft); }
+#threeMapContainer .three-hud-search { top:238px!important; background:var(--rt-surface); color:var(--rt-ink-soft); }
+#threeMapContainer .three-hud-search input { background:var(--rt-surface); color:var(--rt-ink); }
+#threeMapContainer .three-controls-guide { display:none; }
+#threeMapContainer .three-inspect-drawer { background:var(--rt-surface); color:var(--rt-ink); }
+@media(max-width:600px) {
+ #threeMapContainer .modal-3d-header { height:174px; padding:10px; }
+ #threeMapContainer .modal-3d-title-group > div:last-child > div:last-child { display:none; }
+ #threeMapContainer .modal-3d-icon-badge { display:none; }
+ #threeMapContainer .toolbar-btn { font-size:10px; padding:6px 8px; }
+ #threeMapContainer #threeCanvasContainer { top:174px!important; height:calc(100% - 174px)!important; }
+ #threeMapContainer .three-hud-filters { top:184px!important; }
+ #threeMapContainer .three-hud-search { top:230px!important; }
+ .site-visit-modal-backdrop { padding:12px; }
+}
+
+body.immersive-view .sidebar { display:flex!important; }
+body.immersive-view .view-switch-btn { min-height:44px; font-size:12px; padding:8px 10px; }
+body.immersive-view .header-center-actions { width:100%; max-width:100%; z-index:auto; }
+body.immersive-view .header-left { display:flex!important; }
+#threeMapContainer .three-filter-pill { color:var(--rt-ink-soft); background:var(--rt-band); min-height:36px; }
+#threeMapContainer .three-filter-pill.active { background:var(--rt-brand-strong); color:var(--rt-surface); }
+
+#threeMapContainer .three-controls-guide { display:none!important; }
+#threeMapContainer .three-hud-filters { background:var(--rt-surface)!important; color:var(--rt-ink-soft)!important; }
+#threeMapContainer .three-inspect-title,#threeMapContainer .three-inspect-title span { color:var(--rt-ink)!important; }
+#threeMapContainer .three-inspect-drawer { overflow-y:auto; border-color:var(--rt-hairline); z-index:100; }
+.map-viewport:has(.three-inspect-drawer.open) > .map-controls,
+.map-viewport:has(.three-inspect-drawer.open) > .floating-recenter-btn { visibility:hidden; }
+body:has(.three-inspect-drawer.open) #floatingSiteVisitBtn { visibility:hidden; }
+.gis-layer-control,.project-details-card,.layer-control-header,.layer-control-body,.details-card-header { background:var(--rt-surface)!important; color:var(--rt-ink)!important; border-color:var(--rt-hairline)!important; }
+.layer-label,.layer-control-header,.details-card-header h3 { color:var(--rt-ink-soft)!important; }
+.gis-layer-control { max-width:calc(100% - 32px); }
+.three-inspect-drawer .house-style-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media(max-width:600px) { #threeMapContainer .three-inspect-drawer { max-height:60%!important; } }
+
+#threeMapContainer .three-drawer-actions { position:sticky; bottom:0; background:var(--rt-surface); }
+#threeMapContainer .three-drawer-btn { color:var(--rt-ink-soft); background:var(--rt-band); border-color:var(--rt-field-border); min-height:44px; }
+#threeMapContainer .three-btn-primary { background:var(--rt-brand-strong); color:var(--rt-surface); }
+#threeMapContainer .house-style-btn { background:var(--rt-ground); color:var(--rt-ink-soft); border-color:var(--rt-field-border); }
+#threeMapContainer .house-style-title { color:var(--rt-ink); }
+#threeMapContainer .three-hud-search { width:180px; max-width:calc(100% - 24px); }

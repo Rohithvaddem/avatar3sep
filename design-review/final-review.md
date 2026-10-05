@@ -1,0 +1,23 @@
+# Avatar 3 design review — 5 October 2026
+
+1. **Explore the project.** Light surfaces, logo-blue actions, a plain Avatar 3 heading and quiet statistics replace the busy header. Available shows 201, comprising 167 available and 34 mortgage plots. Redundant project-data pills and the inventory disclosure were removed. Statistics no longer lift or cast a shadow on hover.
+2. **Navigate the layout.** Desktop 3D tools and status filters live in the sidebar. Mobile uses a compact toolbar with a bordered search field. Zoom, recenter and booking occupy a separate bottom dock. Mobile schematic has a Smart Plot Finder shortcut beside Recenter. Mobile view names are shortened while accessible labels retain the complete names.
+3. **Read and select plots.** The Park-2 column is corrected from top to bottom to 66–62; plot 6 is North-West. Selecting or searching a 3D plot opens the complete details immediately. The duplicate quick drawer and Open Full Details step are removed. Illustrative house customization remains available in a collapsed section. Label collision thinning is removed, so zoom no longer chooses a different set of numbers. Light compact markers with dark text now maintain a 13.5px screen width (19.5px for selection), rather than shrinking with camera distance. The starting desktop angle is higher and closer. Phones start in top-down mode centered on the residential grid with closer framing; outer plots require panning. Current desktop and 390px phone screenshots were inspected, including phone zoom stability.
+4. **Inspect sunlight.** Default view has no sun curve. Sun & shadows is explicitly enabled. Direction uses project coordinates, date and IST time. The sun marker is placed at sky distance relative to the camera; directional light casts model shadows. No yellow trajectory is drawn around the property. Desktop settings use the sidebar; mobile/tablet settings reserve a 138px strip below the resized canvas, with date, time and playback controls. This is illustrative sunlight, not a surveyed building-shadow analysis.
+5. **Use staff tools.** Aspirealty Avatar now accepts the correctly spelled username; the legacy spelling remains compatible. Existing password validation is unchanged. Director sign-in was verified. Blocking welcome/logout alerts were removed. The staff banner, role badge, details, simulator and edit fields were adapted to the light theme. The staff banner height is deducted from the workspace to prevent dock overlap.
+6. **Verify the product.** Screenshots were visually inspected at widths 360, 390, 768, 1024, 1280, 1440 and 1920. No horizontal overflow was found. Mobile Finder returned 201 matches. Public details and director details, simulator and edit forms were inspected. JavaScript syntax checks, diff whitespace checks and solar direction/seasonal tests passed. No plot edits were saved and no customer messages were sent. PDF export, backend access control and actual site-visit confirmation were not validated by this design pass.
+
+## Current evidence
+- `3d-final-360.png`, `3d-final-390.png`, `3d-final-768.png`, `3d-final-1024.png`, `3d-final-1280.png`, `3d-final-1440.png`, `3d-final-1920.png`: responsive 3D workspace.
+- `mobile-sun-final.png`, `tablet-sun-final.png`: reserved sunlight strip.
+- `mobile-schematic-final.png`: schematic and mobile Finder shortcut.
+- `mobile-director-details-final.png`, `mobile-simulator-final.png`, `mobile-edit-final.png`: signed-in screens. Details screenshot predates the final scrollbar color correction; later screenshots use the current correction.
+- Earlier screenshots in this folder are iteration history, not final evidence. The last compact navigation text change is recorded in `mobile-final-navigation.png`.
+
+- `labels-desktop.png` and `labels-mobile.png`: current label readability fix; these supersede earlier 3D label evidence.
+
+- `labels-desktop-balanced.png` and `labels-mobile-balanced.png` supersede the larger dark-label iteration. Desktop perspective and overview framing were restored; markers are 25 percent narrower. Dense phone overviews still need zoom or search for close inspection.
+
+- `labels-desktop-compact.png`: a further user-requested 25 percent reduction for all plot markers, including three-digit rear rows; supersedes balanced label sizing.
+
+- Zoom-aware labels now retain the compact 13.5px minimum at overview distance and grow continuously to 36px during close inspection (selected labels: 22–42px). Sizing uses camera depth for accurate projection. `labels-close-zoom.png` and `labels-adaptive-overview.png` show both states, verified through Zoom in and Recenter controls. No label thinning was introduced.

@@ -670,17 +670,13 @@ function setupMapControls() {
     // Buttons actions
     document.getElementById('zoomInBtn').addEventListener('click', () => {
         if (is3DViewActive) { window.zoom3DCamera?.(0.85); return; }
-        if (isSatelliteActive) {
-            return;
-        }
+        if (isSatelliteActive) { leafletMap?.zoomIn(); return; }
         adjustZoom(1.25);
     });
 
     document.getElementById('zoomOutBtn').addEventListener('click', () => {
         if (is3DViewActive) { window.zoom3DCamera?.(1.18); return; }
-        if (isSatelliteActive) {
-            return;
-        }
+        if (isSatelliteActive) { leafletMap?.zoomOut(); return; }
         adjustZoom(0.8);
     });
 
@@ -778,6 +774,28 @@ function fadeMapTip() {
 // ----------------------------------------------------
 
 function setupSearch() {
+    const submitSearch = () => {
+        const query = searchInput.value.trim();
+        const plotNo = /^\d+$/.test(query) ? String(Number(query)) : query;
+        if (!(avatarCoordsPool[currentProject] || {})[plotNo]) {
+            searchSuggestions.textContent = 'No plot found. Enter a valid plot number.';
+            searchSuggestions.style.display = 'block';
+            return;
+        }
+        activeFilters.facing = null;
+        activeFilters.status = null;
+        document.querySelectorAll('.filter-pill.active, .legend-item.active').forEach(el => el.classList.remove('active'));
+        searchInput.value = plotNo;
+        searchClearBtn.style.display = 'block';
+        searchSuggestions.style.display = 'none';
+        sidebar.classList.remove('show');
+        document.querySelector('.sidebar-backdrop')?.classList.remove('active');
+        focusOnPlot(plotNo);
+    };
+    document.getElementById('searchPlotBtn')?.addEventListener('click', submitSearch);
+    searchInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); submitSearch(); }
+    });
     searchInput.addEventListener('input', (e) => {
         const val = e.target.value.trim().toLowerCase();
         
@@ -814,7 +832,7 @@ function setupSearch() {
 
     // Close suggestions dropdown when clicking outside
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-box') && !e.target.closest('#searchSuggestions')) {
+        if (!e.target.closest('.search-box') && !e.target.closest('#searchSuggestions') && !e.target.closest('#searchPlotBtn')) {
             searchSuggestions.style.display = 'none';
         }
     });
@@ -857,6 +875,11 @@ function focusOnPlot(plotNo) {
     const coordsSource = avatarCoordsPool[currentProject] || {};
     const coords = coordsSource[plotNo];
     if (!coords) return;
+    activeFilters.facing = null;
+    activeFilters.status = null;
+    document.querySelectorAll('.filter-pill.active, .legend-item.active').forEach(el => el.classList.remove('active'));
+    sidebar.classList.remove('show');
+    document.querySelector('.sidebar-backdrop')?.classList.remove('active');
     
     // Set active search plot and filter out all other plot dots
     activeSearchPlot = plotNo;
@@ -927,6 +950,10 @@ function setupFilters() {
         if (!pill) return;
         
         const isAlreadyActive = pill.classList.contains('active');
+        activeSearchPlot = null;
+        searchInput.value = '';
+        searchClearBtn.style.display = 'none';
+        document.querySelectorAll('.plot-dot.highlighted').forEach(dot => dot.classList.remove('highlighted'));
         
         // Remove active state from other pills
         document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
@@ -948,6 +975,13 @@ function setupFilters() {
     });
 }
 
+function matchesPlotFacing(facing, selected) {
+    const directions = value => String(value).toLowerCase().match(/north|south|east|west/g) || [];
+    const actual = directions(facing);
+    const wanted = directions(selected);
+    return wanted.length > 0 && wanted.every(direction => actual.includes(direction));
+}
+
 function applyFilters() {
     const dots = document.querySelectorAll('.plot-dot');
     
@@ -967,7 +1001,7 @@ function applyFilters() {
         
         // 2. Check Facing Filter
         if (activeFilters.facing) {
-            matchesFacing = String(facing).toLowerCase().trim() === activeFilters.facing.toLowerCase().trim();
+            matchesFacing = matchesPlotFacing(facing, activeFilters.facing);
         }
         
         // 3. Check Status Filter
@@ -975,6 +1009,8 @@ function applyFilters() {
             matchesStatus = String(status).toLowerCase().trim() === activeFilters.status.toLowerCase().trim();
         }
         
+        dot.classList.toggle('facing-highlighted', Boolean(activeFilters.facing) && matchesFacing && matchesStatus && matchesSearch);
+        dot.classList.remove('filtered-out', 'search-filtered');
         // Apply filtered visibility
         if (matchesFacing && matchesStatus && matchesSearch) {
             dot.classList.remove('filtered-out');
@@ -2550,7 +2586,7 @@ function updateStatistics() {
     const coordsSource = avatarCoordsPool[currentProject] || {};
     const totalPlaced = Object.keys(coordsSource).length;
     
-    statAvailablePlots.textContent = statusCounts['AVAILABLE'] + statusCounts['RESALE'];
+    statAvailablePlots.textContent = statusCounts['AVAILABLE'] + statusCounts['RESALE'] + (currentProject === 'avatar3' ? statusCounts['MORTGAGE'] : 0);
     statBookedPlots.textContent = statusCounts['SOLD'] + statusCounts['REGISTERED'] + statusCounts['HOLD'] + statusCounts['INVESTOR'];
     if (statMortgagePlots) {
         statMortgagePlots.textContent = statusCounts['MORTGAGE'];
@@ -2882,7 +2918,7 @@ function setupAdmin() {
             if (loginModalTitle) loginModalTitle.innerHTML = '<i class="fa-solid fa-crown" style="color: #facc15;"></i> Director Login';
             if (loginSubmitBtn) loginSubmitBtn.textContent = 'Login as Director';
             if (loginUsernameLabel) loginUsernameLabel.textContent = 'Director Login ID';
-            loginUsername.placeholder = 'Enter Director ID (aspireality avatar)';
+            loginUsername.placeholder = 'Enter Director ID (Aspirealty Avatar)';
             loginError.style.display = 'none';
         });
     }
@@ -2933,7 +2969,7 @@ function setupAdmin() {
             const password = loginPassword.value;
 
             // Credentials check for Director vs Staff
-            if (username === 'aspireality avatar' && password === 'rudravatar123@asp') {
+            if (['aspirealty avatar', 'aspireality avatar'].includes(username) && password === 'rudravatar123@asp') {
                 userRole = 'director';
                 isAdminLoggedIn = true;
                 isDirectorLoggedIn = true;
@@ -2943,7 +2979,8 @@ function setupAdmin() {
                 loginModalBackdrop.classList.remove('show');
                 setupAdminState();
                 renderPlotDots();
-                alert('Welcome, Director! Full access enabled (including Price Quote Generation).');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('staffLoginBtn')?.setAttribute('title','Signed in as Director');
             } else if (username === 'admin' && password === 'admin') {
                 userRole = 'staff';
                 isAdminLoggedIn = true;
@@ -2954,7 +2991,7 @@ function setupAdmin() {
                 loginModalBackdrop.classList.remove('show');
                 setupAdminState();
                 renderPlotDots();
-                alert('Welcome, Staff! Staff access enabled.');
+                document.getElementById('loginPassword').value = '';
             } else {
                 loginError.style.display = 'block';
             }
@@ -3112,7 +3149,7 @@ function setupAdminState() {
             const exitBtn = document.getElementById('exitPitchModeBtn');
             if (exitBtn) exitBtn.remove();
             
-            alert('Logged out successfully.');
+
             window.location.reload();
         }
 
@@ -3149,7 +3186,7 @@ function setupAdminState() {
             banner.style.cssText = 'background: linear-gradient(90deg, #b45309, #d97706); color: #fff; padding: 6px 16px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; width: 100%; z-index: 1000; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.2);';
             banner.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-user-shield"></i> ADMINISTRATOR MODE ACTIVE &bull; Edit plot details in modal
+                    <i class="fa-solid fa-user-shield"></i> Staff workspace &bull; Plot management
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <button id="adminShareBtn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border: 1px solid rgba(255,255,255,0.4); color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px;">
@@ -3565,7 +3602,7 @@ function setupSatelliteToggle() {
             mapContainer.style.display = 'none';
             document.getElementById('threeMapContainer').style.display = 'block';
             if (mapTip) mapTip.style.display = 'none';
-            document.querySelector('.project-name').textContent = 'Avatar 3 — 3D View';
+            document.querySelector('.project-name').textContent = 'Avatar 3';
             for (const id of ['floatingLegendCard', 'searchSection', 'filtersSection']) {
                 const element = document.getElementById(id);
                 if (element) element.style.display = 'none';
@@ -4175,7 +4212,7 @@ function updateSidebarAndHeaderForProject(project) {
             approvedBadge.innerHTML = '<i class="fa-solid fa-cube" style="color: #c084fc;"></i> DTCP Approved';
         }
         if (projectNameEl) {
-            projectNameEl.textContent = isSatelliteActive ? 'Avatar 3' : 'Layout View (Avatar 3)';
+            projectNameEl.textContent = 'Avatar 3';
         }
         if (comingSoonOverlay) {
             comingSoonOverlay.style.display = 'none';
@@ -4558,6 +4595,8 @@ function setupSiteVisitBooking() {
 
     if (floatBtn && backdrop) {
         floatBtn.addEventListener('click', () => {
+            const projectSelect = document.getElementById('visitProjectSelect');
+            if (projectSelect) projectSelect.selectedIndex = ['avatar1', 'avatar2', 'avatar3'].indexOf(currentProject);
             backdrop.classList.add('show');
             const dateInput = document.getElementById('visitDate');
             if (dateInput) {
@@ -4615,7 +4654,7 @@ _Sent via Aspirealty Interactive Viewer_`;
 
             if (successMsg) {
                 successMsg.style.display = 'block';
-                successMsg.innerHTML = `<i class="fa-solid fa-circle-check"></i> Thank you ${name}! Opening WhatsApp to confirm your site visit for ${project}...`;
+                successMsg.innerHTML = `<i class="fa-solid fa-circle-check"></i> Opening WhatsApp. Send the message to request your visit; the sales team will confirm availability.`;
             }
 
             // Open WhatsApp to send instant alert to sales team
@@ -4704,6 +4743,8 @@ function setupSmartPlotFinder() {
     const clearBannerBtn = document.getElementById('clearFinderMatchBtn');
 
     function openModal() {
+        sidebar.classList.remove('show');
+        document.querySelector('.sidebar-backdrop')?.classList.remove('active');
         if (backdrop) backdrop.classList.add('show');
     }
 
@@ -4755,17 +4796,17 @@ function setupSmartPlotFinder() {
             // Check Status Match
             let statusMatch = true;
             if (statusVal === 'AVAILABLE') {
-                statusMatch = plotStatus === 'AVAILABLE';
+                statusMatch = plotStatus === 'AVAILABLE' || (currentProject === 'avatar3' && ['MORTGAGE', 'MORTAGAGE', 'RESALE'].includes(plotStatus));
             }
 
             // Check Size Match
             let sizeMatch = true;
             if (sizeVal === '150-200') {
-                sizeMatch = plotSize >= 100 && plotSize <= 200;
+                sizeMatch = plotSize >= 150 && plotSize <= 200;
             } else if (sizeVal === '201-300') {
-                sizeMatch = plotSize >= 201 && plotSize <= 300;
+                sizeMatch = plotSize > 200 && plotSize <= 300;
             } else if (sizeVal === '301+') {
-                sizeMatch = plotSize >= 301;
+                sizeMatch = plotSize > 300;
             }
 
             // Check Facing Match
@@ -4897,3 +4938,10 @@ function initAppFeatures() {
 }
 
 
+
+// Refit the schematic after responsive layout changes, including drawer breakpoints.
+const viewportResizeObserver = new ResizeObserver(() => {
+    if (!isSatelliteActive && !is3DViewActive) fitMapToViewport();
+});
+viewportResizeObserver.observe(mapViewport);
+if (window.innerWidth <= 600) document.getElementById('floatingLegendCard')?.classList.add('collapsed');
