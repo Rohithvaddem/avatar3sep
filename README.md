@@ -17,6 +17,11 @@ The house is merged and simplified for distant views, with original geometry ret
 
 Aerial imagery is sourced from Esri World Imagery. Background preparation scripts are included.
 
+The **Arc Lamp - Victorian Street Lamp** is by **i-m-a-kitty-cat**, licensed under **CC BY 4.0**:
+https://sketchfab.com/3d-models/arc-lamp-victorian-street-lamp-41e1be71fdaf430d9d91c871cf153f0d
+
+Original lamp geometry is retained nearby; a simplified distant model and shared instancing keep repeated lamps efficient. Lamps alternate along house rows beside the road. Details are in `downloaded_streetlight_credit.json`.
+
 ## Data
 
 This workspace includes sales and customer information. Keep the repository private unless the data has been reviewed for public release.

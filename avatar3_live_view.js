@@ -22,6 +22,11 @@
     let fullHouseRequested = false;
     const houseLods = new Map();
     let downloadedHouseSize = null;
+    let streetLightGroup = null;
+    let streetLightBatches = [];
+    let streetLightPlacements = [];
+    let streetLightEmissiveMaterials = [];
+    let lastStreetLightUpdate = -Infinity;
     try {
         const styles = JSON.parse(localStorage.getItem('avatar3_house_styles_v1'));
         if (styles && typeof styles === 'object') {
@@ -219,12 +224,10 @@
         // 8. 3D Plots & Plot Buttons
         build3DPlotsAndButtons();
 
-        // 9. Street Lights along Roads
-        setupStreetLights();
-
         // 10. Exactly ONE Roaming Car on the whole layout
         setupSingleRoamingCar();
         if (singleCarMesh) singleCarMesh.traverse(object => { object.castShadow = false; });
+        setupStreetLights();
 
         // 11. Highlight Beacon
         setupBeacon();
@@ -307,6 +310,7 @@
         if (groundMesh && groundMesh.material) groundMesh.material.color.set(palette.ground);
         const aerialGround = scene.getObjectByName('Avatar3SatelliteTerrain');
         if (aerialGround) aerialGround.material.color.set(palette.ground);
+        updateStreetLightGlow();
     }
 
     /**
@@ -929,37 +933,93 @@
      * Setup Streetlights along roads
      */
     function setupStreetLights() {
-        const lightsGroup = new THREE.Group();
-        const poleGeo = new THREE.CylinderGeometry(0.08, 0.12, 4.2, 8);
-        const poleMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.85, roughness: 0.2 });
-
-        const lampBulbGeo = new THREE.SphereGeometry(0.24, 10, 10);
-        const lampBulbMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            emissive: 0xfef08a,
-            emissiveIntensity: 2.0
+        if (!window.AVATAR3_STREETLIGHT_B64 || !THREE.GLTFLoader) return;
+        const parse = b64 => new Promise((resolve, reject) => {
+            const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+            new THREE.GLTFLoader().parse(bytes.buffer, '', gltf => resolve(gltf.scene), reject);
         });
+        Promise.all([parse(window.AVATAR3_STREETLIGHT_B64), parse(window.AVATAR3_STREETLIGHT_FAR_B64)])
+            .then(([near, far]) => {
+                // Alternate plots in spatial road-side order, rather than plot-number order.
+                const rows = new Map();
+                Object.entries(plotGroups).forEach(([plotNo, group]) => {
+                    const yaw = roadFacingYaw(group, getPlotDetails(plotNo));
+                    const direction = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw));
+                    const alongX = Math.abs(direction.x) > Math.abs(direction.z);
+                    const side = alongX ? Math.sign(direction.x) : Math.sign(direction.z);
+                    const rowKey = `${alongX ? 'x' : 'z'}:${side}:${Math.round((alongX ? group.position.x : group.position.z) / 3)}`;
+                    if (!rows.has(rowKey)) rows.set(rowKey, []);
+                    rows.get(rowKey).push({plotNo, group, yaw, direction, order:alongX ? group.position.z : group.position.x});
+                });
+                rows.forEach(row => {
+                    row.sort((a, b) => a.order - b.order || Number(a.plotNo) - Number(b.plotNo));
+                    row.forEach((item, index) => {
+                        if (index % 2) return;
+                        const data = plotMeshes[item.plotNo].userData;
+                        const edge = (Math.abs(item.direction.x) * data.pWidth + Math.abs(item.direction.z) * data.pDepth) / 2;
+                        const position = item.group.position.clone().addScaledVector(item.direction, edge + .45);
+                        position.y = .12;
+                        streetLightPlacements.push({plotNo:item.plotNo, position, yaw:item.yaw});
+                    });
+                });
+                streetLightGroup = new THREE.Group();
+                streetLightGroup.name = 'DownloadedStreetLights';
+                layoutWorldGroup.add(streetLightGroup);
+                [near, far].forEach((model, level) => {
+                    const bounds = new THREE.Box3().setFromObject(model);
+                    const center = bounds.getCenter(new THREE.Vector3());
+                    const scale = 3.8 / bounds.getSize(new THREE.Vector3()).y;
+                    const normalization = new THREE.Matrix4().makeScale(scale, scale, scale);
+                    normalization.multiply(new THREE.Matrix4().makeTranslation(-center.x, -bounds.min.y, -center.z));
+                    model.updateMatrixWorld(true);
+                    model.traverse(object => {
+                        if (!object.isMesh) return;
+                        const material = object.material.clone();
+                        if (material.emissive && material.emissive.getHex() !== 0) streetLightEmissiveMaterials.push(material);
+                        const mesh = new THREE.InstancedMesh(object.geometry, material, streetLightPlacements.length);
+                        mesh.name = `StreetLamp-${level}-${object.name}`;
+                        mesh.castShadow = false;
+                        mesh.receiveShadow = true;
+                        // Instance matrices change with LOD; disable the single-source bounding sphere.
+                        mesh.frustumCulled = false;
+                        mesh.count = 0;
+                        streetLightGroup.add(mesh);
+                        streetLightBatches.push({mesh, level, source:normalization.clone().multiply(object.matrixWorld)});
+                    });
+                });
+                updateStreetLightGlow();
+                updateStreetLightDetail(true);
+            }).catch(error => console.error('Downloaded street lamps could not load:', error));
+    }
 
-        const lightCoords = [
-            { x: 80, z: 2 }, { x: 55, z: 8 }, { x: 34, z: 1.5 },
-            { x: 32, z: -20 }, { x: 32, z: 20 }, { x: 32, z: 40 },
-            { x: 23, z: -15 }, { x: 23, z: 25 },
-            { x: 6, z: -15 }, { x: 6, z: 25 },
-            { x: -10, z: -15 }, { x: -10, z: 25 },
-            { x: -26, z: -15 }, { x: -26, z: 25 },
-            { x: -42, z: -25 }, { x: -42, z: -45 }
-        ];
-
-        lightCoords.forEach(pos => {
-            const pole = new THREE.Mesh(poleGeo, poleMat);
-            pole.position.set(pos.x, 2.1, pos.z);
-            const bulb = new THREE.Mesh(lampBulbGeo, lampBulbMat);
-            bulb.position.set(pos.x, 4.3, pos.z);
-            lightsGroup.add(pole);
-            lightsGroup.add(bulb);
+    function updateStreetLightGlow() {
+        streetLightEmissiveMaterials.forEach(material => {
+            material.emissive.set(0xffdf9e);
+            material.emissiveIntensity = currentLightingMode === 'night' ? 2.5 : currentLightingMode === 'sunset' ? 1.3 : .15;
         });
+    }
 
-        layoutWorldGroup.add(lightsGroup);
+    function updateStreetLightDetail(force = false) {
+        if (!streetLightGroup) return;
+        const now = performance.now();
+        if (!force && now - lastStreetLightUpdate < 250) return;
+        lastStreetLightUpdate = now;
+        layoutWorldGroup.updateMatrixWorld(true);
+        const ranked = streetLightPlacements.map(item => ({...item,
+            distance:item.position.clone().applyMatrix4(layoutWorldGroup.matrixWorld).distanceTo(camera.position)}))
+            .sort((a, b) => a.distance - b.distance);
+        const nearby = new Set(ranked.filter(item => item.distance < 90).slice(0, 8).map(item => item.plotNo));
+        streetLightBatches.forEach(batch => {
+            let count = 0;
+            streetLightPlacements.forEach(item => {
+                if ((batch.level === 0) !== nearby.has(item.plotNo)) return;
+                const matrix = new THREE.Matrix4().compose(item.position,
+                    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), item.yaw), new THREE.Vector3(1, 1, 1));
+                batch.mesh.setMatrixAt(count++, matrix.multiply(batch.source));
+            });
+            batch.mesh.count = count;
+            batch.mesh.instanceMatrix.needsUpdate = true;
+        });
     }
 
     /**
@@ -1285,6 +1345,7 @@
 
             if (controls) controls.update();
             updateHouseDetailLevels();
+            updateStreetLightDetail();
             if (renderer && scene && camera) {
                 renderer.render(scene, camera);
             }
