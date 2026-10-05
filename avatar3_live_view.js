@@ -537,8 +537,6 @@
             groundMesh.material.needsUpdate = true;
         });
 
-        // 3. Add 3D Landscaped Trees throughout Park-1, Park-2, Park-3, Park-4 and Entrances
-        setup3DLandscaping();
     }
 
     /**
