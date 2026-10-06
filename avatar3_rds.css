@@ -275,3 +275,14 @@ body.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:none!impor
  #plotModal { max-height:75dvh!important; }
 }
 #dealSimulatorBody #simMarginBadge { color:#056348!important; background:#E0F3EB!important; border-color:#8DBBA8!important; }
+
+/* Project registrations beside the title, wrapping on narrow screens. */
+.header-project-info { display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:8px 16px; }
+.project-registrations { display:flex; flex-direction:column; gap:3px; font-size:11px; line-height:1.4; color:var(--rt-ink-muted, #526479); }
+.project-registrations span { white-space:nowrap; }
+@media (max-width:600px) { .header-project-info { gap:4px 12px; } .project-registrations { font-size:10px; } }
+
+.project-registrations { flex-direction:row; flex-wrap:wrap; gap:8px; }
+.registration-item { display:flex; align-items:center; gap:6px; padding:5px 8px; border:1px solid #dce5ec; border-radius:8px; background:#fff; font-size:10px; font-weight:600; color:#334d63; }
+.registration-item img { width:44px; height:27px; object-fit:contain; }
+@media (max-width:600px) { .project-registrations { gap:6px; } .registration-item { padding:3px 5px; gap:4px; font-size:9px; } .registration-item img { width:34px; height:23px; } }

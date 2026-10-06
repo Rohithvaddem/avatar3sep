@@ -4,8 +4,8 @@
 .vscode/
 temp_xlsx/
 node_modules/
-package.json
-package-lock.json
+dist/
+.netlify/
 __pycache__/
 *.pyc
 .env

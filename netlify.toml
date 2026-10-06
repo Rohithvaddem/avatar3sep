@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+[build.environment]
+  NODE_VERSION = "22"
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["avatar3_data.json", "avatar1_data.json", "avatar2_digi/data.json"]
+[[edge_functions]]
+  function = "staff-gate"
+  path = "/*"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "same-origin"
+    Cache-Control = "private, no-store"

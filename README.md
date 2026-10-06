@@ -33,3 +33,32 @@ These models retain their source geometry. Materials are merged per tree variant
 ## Data
 
 This workspace includes sales and customer information. Keep the repository private unless the data has been reviewed for public release.
+
+## Private Netlify staff deployment
+
+Netlify runs `npm run build` and publishes **dist**, never the repository root.
+The build removes raw customer datasets, browser credentials and direct Firebase
+access from the deployment. The root files remain the legacy local preview;
+they are not the private production build.
+
+The production login uses invited **email accounts**, not the old shared
+username/password pairs. Enable Netlify Identity, select **Invite only**, and
+assign each user `staff` or `director` in their application roles. Both roles
+can read/edit plots; director UI additionally includes quoting tools.
+Do not reuse the old frontend passwords. Configure invitation/recovery email
+links to `/login.html`. Staff set their own passwords through the invitation.
+
+An Edge Function gates application pages/assets using the Identity session.
+The public login screen contains no customer data. Plot reads/updates have
+independent server-side role and request-origin checks. Data is stored in the
+site-scoped `staff-plots` Netlify Blobs store with strong consistency and
+conditional writes. First reads use server-only JSON seeds. Existing Firebase
+or browser-local edits are **not migrated automatically**. Import those only
+after reviewing which source is authoritative.
+
+Validation: `npm run build`, `npm test`, `node --check dist/app.js`.
+Tests cover anonymous/unassigned access, staff/director updates, CSRF,
+unknown fields/plots, stale writes, markup encoding and publish exclusions.
+For platform testing use `npx netlify-cli dev`. Python's static server cannot
+run the private auth APIs/Edge Functions. Verify Identity login, direct asset
+denial, two-session update conflicts and logout on Netlify before staff rollout.
