@@ -34,31 +34,14 @@ These models retain their source geometry. Materials are merged per tree variant
 
 This workspace includes sales and customer information. Keep the repository private unless the data has been reviewed for public release.
 
-## Private Netlify staff deployment
+## Netlify public layout and staff access
 
-Netlify runs `npm run build` and publishes **dist**, never the repository root.
-The build removes raw customer datasets, browser credentials and direct Firebase
-access from the deployment. The root files remain the legacy local preview;
-they are not the private production build.
+`npm run build` creates `dist/`, the only directory to publish. Root files remain the legacy local preview. The production layout is public; the sidebar Staff Login authenticates invited email accounts with Netlify Identity. Invite-only registration and server-assigned `staff` / `director` roles protect editing, customer contact information, CRM notes and exports. Both roles edit plot records; director mode also exposes the existing director UI features.
 
-The production login uses invited **email accounts**, not the old shared
-username/password pairs. Enable Netlify Identity, select **Invite only**, and
-assign each user `staff` or `director` in their application roles. Both roles
-can read/edit plots; director UI additionally includes quoting tools.
-Do not reuse the old frontend passwords. Configure invitation/recovery email
-links to `/login.html`. Staff set their own passwords through the invitation.
+Anonymous GET requests return an explicit allowlist of plot numbers, sizes, facing, status and dimensions. Raw customer datasets and old passwords are excluded from published assets. PATCH requests verify the authenticated role and request origin, validate fields and use conditional writes in the site-scoped `staff-plots` Netlify Blobs store. Public readers see saved inventory changes.
 
-An Edge Function gates application pages/assets using the Identity session.
-The public login screen contains no customer data. Plot reads/updates have
-independent server-side role and request-origin checks. Data is stored in the
-site-scoped `staff-plots` Netlify Blobs store with strong consistency and
-conditional writes. First reads use server-only JSON seeds. Existing Firebase
-or browser-local edits are **not migrated automatically**. Import those only
-after reviewing which source is authoritative.
+Use `/login.html` for invitation/password recovery callbacks only; ordinary visitors are redirected to the layout. Netlify production visibility must allow public visitors; previews may remain team-private. No site-wide login gate is required.
 
-Validation: `npm run build`, `npm test`, `node --check dist/app.js`.
-Tests cover anonymous/unassigned access, staff/director updates, CSRF,
-unknown fields/plots, stale writes, markup encoding and publish exclusions.
-For platform testing use `npx netlify-cli dev`. Python's static server cannot
-run the private auth APIs/Edge Functions. Verify Identity login, direct asset
-denial, two-session update conflicts and logout on Netlify before staff rollout.
+Existing Firebase/browser edits are not migrated automatically. Review the authoritative dataset before importing existing edits. Legacy credentials must not be reused.
+
+Run `npm run build` and `npm test`. Use `npx netlify-cli dev` for the backend locally; Python static serving cannot run the production API. Verify invited staff/director login, logout and two-session update conflicts on Netlify before staff rollout.

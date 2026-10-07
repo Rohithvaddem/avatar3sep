@@ -1,0 +1,396 @@
+/* Compact shared shell; map engines retain their own coordinate systems. */
+body.layout-shell .dashboard-container { width:100%; }
+body.layout-shell .main-content { width:100%; margin:0!important; min-width:0; }
+body.layout-shell .sidebar { position:fixed!important; left:0; top:0; bottom:0; width:340px!important; max-width:calc(100vw - 32px); height:100dvh!important; transform:translateX(-100%); z-index:1200; transition:transform .2s; }
+body.layout-shell .sidebar.show { transform:translateX(0); }
+body.layout-shell .sidebar-backdrop.active { display:block!important; z-index:1199; }
+body.layout-shell .sidebar-toggle,body.layout-shell .sidebar-close { display:flex!important; }
+body.layout-shell .sidebar-header { min-height:56px!important; height:56px!important; padding:12px 20px!important; justify-content:flex-end; }
+body.layout-shell .dashboard-header { padding:12px 20px!important; gap:16px!important; flex-wrap:nowrap!important; align-items:center; min-height:0!important; }
+body.layout-shell .dashboard-header > .logo-container { width:150px; flex:0 0 150px; margin:0; }
+body.layout-shell .dashboard-header .brand-logo-full { width:150px; height:60px; object-fit:contain; }
+body.layout-shell .header-left { flex:1; min-width:0; gap:12px; }
+body.layout-shell .header-project-info { gap:4px 16px!important; }
+body.layout-shell .project-name { font-size:26px!important; }
+body.layout-shell .project-description-tag { font-size:11px!important; padding:3px 8px; }
+body.layout-shell .header-center-actions { flex:0 0 auto; margin:0!important; }
+body.layout-shell #viewSwitchContainer { padding:4px!important; }
+body.layout-shell #viewSwitchContainer button { padding:12px 14px!important; font-size:13px!important; }
+body.layout-shell .floating-site-visit-btn { position:static!important; flex:0 0 auto; width:auto!important; margin:0!important; min-height:46px; padding:12px 18px!important; font-size:13px; }
+body.layout-shell .main-content::after { display:none!important; }
+body.layout-shell .map-viewport { margin-bottom:0!important; flex:1; min-height:0; }
+.map-tool-strip { display:flex; align-items:center; gap:12px; padding:10px 20px; background:#f7fafb; border-top:1px solid #e0e8ed; border-bottom:1px solid #d9e3ec; flex-shrink:0; }
+.map-tool-strip #searchSection { display:flex!important; align-items:center; gap:10px; padding:0!important; margin:0!important; border:0!important; }
+.map-tool-strip #searchSection h3 { display:none; }
+.map-tool-strip .search-box { width:240px; height:44px; margin:0!important; }
+.map-tool-strip #searchPlotBtn { width:44px!important; min-width:44px; height:44px; min-height:44px!important; padding:0!important; margin:0!important; font-size:0; }
+.map-tool-strip #searchPlotBtn i { font-size:15px; }
+.map-tool-strip #openPlotFinderSidebarBtn { width:auto!important; height:44px; min-height:44px!important; padding:8px 18px!important; margin:0!important; }
+.shell-tools-button,.shell-facing-menu > summary { min-height:44px; padding:10px 16px; border:1px solid #c5d3df; background:white; color:#143047; border-radius:24px; font:inherit; font-size:13px; cursor:pointer; }
+.shell-tools-button { display:flex; align-items:center; gap:8px; margin-left:auto; }
+.shell-facing-menu { position:relative; }
+.shell-facing-menu > summary { display:flex; align-items:center; gap:10px; }
+.shell-facing-menu > summary::after { content:'⌄'; }
+.shell-facing-menu #filtersSection { position:absolute; top:52px; left:0; width:300px; background:white; border:1px solid #d7e1e9; border-radius:18px; padding:20px!important; box-shadow:0 12px 32px #102c4526; z-index:1000; }
+body.layout-shell .floating-recenter-btn { position:absolute!important; left:auto!important; right:120px!important; bottom:16px!important; }
+body.layout-shell .map-controls { position:absolute!important; right:16px!important; bottom:16px!important; }
+body.layout-shell .rt-three-bar { display:none!important; }
+body.layout-shell #threeCanvasContainer { top:0!important; height:100%!important; }
+body.layout-shell .rt-desktop-tools { position:static!important; width:100%!important; padding:20px!important; background:white!important; }
+body.layout-shell .rt-desktop-tools[hidden],body.layout-shell .rt-desktop-tools [hidden] { display:none!important; }
+body.layout-shell .rt-three-active .sidebar-content { padding:0!important; }
+body.layout-shell .rt-desktop-tools .modal-3d-toolbar { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr)); width:100%!important; }
+body.layout-shell .rt-desktop-tools .toolbar-group { grid-column:1/-1; }
+body.layout-shell .rt-desktop-tools .toolbar-btn { min-height:44px; width:100%; }
+body.layout-shell .rt-three-active .floating-legend-card { top:16px!important; }
+.shell-mobile-actions { display:none; }
+@media(max-width:1200px) and (min-width:993px) {
+ body.layout-shell .dashboard-header > .logo-container { width:110px; flex-basis:110px; }
+ body.layout-shell .dashboard-header .brand-logo-full { width:110px; }
+ body.layout-shell .project-name { font-size:22px!important; }
+ body.layout-shell .registration-item { font-size:10px; }
+ body.layout-shell #viewSwitchContainer button { padding:10px!important; font-size:11px!important; }
+ body.layout-shell .dashboard-header { gap:10px!important; padding:10px 12px!important; }
+}
+@media(max-width:992px) {
+ body.layout-shell .dashboard-header { flex-wrap:wrap!important; padding:8px 12px!important; gap:8px!important; }
+ body.layout-shell .dashboard-header > .logo-container { display:none; }
+ body.layout-shell .header-left { width:100%; flex:1 0 100%; }
+ body.layout-shell .header-center-actions { width:100%; }
+ body.layout-shell #viewSwitchContainer { width:100%; }
+ body.layout-shell #viewSwitchContainer button { flex:1; padding:10px!important; }
+ body.layout-shell .project-name { font-size:22px!important; }
+ body.layout-shell .project-description-tag { font-size:10px!important; }
+ .map-tool-strip { display:none; }
+ body.layout-shell .map-viewport { margin-bottom:70px!important; }
+ .shell-mobile-actions { display:flex; position:fixed; bottom:0; left:0; right:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); gap:10px; background:#fff; border-top:1px solid #d7e1e9; z-index:100; }
+ body.layout-shell .rt-mobile-finder { display:block!important; position:static!important; width:auto!important; height:48px; padding:10px 16px!important; flex:0 0 auto; margin:0!important; }
+ body.layout-shell .shell-mobile-actions .floating-site-visit-btn { flex:1; min-width:0; height:48px; padding:10px!important; font-size:12px; }
+ body.layout-shell .sidebar-content { padding:0!important; }
+ body.layout-shell .sidebar-section { padding:20px!important; }
+ body.layout-shell .gis-layer-control { top:16px!important; }
+ body.layout-shell .floating-recenter-btn { right:116px!important; bottom:12px!important; }
+ body.layout-shell .map-controls { right:12px!important; bottom:12px!important; }
+}
+body.layout-shell .dashboard-header { display:flex!important; grid-template-columns:none!important; }
+body.layout-shell .map-tool-strip #searchSection { flex-direction:row!important; width:auto!important; }
+body.layout-shell .map-tool-strip #searchPlotBtn span { display:none; }
+body.layout-shell .map-tool-strip .search-box { flex:0 0 240px; }
+body.layout-shell .dashboard-header > .floating-site-visit-btn { flex:0 0 auto!important; align-self:center; }
+@media(max-width:992px) { body.layout-shell .dashboard-header { display:flex!important; } }
+@media(min-width:993px) {
+ body.layout-shell .project-registrations { gap:2px!important; }
+ body.layout-shell .registration-item img { height:22px!important; }
+ body.layout-shell .registration-item:has(img[alt="RERA"]) img { height:26px!important; }
+ body.layout-shell .dashboard-header { padding-top:8px!important; padding-bottom:8px!important; }
+}
+body.layout-shell #searchPlotBtn { font-size:13px; }
+body.layout-shell .header-center-actions { width:auto!important; inset:auto!important; transform:none!important; }
+body.layout-shell .sidebar-backdrop { position:fixed!important; inset:0!important; background:rgba(15,35,53,.35)!important; }
+body.layout-shell .sidebar-backdrop:not(.active) { display:none!important; }
+@media(max-width:992px) { body.layout-shell .header-center-actions { width:100%!important; } }
+body.layout-shell #floatingSiteVisitBtn { display:flex!important; align-items:center; justify-content:center; gap:8px; }
+@media(max-width:992px) {
+ body.layout-shell.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:block!important; }
+ body.layout-shell .header-project-info { display:grid!important; grid-template-columns:auto minmax(0,1fr)!important; gap:4px 10px!important; align-items:center; }
+ body.layout-shell .project-registrations { flex-direction:column; gap:2px; padding-left:10px!important; }
+ body.layout-shell .registration-item { font-size:10px; }
+ body.layout-shell .registration-item img { height:20px!important; }
+ body.layout-shell .registration-item:has(img[alt="RERA"]) img { height:22px!important; }
+ body.layout-shell .project-description-tag { grid-column:1/-1; font-size:10px!important; }
+}
+body.layout-shell #threeMapContainer #threeCanvasContainer { top:0!important; height:100%!important; }
+body.layout-shell #sidebar #searchSection,body.layout-shell #sidebar #filtersSection { display:block!important; }
+body.layout-shell #threeOptionsPanel { display:flex!important; flex-direction:column; align-items:stretch; gap:12px; max-height:none!important; height:auto!important; overflow:visible!important; border:0!important; border-radius:0!important; box-shadow:none!important; }
+body.layout-shell #threeOptionsPanel[hidden] { display:none!important; }
+body.layout-shell #threeOptionsPanel .three-hud-filters { position:static!important; display:grid!important; grid-template-columns:1fr 1fr; transform:none!important; margin:0!important; padding:0!important; width:100%!important; background:white!important; box-shadow:none!important; color:#143047; }
+body.layout-shell #threeOptionsPanel .three-hud-filters > span { grid-column:1/-1; }
+body.layout-shell #threeOptionsPanel .toolbar-btn,body.layout-shell #threeOptionsPanel .three-filter-pill { min-height:44px; padding:8px; border:1px solid #d7e1e9; border-radius:24px; background:#edf2f6; color:#143047; }
+body.layout-shell #threeOptionsPanel .toolbar-btn.active,body.layout-shell #threeOptionsPanel .three-filter-pill.active { background:#e2f4ff; color:#086b9b; border-color:#a6d9f4; }
+body.layout-shell #threeOptionsPanel .toolbar-group { display:flex; width:100%; }
+body.layout-shell #threeOptionsPanel .toolbar-group button { flex:1; }
+body.layout-shell #threeOptionsPanel .modal-3d-icon-badge,body.layout-shell #threeOptionsPanel .modal-3d-tag,body.layout-shell #threeOptionsPanel .modal-3d-title-group > div > div + div,body.layout-shell #modal3DCloseBtn { display:none!important; }
+body.layout-shell #threeOptionsPanel .modal-3d-title { font-size:16px; color:#143047; }
+body.layout-shell #threeOptionsPanel .rt-sun-controls { position:static!important; width:100%!important; margin:0!important; box-shadow:none; }
+body.layout-shell.rt-three-active #floatingLegendCard { top:16px!important; }
+/* Final visual hierarchy: project identity, actions, then map controls. */
+body.layout-shell .shell-project-tags { display:flex!important; flex-wrap:wrap; align-items:center; gap:5px; padding:0!important; margin:0!important; border:0!important; background:none!important; box-shadow:none!important; border-radius:0!important; line-height:1.4; }
+body.layout-shell .shell-project-tags::before,body.layout-shell .shell-project-tags::after { display:none!important; }
+body.layout-shell .shell-project-tags > * { padding:2px 6px; border-radius:5px; background:#f0f6fa; color:#466176; font-weight:500; white-space:nowrap; }
+body.layout-shell .shell-project-tags > strong { color:#086b9b; background:#e5f3fc; font-weight:600; }
+body.layout-shell .map-tool-strip { padding:7px 20px; }
+body.layout-shell .map-controls button,body.layout-shell .floating-recenter-btn { min-height:44px; box-shadow:0 2px 8px #102c450d; }
+body.layout-shell #floatingLegendCard { max-height:calc(100% - 80px); overflow:auto; box-shadow:0 6px 20px #102c4514; }
+body.layout-shell .floating-legend-header { padding:12px 14px; }
+@media(min-width:993px) {
+ body.layout-shell .dashboard-header .sidebar-toggle { display:none!important; }
+ body.layout-shell .header-project-info { gap:4px 14px!important; }
+ body.layout-shell .dashboard-header { gap:20px!important; }
+ body.layout-shell .header-left { padding-left:18px; border-left:1px solid #dce5ed; }
+}
+@media(max-width:992px) {
+ body.layout-shell .rt-mobile-finder { border:1px solid #bccfdd; border-radius:24px; background:white; color:#143047; font:inherit; font-size:12px; font-weight:600; }
+ body.layout-shell .shell-mobile-actions { padding-top:8px; padding-bottom:calc(8px + env(safe-area-inset-bottom)); }
+ body.layout-shell .map-viewport { margin-bottom:calc(66px + env(safe-area-inset-bottom))!important; }
+ body.layout-shell .shell-project-tags { font-size:9px!important; gap:4px; }
+ body.layout-shell .registration-item:has(img[alt="RERA"]) img { width:48px!important; height:22px!important; object-fit:contain; }
+ body.layout-shell .header-project-info { gap:3px 8px!important; }
+ body.layout-shell .dashboard-header { gap:6px!important; }
+ body.layout-shell #viewSwitchContainer button { padding:8px!important; min-height:40px; }
+}
+@media(max-width:992px) and (max-height:500px) and (orientation:landscape) {
+ body.layout-shell .dashboard-header { display:grid!important; grid-template-columns:minmax(0,1fr) 300px!important; align-items:center; padding:6px 12px!important; gap:12px!important; }
+ body.layout-shell .header-left { width:auto; flex:auto; }
+ body.layout-shell .header-center-actions { width:300px!important; }
+ body.layout-shell .project-name { font-size:20px!important; }
+ body.layout-shell .project-registrations { gap:0; }
+ body.layout-shell .registration-item img { height:18px!important; }
+ body.layout-shell .shell-mobile-actions .floating-site-visit-btn,body.layout-shell .rt-mobile-finder { height:44px; }
+ body.layout-shell .map-viewport { margin-bottom:calc(62px + env(safe-area-inset-bottom))!important; }
+}
+@media(prefers-reduced-motion:reduce) { body.layout-shell .sidebar { transition:none; } }
+body.layout-shell #floatingLegendHeader { padding:12px!important; }
+body.layout-shell .floating-legend-title { font-size:12px!important; }
+body.layout-shell .floating-legend-title > span { white-space:nowrap; }
+@media(max-width:992px) { body.layout-shell #floatingLegendCard { width:170px!important; } }
+body.layout-shell .map-tool-strip { min-height:60px; }
+@media(min-width:993px) {
+ body.layout-shell .floating-recenter-btn { left:16px!important; right:auto!important; }
+ body.layout-shell .map-controls { left:140px!important; right:auto!important; width:auto!important; }
+}
+/* Combined identity keeps the primary header compact in every map view. */
+body.layout-shell .project-name { position:absolute!important; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+body.layout-shell .dashboard-header { min-height:76px!important; padding:6px 20px!important; gap:16px!important; }
+body.layout-shell .header-left { padding:0!important; border:0!important; gap:16px!important; }
+body.layout-shell .header-left .logo-container { display:block!important; flex:0 0 230px; width:230px; height:64px; overflow:hidden; border-radius:8px; margin:0; }
+body.layout-shell .header-left .brand-logo-full { width:246px!important; height:83px!important; max-width:none!important; object-fit:fill; transform:translate(-8px,-9px); border:0!important; padding:0!important; }
+body.layout-shell .header-project-info { display:flex!important; flex:0 0 auto; gap:0!important; }
+body.layout-shell .project-registrations { border:0!important; padding:0!important; gap:3px!important; }
+body.layout-shell .map-tool-strip { min-height:56px; padding:6px 20px; gap:10px; }
+body.layout-shell .map-tool-strip #searchSection { gap:0; }
+body.layout-shell .map-tool-strip .search-box { border-radius:12px 0 0 12px; border-right:0; }
+body.layout-shell .map-tool-strip #searchPlotBtn { border-radius:0 12px 12px 0!important; }
+body.layout-shell .map-tool-strip #openPlotFinderSidebarBtn { margin-left:12px!important; }
+body.layout-shell .map-tool-strip .shell-project-tags { margin-left:auto!important; font-size:10px!important; }
+body.layout-shell .shell-tools-button { margin-left:0; }
+@media(min-width:993px) and (max-width:1250px) {
+ body.layout-shell .header-left .logo-container { flex-basis:190px; width:190px; height:54px; }
+ body.layout-shell .header-left .brand-logo-full { width:204px!important; height:69px!important; transform:translate(-7px,-7px); }
+ body.layout-shell .dashboard-header { gap:10px!important; padding:6px 12px!important; min-height:68px!important; }
+ body.layout-shell .header-left { gap:10px!important; }
+ body.layout-shell .map-tool-strip .shell-project-tags { display:none!important; }
+ body.layout-shell .shell-tools-button { margin-left:auto; }
+}
+@media(max-width:992px) {
+ body.layout-shell .dashboard-header { padding:6px 10px!important; gap:4px!important; }
+ body.layout-shell .header-left { gap:8px!important; justify-content:space-between; }
+ body.layout-shell .header-left .logo-container { flex:0 0 156px; width:156px; height:46px; }
+ body.layout-shell .header-left .brand-logo-full { width:167px!important; height:56px!important; transform:translate(-5px,-5px); }
+ body.layout-shell .header-project-info { flex-direction:column; align-items:flex-start; min-width:0; }
+ body.layout-shell .registration-item { font-size:9px!important; gap:4px!important; }
+ body.layout-shell .registration-item img { height:16px!important; }
+ body.layout-shell .registration-item:has(img[alt="RERA"]) img { width:35px!important; height:17px!important; }
+ body.layout-shell .shell-project-tags { display:none!important; }
+ body.layout-shell .header-center-actions { flex:1 0 100%; }
+ body.layout-shell .sidebar-toggle { width:28px; min-width:28px; padding:0; }
+}
+@media(max-width:360px) {
+ body.layout-shell .header-left .logo-container { width:124px; flex-basis:124px; height:40px; }
+ body.layout-shell .header-left .brand-logo-full { width:133px!important; height:45px!important; transform:translate(-4px,-3px); }
+ body.layout-shell .registration-item { font-size:8px!important; }
+}
+@media(max-width:992px) and (max-height:500px) and (orientation:landscape) {
+ body.layout-shell .dashboard-header { min-height:58px!important; grid-template-columns:minmax(0,1fr) 280px!important; }
+ body.layout-shell .header-center-actions { width:280px!important; }
+ body.layout-shell .header-left { justify-content:flex-start; }
+}
+body.layout-shell .header-left .logo-container { border:0!important; box-shadow:none!important; }
+body.layout-shell .map-tool-strip .search-box { height:44px!important; min-height:44px!important; }
+@media(min-width:1251px) { body.layout-shell .header-left .logo-container { height:60px; } }
+@media(max-width:992px) {
+ body.layout-shell .dashboard-header { min-height:0!important; }
+ body.layout-shell .header-left { min-height:46px!important; }
+}
+/* Map-first chrome: one header, floating controls, shared tokens. */
+body.layout-shell { --primary:#0F6AA0; --accent:#0F6AA0; --text:#0E2A47; background:#F3F5F4; }
+body.layout-shell .dashboard-header { height:64px!important; min-height:64px!important; max-height:64px!important; padding:0 24px!important; gap:18px!important; flex-wrap:nowrap!important; background:white; border-bottom:1px solid #E3E8EC; }
+body.layout-shell .header-left { width:auto!important; flex:1!important; gap:18px!important; min-height:0!important; }
+body.layout-shell .header-left .logo-container { width:130px!important; height:44px!important; flex:0 0 130px!important; border-radius:0; }
+body.layout-shell .header-left .brand-logo-full { width:130px!important; height:44px!important; transform:none!important; object-fit:contain; }
+body.layout-shell .header-project-info { display:flex!important; flex-direction:row!important; align-items:center!important; gap:16px!important; border-left:1px solid #E3E8EC; padding-left:18px; }
+body.layout-shell .project-name { position:static!important; width:auto!important; height:auto!important; overflow:visible; clip-path:none; font-size:21px!important; font-weight:700; white-space:nowrap; margin:0; }
+.approval-chip { height:44px; border:0; border-radius:24px; padding:0 14px; display:flex; align-items:center; gap:8px; color:#14633A; background:#E6F4EC; font:inherit; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
+body.layout-shell #viewSwitchContainer { background:#edf2f5; border:0; padding:4px!important; border-radius:16px; }
+body.layout-shell #viewSwitchContainer button { min-height:44px; padding:8px 14px!important; border-radius:12px; color:#0E2A47; font-size:12px!important; }
+body.layout-shell #viewSwitchContainer button.active { background:#0E2A47!important; color:white!important; border-color:#0E2A47!important; }
+body.layout-shell #floatingSiteVisitBtn { background:#0F6AA0!important; min-height:44px; font-size:12px; text-transform:none; }
+body.layout-shell .header-center-actions { width:auto!important; flex:0 0 auto!important; }
+body.layout-shell .map-viewport { background:#F3F5F4!important; position:relative; }
+body.layout-shell .map-tool-strip { position:absolute; left:20px; top:20px; right:auto; height:48px; min-height:48px; padding:0; border:0; background:none; z-index:500; gap:10px; }
+body.layout-shell .map-tool-strip #searchSection { height:48px; border-radius:28px; padding:4px!important; background:white; box-shadow:0 6px 20px rgba(14,42,71,.14); gap:0; }
+body.layout-shell .map-tool-strip .search-box { border:0!important; background:none; width:200px; flex:0 0 200px; height:40px!important; min-height:40px!important; }
+body.layout-shell .map-tool-strip .search-input { padding:8px 28px 8px 36px!important; font-size:13px; }
+body.layout-shell .map-tool-strip #searchPlotBtn { width:44px!important; height:44px; border-radius:50%!important; background:white; color:#0E2A47; }
+body.layout-shell .map-tool-strip #openPlotFinderSidebarBtn { height:44px; min-height:44px!important; margin:0!important; padding:0 12px!important; background:#e8f3f9; color:#0F6AA0; border:0; }
+body.layout-shell .shell-facing-menu > summary,body.layout-shell .shell-tools-button { height:48px; min-height:48px; border:0; background:white; box-shadow:0 6px 20px rgba(14,42,71,.14); }
+body.layout-shell .shell-tools-button { width:48px; padding:0; justify-content:center; margin:0; }
+.shell-tools-button span { display:none; }
+.mobile-search-open,.mobile-view-menu { display:none; }
+body.layout-shell .map-controls { left:auto!important; right:16px!important; bottom:16px!important; display:flex!important; flex-direction:column!important; gap:8px; background:none!important; box-shadow:none!important; }
+body.layout-shell .map-controls button,body.layout-shell .map-controls .floating-recenter-btn { position:static!important; width:48px!important; height:48px!important; padding:0!important; border:0!important; border-radius:50%!important; display:flex; align-items:center; justify-content:center; background:white!important; color:#0E2A47!important; box-shadow:0 6px 20px rgba(14,42,71,.14); }
+body.layout-shell .floating-recenter-btn span { display:none; }
+body.layout-shell #floatingLegendCard,body.layout-shell.rt-three-active #floatingLegendCard { top:auto!important; right:auto!important; left:20px!important; bottom:20px!important; width:224px!important; max-height:calc(100% - 100px); display:flex; flex-direction:column-reverse; border:0; border-radius:24px; overflow:visible; background:white; box-shadow:0 6px 20px rgba(14,42,71,.14); }
+body.layout-shell #floatingLegendCard.collapsed { width:auto!important; }
+body.layout-shell #floatingLegendHeader { min-height:48px; padding:6px 12px!important; border:0; gap:8px; border-radius:28px; }
+body.layout-shell #floatingLegendToggle { width:44px; height:44px; min-width:44px; color:#0E2A47; }
+.status-summary { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:11px; color:#0E2A47; }
+.status-summary-item { display:flex; gap:5px; align-items:center; white-space:nowrap; }
+.status-summary .color-dot { width:9px; height:9px; border-radius:50%; display:inline-block; }
+body.layout-shell #floatingLegendBody { padding:10px; max-height:320px; overflow:auto; border-bottom:1px solid #E3E8EC; }
+body.layout-shell .floating-legend-item { min-height:44px; color:#0E2A47; cursor:pointer; }
+body.layout-shell .count-badge { background:#edf2f5; color:#0E2A47; }
+body.layout-shell .gis-layer-control { top:20px!important; right:16px!important; }
+.approval-popover { position:fixed; top:72px; left:220px; margin:0; width:340px; max-width:calc(100vw - 24px); padding:24px; border:1px solid #E3E8EC; border-radius:20px; color:#0E2A47; background:white; box-shadow:0 8px 28px rgba(14,42,71,.14); }
+.approval-popover::backdrop { background:rgba(14,42,71,.15); }
+.approval-popover h3 { font-size:17px; margin:0 44px 20px 0; }
+.approval-close { position:absolute; top:8px; right:8px; width:44px; height:44px; border:0; border-radius:50%; background:#f3f5f4; color:#0E2A47; cursor:pointer; }
+.approval-popover .project-registrations { display:flex!important; flex-direction:column; align-items:flex-start; gap:16px!important; border:0!important; padding:0!important; }
+.approval-popover .registration-item { font-size:14px!important; gap:12px; }
+.approval-popover .registration-item img { width:64px!important; height:44px!important; object-fit:contain; }
+.approval-popover a { color:#0F6AA0; }
+body.layout-shell .approval-popover .shell-project-tags { display:flex!important; margin-top:20px!important; font-size:12px!important; }
+body.layout-shell :is(button,summary,a,input):focus-visible { outline:3px solid #0F6AA0!important; outline-offset:3px; }
+@media(max-width:1100px) and (min-width:993px) {
+ body.layout-shell .dashboard-header { gap:10px!important; padding:0 12px!important; }
+ body.layout-shell .header-left { gap:10px!important; }
+ body.layout-shell .header-left .logo-container { width:100px!important; flex-basis:100px!important; }
+ body.layout-shell .header-left .brand-logo-full { width:100px!important; }
+ body.layout-shell .header-project-info { padding-left:10px; gap:10px!important; }
+ body.layout-shell #viewSwitchContainer button { padding:6px 9px!important; }
+}
+@media(max-width:992px) {
+ body.layout-shell .dashboard-header { display:flex!important; height:56px!important; min-height:56px!important; max-height:56px!important; padding:0 12px!important; gap:4px!important; }
+ body.layout-shell .header-left { width:auto!important; flex:1!important; justify-content:flex-start; gap:10px!important; }
+ body.layout-shell .header-left .logo-container { display:none!important; }
+ body.layout-shell .header-project-info { border:0; padding:0; gap:12px!important; }
+ body.layout-shell .project-name { font-size:21px!important; }
+ body.layout-shell .sidebar-toggle { width:44px!important; min-width:44px; height:44px; }
+ .approval-chip { padding:0 10px; font-size:12px; }
+ .approval-chip > i:last-child { display:none; }
+ body.layout-shell .header-center-actions { display:none!important; }
+ .mobile-search-open { display:block; width:44px; height:44px; border:0; color:#0E2A47; background:white; font-size:20px; }
+ body.layout-shell .map-tool-strip { display:flex!important; left:12px; right:12px; top:12px; justify-content:space-between; }
+ body.layout-shell .map-tool-strip #searchSection,body.layout-shell .shell-facing-menu { display:none!important; }
+ .mobile-view-menu { display:block; position:relative; }
+ .mobile-view-menu > summary { height:48px; padding:0 16px; display:flex; align-items:center; gap:10px; border-radius:28px; background:white; color:#0E2A47; font-size:14px; font-weight:600; box-shadow:0 6px 20px rgba(14,42,71,.14); cursor:pointer; }
+ body.layout-shell .mobile-view-menu #viewSwitchContainer { position:absolute; top:56px; left:0; width:180px; display:flex; flex-direction:column; background:white; box-shadow:0 6px 20px rgba(14,42,71,.14); z-index:1000; }
+ body.layout-shell .mobile-view-menu:not([open]) #viewSwitchContainer { display:none!important; }
+ body.layout-shell .shell-mobile-actions { height:80px; padding:12px; gap:10px; align-items:center; }
+ body.layout-shell .shell-mobile-actions .floating-site-visit-btn,body.layout-shell .rt-mobile-finder { height:48px; }
+ body.layout-shell .map-viewport { margin-bottom:80px!important; }
+ body.layout-shell #floatingLegendCard,body.layout-shell.rt-three-active #floatingLegendCard { left:12px!important; bottom:12px!important; width:auto!important; }
+ .status-summary-item:not(:first-child) { display:none; }
+ .status-summary { font-size:13px; }
+ body.layout-shell #floatingLegendCard:not(.collapsed) { position:fixed; bottom:80px!important; left:0!important; right:0!important; width:100%!important; max-height:calc(100dvh - 150px); border-radius:24px 24px 0 0; z-index:1100; }
+ body.layout-shell #floatingLegendBody { max-height:320px; }
+ body.layout-shell .map-controls { right:12px!important; bottom:12px!important; }
+ .approval-popover { top:auto; bottom:0; left:0; width:100%; max-width:100%; border-radius:24px 24px 0 0; }
+ body.layout-shell .gis-layer-control { top:72px!important; right:12px!important; }
+}
+body.layout-shell .map-tool-strip .search-input { border:0!important; border-radius:24px!important; box-shadow:none!important; background:transparent!important; }
+body.layout-shell .map-tool-strip #openPlotFinderSidebarBtn { background:#e8f3f9!important; color:#0F6AA0!important; border-radius:24px!important; }
+.status-summary,.status-summary-item { text-transform:none!important; font-weight:500; }
+body.layout-shell .map-tool-strip #searchPlotBtn { background:white!important; color:#0E2A47!important; }
+body.layout-shell .map-tool-strip .search-box { flex-basis:220px; width:220px; }
+body.layout-shell .map-tool-strip .search-input::placeholder { color:#536677; opacity:1; }
+body.layout-shell #floatingLegendCard { padding:0!important; }
+body.layout-shell #floatingLegendHeader { padding:2px 12px!important; height:48px; }
+body.layout-shell .approval-popover .registration-item { font-size:14px!important; gap:12px!important; min-height:44px; width:100%; }
+body.layout-shell .approval-popover .registration-item img,body.layout-shell .approval-popover .registration-item:has(img[alt="RERA"]) img { width:64px!important; height:44px!important; flex:0 0 64px; min-width:64px; object-fit:contain; }
+body.layout-shell .approval-popover .registration-item span { white-space:nowrap; }
+body.layout-shell .floating-legend-item:focus-visible { outline:3px solid #0F6AA0; outline-offset:2px; }
+body.layout-shell #mapContainer { touch-action:none; }
+body.layout-shell .map-tool-strip,body.layout-shell #floatingLegendCard { touch-action:manipulation; }
+@media(max-width:992px) { body.layout-shell .dashboard-header > .mobile-search-open { display:block!important; } }
+body.layout-shell #floatingLegendCard.collapsed #floatingLegendToggle i { transform:none!important; }
+body.layout-shell #floatingLegendCard:not(.collapsed) #floatingLegendToggle i { transform:rotate(180deg)!important; }
+body.layout-shell .plot-dot[data-status="AVAILABLE"] { color:#000000!important; }
+body.layout-shell #floatingLegendCard:not(.collapsed) .status-summary-item:not(:first-child) { display:none; }
+@media(min-width:993px) {
+ body.layout-shell #floatingLegendCard.collapsed { max-width:none!important; }
+ body.layout-shell #floatingLegendCard.collapsed .status-summary { flex-wrap:nowrap; gap:14px; }
+}
+body.layout-shell .map-tool-strip #searchInput { border:0!important; border-radius:0!important; padding:8px 24px 8px 4px!important; color:#0E2A47; }
+body.layout-shell .map-tool-strip .search-box > i { display:none; }
+body.layout-shell .map-tool-strip #searchPlotBtn { order:-1; border:0!important; }
+body.layout-shell .map-tool-strip #searchSection:focus-within { outline:2px solid #0F6AA0; outline-offset:2px; }
+@media(min-width:993px) { .approval-chip { font-size:14px; } }
+body.layout-shell .model-attribution { left:50%!important; bottom:8px!important; transform:translateX(-50%); max-width:calc(100% - 600px); }
+body.layout-shell .leaflet-bottom.leaflet-right { right:80px; bottom:8px; }
+body.layout-shell .leaflet-control-attribution { max-width:calc(100vw - 360px); }
+@media(max-width:992px) {
+ body.layout-shell .model-attribution { left:12px!important; bottom:72px!important; transform:none; max-width:calc(100% - 92px); font-size:9px!important; }
+ body.layout-shell .leaflet-bottom.leaflet-right { right:76px; bottom:72px; }
+ body.layout-shell .leaflet-control-attribution { max-width:calc(100vw - 88px); }
+}
+body.layout-shell #floatingLegendToggle { transform:none!important; }
+/* Keep project context visible without growing the single-row header. */
+body.layout-shell .map-tool-strip .shell-project-tags { display:flex!important; position:absolute; top:56px; left:0; margin:0!important; gap:6px; flex-wrap:nowrap; font-size:11px!important; pointer-events:none; }
+body.layout-shell .map-tool-strip .shell-project-tags > * { padding:3px 7px; }
+body.layout-shell .plot-dot[data-status="AVAILABLE"] { color:#ffffff!important; }
+body.layout-shell .shell-facing-menu > summary { list-style:none; flex-wrap:nowrap; align-items:center; justify-content:center; gap:8px; }
+body.layout-shell .shell-facing-menu > summary::after { content:none!important; }
+body.layout-shell .shell-facing-menu > summary::-webkit-details-marker { display:none; }
+body.layout-shell .shell-facing-menu > summary > i { font-size:11px; line-height:1; flex:none; }
+@media(max-width:360px) { body.layout-shell .map-tool-strip .shell-project-tags { font-size:10px!important; gap:4px; } }
+body.layout-shell .project-name { display:flex; align-items:center; }
+body.layout-shell .project-wordmark { display:block; width:110px; height:24px; object-fit:contain; }
+@media(max-width:1100px) { body.layout-shell .project-wordmark { width:100px; height:22px; } }
+/* Outline-only wordmark pill, aligned with the approval chip. */
+body.layout-shell .project-name { border:1px solid #c6d3dd; border-radius:999px; background:transparent!important; padding:0 12px; min-height:44px; box-sizing:border-box; }
+@media(max-width:360px) { body.layout-shell .project-name { padding:0 7px; } body.layout-shell .header-project-info { gap:6px!important; } body.layout-shell .header-left { gap:6px!important; } }
+body.layout-shell .project-name { background:#e8f3f9!important; }
+@media(min-width:993px) {
+ body.layout-shell .header-left .logo-container { width:158px!important; height:54px!important; flex-basis:158px!important; }
+ body.layout-shell .header-left .brand-logo-full { width:158px!important; height:54px!important; }
+}
+@media(min-width:993px) and (max-width:1100px) {
+ body.layout-shell .header-left .logo-container { width:128px!important; flex-basis:128px!important; }
+ body.layout-shell .header-left .brand-logo-full { width:128px!important; }
+}
+.facing-compass{position:absolute;z-index:1000;left:20px;width:150px;height:150px;border-radius:50%;background:white;box-shadow:0 8px 28px rgba(14,42,71,.14);touch-action:manipulation;transform-origin:bottom left;transition:transform 150ms}
+.facing-compass svg{width:100%;height:100%;overflow:visible;display:block}
+.compass-wedge{cursor:pointer;outline:none}.compass-wedge path{fill:#EEF2F5;stroke:#D5DDE3;stroke-width:1;transition:fill 150ms}.compass-wedge text{fill:#0E2A47;pointer-events:none}.compass-wedge:hover path{fill:#dce4ea}.compass-wedge[aria-pressed=true] path{fill:#0F6AA0;stroke:#0A5580}.compass-wedge[aria-pressed=true] text{fill:white}.compass-wedge:focus-visible path{stroke:#0E2A47;stroke-width:3}.compass-center{cursor:pointer;outline:none}.compass-center circle{fill:white}.compass-center:focus-visible circle{stroke:#0F6AA0;stroke-width:3}.compass-center text{fill:#0E2A47;pointer-events:none}.compass-center-title{font-size:15px;font-weight:700}.compass-center-subtitle{font-size:11px}
+body.layout-shell .plot-dot.filtered-out,body.layout-shell [data-plot].filtered-out,body.layout-shell .dimmed-finder-dot{opacity:.25!important;pointer-events:none!important;transition:opacity 150ms}body.layout-shell .plot-dot{transition:opacity 150ms}body.compass-facing-active .plot-dot.search-filtered{display:flex!important;opacity:.25!important;pointer-events:none!important}
+@media(max-width:992px){.facing-compass{left:12px;width:96px;height:96px}.facing-compass.expanded{transform:scale(2.083333)}}
+@media(prefers-reduced-motion:reduce){.facing-compass,.compass-wedge path,body.layout-shell .plot-dot,body.layout-shell [data-plot]{transition:none!important}}
+@media(prefers-reduced-motion:reduce){body.layout-shell .plot-dot.filtered-out,body.layout-shell [data-plot].filtered-out,body.layout-shell .dimmed-finder-dot{transition:none!important}}
+body.layout-shell .gis-layer-control{left:auto!important;right:20px!important;top:20px!important}
+@media(max-width:992px){body.layout-shell .gis-layer-control{left:auto!important;right:12px!important;top:104px!important}}
+/* Registration artwork keeps the fixed header height. */
+.registration-image-link{display:flex;align-items:center;justify-content:center;height:52px;flex:none;border-radius:8px}
+.registration-image-link img{display:block;width:140px;height:52px;object-fit:contain}.registration-image-link:focus-visible{outline:2px solid #0F6AA0;outline-offset:2px}
+body.layout-shell .dashboard-header .sidebar-toggle{position:static!important;inset:auto!important;margin:0!important;transform:none!important;align-items:center;justify-content:center;align-self:center;padding:0!important}
+body.layout-shell .mobile-view-menu[open]{z-index:1150}body.layout-shell .map-tool-strip .project-description{z-index:0!important;pointer-events:none}
+body.layout-shell #finderResultBanner{top:108px!important;bottom:auto!important;left:20px!important;right:auto!important;transform:none!important;max-width:224px;width:224px;box-sizing:border-box;z-index:1010;gap:8px;padding:8px 10px;min-height:48px;flex-wrap:nowrap;align-items:center;background:white!important;color:#0E2A47!important}
+body.layout-shell #finderResultBanner>span{font-size:12px;line-height:1.4;min-width:0}body.layout-shell #finderResultBanner .clear-finder-btn{min-width:44px;min-height:44px;flex:none;color:#0F6AA0!important}
+body.layout-shell .gis-layer-control .layer-control-header{color:#0F6AA0!important;gap:8px}
+.layers-open-label{display:none}.gis-layer-control:not(.rt-layers-collapsed) .layers-open-label{display:inline;font-weight:600;font-size:14px}
+body.layout-shell .gis-layer-control:not(.rt-layers-collapsed) .layer-control-header{width:100%;justify-content:flex-start;padding:0 12px;box-sizing:border-box}
+body.layout-shell .compact-map-credits,body.layout-shell .leaflet-control-attribution.compact-map-credits{position:absolute!important;left:auto!important;right:20px!important;bottom:184px!important;transform:none!important;max-width:44px!important;width:44px!important;padding:0!important;margin:0!important;background:transparent!important;overflow:visible!important;z-index:1050;color:#536677!important}
+.credits-disclosure>summary{list-style:none;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#0F6AA0;cursor:pointer;font-size:18px;box-shadow:0 3px 12px rgba(14,42,71,.1)}.credits-disclosure>summary::-webkit-details-marker{display:none}
+.credits-content{position:absolute;bottom:0;right:52px;width:280px;max-width:calc(100vw - 92px);box-sizing:border-box;padding:12px;background:white;color:#536677;font-size:11px;line-height:1.5;border-radius:12px;box-shadow:0 6px 20px rgba(14,42,71,.14)}.credits-content a{color:#0F6AA0!important}.credits-disclosure:not([open]) .credits-content{display:none}.credits-disclosure:hover .credits-content,.credits-disclosure:focus-within .credits-content{display:block}
+@media(max-width:992px){body.layout-shell .dashboard-header{padding:0 4px!important;gap:0!important}body.layout-shell .header-left{gap:2px!important}body.layout-shell .header-project-info{gap:4px!important}.registration-image-link,.registration-image-link img{width:110px;height:44px}.registration-image-link{min-width:110px}body.layout-shell .project-name{padding:0 8px!important}body.layout-shell .project-name img{width:76px!important;height:20px!important}body.layout-shell .mobile-search-open{margin-left:auto!important;flex:none}body.layout-shell .compact-map-credits,body.layout-shell .leaflet-control-attribution.compact-map-credits{right:12px!important;bottom:184px!important}body.layout-shell #finderResultBanner{left:12px!important;right:72px!important;width:auto;max-width:none!important;top:108px!important}}
+@media(max-width:992px){body.layout-shell .mobile-view-menu{height:48px;flex:none;align-self:flex-start}body.layout-shell .mobile-view-menu #viewSwitchContainer{position:absolute!important;top:56px!important;left:0!important;margin:0!important}body.layout-shell #floatingLegendCard:not(.collapsed){max-width:none!important;width:100%!important}body.layout-shell #finderResultBanner{top:auto!important;bottom:188px!important}body.layout-shell .map-viewport:has(.facing-compass.expanded) #finderResultBanner,body.layout-shell .map-viewport:has(#floatingLegendCard:not(.collapsed)) #finderResultBanner{visibility:hidden}}
+body.layout-shell .compact-map-credits,body.layout-shell .leaflet-control-attribution.compact-map-credits{position:fixed!important;right:20px!important;bottom:184px!important}
+@media(max-width:992px){body.layout-shell .compact-map-credits,body.layout-shell .leaflet-control-attribution.compact-map-credits{right:12px!important;bottom:264px!important}}
+.registration-image-link{height:56px}.registration-image-link img{width:156px;height:56px}
+@media(max-width:992px){.registration-image-link,.registration-image-link img{width:120px;height:44px}.registration-image-link{min-width:120px}}
+@media(min-width:993px){body.layout-shell #finderResultBanner{left:484px!important;top:20px!important}}
+@media(min-width:993px) and (max-height:720px){body.layout-shell #floatingLegendCard:not(.collapsed){width:300px!important;max-width:300px!important}body.layout-shell #floatingLegendCard:not(.collapsed) #floatingLegendBody{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:10px}body.layout-shell #floatingLegendCard:not(.collapsed) .floating-legend-item{min-height:44px;margin:0;font-size:11px;padding:6px}body.layout-shell #floatingLegendCard:not(.collapsed) .status-summary-item:not(:first-child){display:none}}
+body.layout-shell #floatingLegendCard{transition:none!important}
+.credits-disclosure:not([open]):focus-within:not(:hover) .credits-content{display:none}.credits-dismissed .credits-content{display:none!important}
+@media(min-width:361px) and (max-width:599px){body.layout-shell .project-name img{width:90px!important}}
+@media(min-width:600px) and (max-width:992px){body.layout-shell .project-name img{width:110px!important;height:24px!important}}
+body.layout-shell .map-tool-strip:has(.mobile-view-menu[open]){z-index:1160!important}
+@media(max-width:992px){body.layout-shell .map-viewport:has(.facing-compass.shrinking) #finderResultBanner{visibility:hidden}}

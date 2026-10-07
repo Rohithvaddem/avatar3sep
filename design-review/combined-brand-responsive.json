@@ -1,0 +1,194 @@
+[
+  {
+    "bookingBottom": 632,
+    "h": 640,
+    "header": 113,
+    "overflow": false,
+    "view": "Schematic",
+    "w": 320
+  },
+  {
+    "bookingBottom": 632,
+    "h": 640,
+    "header": 113,
+    "overflow": false,
+    "view": "Satellite",
+    "w": 320
+  },
+  {
+    "bookingBottom": 632,
+    "h": 640,
+    "header": 113,
+    "overflow": false,
+    "view": "3D",
+    "w": 320
+  },
+  {
+    "bookingBottom": 844,
+    "h": 852,
+    "header": 113,
+    "overflow": false,
+    "view": "Schematic",
+    "w": 393
+  },
+  {
+    "bookingBottom": 844,
+    "h": 852,
+    "header": 113,
+    "overflow": false,
+    "view": "Satellite",
+    "w": 393
+  },
+  {
+    "bookingBottom": 844,
+    "h": 852,
+    "header": 113,
+    "overflow": false,
+    "view": "3D",
+    "w": 393
+  },
+  {
+    "bookingBottom": 1016,
+    "h": 1024,
+    "header": 113,
+    "overflow": false,
+    "view": "Schematic",
+    "w": 768
+  },
+  {
+    "bookingBottom": 1016,
+    "h": 1024,
+    "header": 113,
+    "overflow": false,
+    "view": "Satellite",
+    "w": 768
+  },
+  {
+    "bookingBottom": 1016,
+    "h": 1024,
+    "header": 113,
+    "overflow": false,
+    "view": "3D",
+    "w": 768
+  },
+  {
+    "bookingBottom": 382,
+    "h": 390,
+    "header": 63,
+    "overflow": false,
+    "view": "Schematic",
+    "w": 844
+  },
+  {
+    "bookingBottom": 382,
+    "h": 390,
+    "header": 63,
+    "overflow": false,
+    "view": "Satellite",
+    "w": 844
+  },
+  {
+    "bookingBottom": 382,
+    "h": 390,
+    "header": 63,
+    "overflow": false,
+    "view": "3D",
+    "w": 844
+  },
+  {
+    "bookingBottom": 56.5,
+    "h": 768,
+    "header": 68,
+    "overflow": false,
+    "view": "Schematic View",
+    "w": 1024
+  },
+  {
+    "bookingBottom": 56.5,
+    "h": 768,
+    "header": 68,
+    "overflow": false,
+    "view": "Satellite View",
+    "w": 1024
+  },
+  {
+    "bookingBottom": 56.5,
+    "h": 768,
+    "header": 68,
+    "overflow": false,
+    "view": "3D View",
+    "w": 1024
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 720,
+    "header": 76,
+    "overflow": false,
+    "view": "Schematic View",
+    "w": 1280
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 720,
+    "header": 76,
+    "overflow": false,
+    "view": "Satellite View",
+    "w": 1280
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 720,
+    "header": 76,
+    "overflow": false,
+    "view": "3D View",
+    "w": 1280
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 900,
+    "header": 76,
+    "overflow": false,
+    "view": "Schematic View",
+    "w": 1440
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 900,
+    "header": 76,
+    "overflow": false,
+    "view": "Satellite View",
+    "w": 1440
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 900,
+    "header": 76,
+    "overflow": false,
+    "view": "3D View",
+    "w": 1440
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 1080,
+    "header": 76,
+    "overflow": false,
+    "view": "Schematic View",
+    "w": 1920
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 1080,
+    "header": 76,
+    "overflow": false,
+    "view": "Satellite View",
+    "w": 1920
+  },
+  {
+    "bookingBottom": 60.5,
+    "h": 1080,
+    "header": 76,
+    "overflow": false,
+    "view": "3D View",
+    "w": 1920
+  }
+]

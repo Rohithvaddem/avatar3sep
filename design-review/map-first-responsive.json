@@ -1,0 +1,218 @@
+[
+  {
+    "ctaInside": true,
+    "h": 640,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 320
+  },
+  {
+    "ctaInside": true,
+    "h": 640,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 320
+  },
+  {
+    "ctaInside": true,
+    "h": 640,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 320
+  },
+  {
+    "ctaInside": true,
+    "h": 844,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 390
+  },
+  {
+    "ctaInside": true,
+    "h": 844,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 390
+  },
+  {
+    "ctaInside": true,
+    "h": 844,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 390
+  },
+  {
+    "ctaInside": true,
+    "h": 1024,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 768
+  },
+  {
+    "ctaInside": true,
+    "h": 1024,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 768
+  },
+  {
+    "ctaInside": true,
+    "h": 1024,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 768
+  },
+  {
+    "ctaInside": true,
+    "h": 390,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 844
+  },
+  {
+    "ctaInside": true,
+    "h": 390,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 844
+  },
+  {
+    "ctaInside": true,
+    "h": 390,
+    "header": 56,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 844
+  },
+  {
+    "ctaInside": true,
+    "h": 768,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 1024
+  },
+  {
+    "ctaInside": true,
+    "h": 768,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 1024
+  },
+  {
+    "ctaInside": true,
+    "h": 768,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 1024
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 1280
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 1280
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 1280
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 1440
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 1440
+  },
+  {
+    "ctaInside": true,
+    "h": 720,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 1440
+  },
+  {
+    "ctaInside": true,
+    "h": 1080,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Schematic",
+    "w": 1920
+  },
+  {
+    "ctaInside": true,
+    "h": 1080,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "Satellite",
+    "w": 1920
+  },
+  {
+    "ctaInside": true,
+    "h": 1080,
+    "header": 64,
+    "overflow": false,
+    "searchVisible": true,
+    "view": "3D",
+    "w": 1920
+  }
+]

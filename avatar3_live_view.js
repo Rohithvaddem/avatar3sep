@@ -114,24 +114,72 @@
         points.push(parkEntranceEdge());
         points.push(parkFourEdge());
         const direction = new THREE.Vector3(...preset).normalize();
+        const shell=document.body.classList.contains('layout-shell');
+        const compact=window.innerWidth<=992;
+        const chromeLeft=document.getElementById('floatingLegendCard')?.classList.contains('collapsed')?186:(document.getElementById('floatingLegendCard')?.getBoundingClientRect().width||224)+36;
+        const chromeTop=112;
+        const chromeBottom=compact?276:72;
+        const limitX=shell?Math.max(.2,(viewport.clientWidth-(compact?24:chromeLeft+72))/viewport.clientWidth)*.97:.9;
+        const limitY=shell?Math.max(.2,(viewport.clientHeight-(chromeTop+chromeBottom))/viewport.clientHeight)*.97:.88;
         let distance=60;
         const probe=camera.clone();
-        for(let i=0;i<40;i++) {
+        for(let i=0;i<80;i++) {
             probe.position.copy(target).addScaledVector(direction,distance); probe.lookAt(target); probe.updateMatrixWorld();
             const fits=points.every(point=>{
-                const p=point.clone().project(probe);return Math.abs(p.x)<.9&&Math.abs(p.y)<.88;
+                const p=point.clone().project(probe);return Math.abs(p.x)<limitX&&Math.abs(p.y)<limitY;
             });
             if(fits) break; distance*=1.07;
         }
-        return target.clone().addScaledVector(direction, distance * (renderer.domElement.clientWidth <= 600 ? .65 : .9));
+        // Tall screens need a farther fit than the original orbit limit allowed.
+        if (controls) controls.maxDistance=Math.max(1000,distance*1.2);
+        // Centre the projected footprint, since perspective shifts its visual centre.
+        for (let i=0;i<3;i++) {
+            probe.position.copy(target).addScaledVector(direction,distance);
+            probe.lookAt(target); probe.updateMatrixWorld();
+            const projected=points.map(point=>point.clone().project(probe));
+            const cx=(Math.min(...projected.map(p=>p.x))+Math.max(...projected.map(p=>p.x)))/2;
+            const cy=(Math.min(...projected.map(p=>p.y))+Math.max(...projected.map(p=>p.y)))/2;
+            const halfHeight=distance*Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+            const desiredX=shell&&!compact?(chromeLeft-72)/viewport.clientWidth:0;
+            const desiredY=shell?(chromeBottom-chromeTop)/viewport.clientHeight:0;
+            target.addScaledVector(new THREE.Vector3().setFromMatrixColumn(probe.matrixWorld,0),(cx-desiredX)*halfHeight*camera.aspect);
+            target.addScaledVector(new THREE.Vector3().setFromMatrixColumn(probe.matrixWorld,1),(cy-desiredY)*halfHeight);
+        }
+        if (controls) controls.target.copy(target);
+        // Tighten the centred footprint to the safe map area rather than fitting
+        // an off-centre initial target, which wastes width on portrait screens.
+        for(let iteration=0;shell&&iteration<5;iteration++) {
+            probe.position.copy(target).addScaledVector(direction,distance);probe.lookAt(target);probe.updateMatrixWorld();
+            const projected=points.map(point=>point.clone().project(probe));
+            const dx=!compact?(chromeLeft-72)/viewport.clientWidth:0,dy=(chromeBottom-chromeTop)/viewport.clientHeight;
+            const ratio=Math.max(...projected.map(p=>Math.max(Math.abs(p.x-dx)/limitX,Math.abs(p.y-dy)/limitY)));
+            if(Math.abs(ratio-1)<.025) break;
+            distance*=Math.max(.5,ratio)*1.015;
+        }
+        if(shell) {
+            distance*=compact?1.08:1.03;
+            for(let iteration=0;iteration<3;iteration++) {
+                probe.position.copy(target).addScaledVector(direction,distance);probe.lookAt(target);probe.updateMatrixWorld();
+                const projected=points.map(point=>point.clone().project(probe));
+                const cx=(Math.min(...projected.map(p=>p.x))+Math.max(...projected.map(p=>p.x)))/2;
+                const cy=(Math.min(...projected.map(p=>p.y))+Math.max(...projected.map(p=>p.y)))/2;
+                const halfHeight=distance*Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
+                target.addScaledVector(new THREE.Vector3().setFromMatrixColumn(probe.matrixWorld,0),(cx-(compact?0:(chromeLeft-72)/viewport.clientWidth))*halfHeight*camera.aspect);
+                target.addScaledVector(new THREE.Vector3().setFromMatrixColumn(probe.matrixWorld,1),(cy-(chromeBottom-chromeTop)/viewport.clientHeight)*halfHeight);
+            }
+            if(controls)controls.target.copy(target);
+        }
+        if(controls) controls.maxDistance=Math.max(1000,distance*1.2);
+        return target.clone().addScaledVector(direction, distance);
     }
 
     /**
      * Helper to get plot details from avatar3_data.js
      */
     function getPlotDetails(plotNo) {
-        if (typeof plotDataRawAvatar3 !== 'undefined' && Array.isArray(plotDataRawAvatar3)) {
-            const found = plotDataRawAvatar3.find(p => String(p.plot_no) === String(plotNo));
+        const inventory = typeof avatarDataPool !== 'undefined' ? avatarDataPool.avatar3 : (typeof plotDataRawAvatar3 !== 'undefined' ? plotDataRawAvatar3 : []);
+        if (Array.isArray(inventory)) {
+            const found = inventory.find(p => String(p.plot_no) === String(plotNo));
             if (found) return found;
         }
         return {
@@ -153,16 +201,21 @@
             const s = String(detail.plot_status).toUpperCase();
             if (s.includes('SOLD') || s.includes('BOOKED')) return 'SOLD';
             if (s.includes('MORTGAGE') || s.includes('MORTAGAGE')) return 'MORTGAGE';
+            if (['HOLD','REGISTERED','RESALE'].includes(s)) return s;
         }
         return 'AVAILABLE';
     }
 
     function getStatusColorHex(status) {
         switch (status) {
-            case 'AVAILABLE': return '#0A6AA3'; // Project inventory, not verification
-            case 'SOLD': return '#55667A';      // Neutral status
-            case 'MORTGAGE': return '#85530A';  // Amber status
-            default: return '#0A6AA3';
+            case 'AVAILABLE': return '#1E8A4C';
+            case 'BOOKED':
+            case 'SOLD': return '#C62F2F';
+            case 'MORTGAGE': return '#7A3FC4';
+            case 'HOLD': return '#B45309';
+            case 'REGISTERED': return '#475569';
+            case 'RESALE': return '#0369A1';
+            default: return '#1E8A4C';
         }
     }
 
@@ -178,12 +231,12 @@
         // Light marker with dark type and a subtle status rim.
         ctx.beginPath();
         ctx.roundRect(6, 6, 116, 68, 12);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+        ctx.fillStyle = hexColor || '#1E8A4C';
         ctx.fill();
         ctx.lineWidth = 4;
-        ctx.strokeStyle = hexColor || '#38bdf8';
+        ctx.strokeStyle = '#ffffff';
         ctx.stroke();
-        ctx.fillStyle = '#10283B';
+        ctx.fillStyle = '#ffffff';
         ctx.font = '600 60px Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -533,7 +586,7 @@
 
         // Load transparent layout cutout
         const layoutB64 = (typeof AVATAR3_LAYOUT_TEXTURE_B64 !== 'undefined') ? AVATAR3_LAYOUT_TEXTURE_B64 : null;
-        loadTextureSafe(layoutB64, 'avatar3_layout_transparent.png', (tex) => {
+        loadTextureSafe(null, 'avatar3_satellite_overlay-park1.svg', (tex) => {
             groundMesh.material.map = removeExteriorWhite(tex);
             groundMesh.material.needsUpdate = true;
         });
@@ -1708,6 +1761,16 @@
     /**
      * Filter Plots (All, Available, Sold, Mortgage)
      */
+    const pendingFilterFades=new Map();let filterFadeFrame=null;
+    function fadeFilterMaterial(material,target) {
+        if(material.userData.filterOpacityTarget===target) return;
+        material.userData.filterOpacityTarget=target;
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){material.opacity=target;return;}
+        pendingFilterFades.set(material,{from:material.opacity,to:target,start:performance.now()});
+        if(filterFadeFrame!==null)return;
+        const tick=now=>{for(const [m,fade] of pendingFilterFades){const progress=Math.min(1,(now-fade.start)/150);m.opacity=fade.from+(fade.to-fade.from)*progress;if(progress===1)pendingFilterFades.delete(m);}filterFadeFrame=pendingFilterFades.size?requestAnimationFrame(tick):null;};
+        filterFadeFrame=requestAnimationFrame(tick);
+    }
     function filterPlots(status) {
         activeFilterStatus = String(status || 'ALL').toUpperCase();
 
@@ -1724,8 +1787,22 @@
                 match = true;
             }
 
-            btn.visible = match;
-            if (plotGroups[pNo]) plotGroups[pNo].visible = match && !isLayoutOnly;
+            const finder=window.smartFinderPlotNumbers;
+            const finderMatch=!Array.isArray(finder) || finder.includes(String(pNo));
+            const facing=window.avatar3FacingPlotNumbers;
+            const facingMatch=!Array.isArray(facing) || facing.includes(String(pNo));
+            const result=match && facingMatch && finderMatch && (!window.avatar3SearchPlotNumber || String(pNo)===String(window.avatar3SearchPlotNumber));
+            btn.visible = Array.isArray(facing) || match;
+            fadeFilterMaterial(btn.material,result ? 1 : .25);
+            if (plotGroups[pNo]) {
+                const group=plotGroups[pNo];group.userData.filterMatch=result;
+                group.visible=(Array.isArray(facing) || (match && finderMatch)) && !isLayoutOnly;
+                group.traverse(object=>{if(object.isMesh && object.material){
+                    if(result && !object.userData.filterMaterial)return;
+                    if(!object.userData.filterMaterial){object.material=Array.isArray(object.material)?object.material.map(m=>m.clone()):object.material.clone();object.userData.filterMaterial=true;}
+                    const materials=Array.isArray(object.material)?object.material:[object.material];materials.forEach(m=>{m.userData.baseOpacity??=m.opacity;m.transparent=true;fadeFilterMaterial(m,m.userData.baseOpacity*(result?1:.25));});
+                }});
+            }
         });
     }
 
@@ -1746,6 +1823,57 @@
             };
         }
 
+        // Touch uses a screen-space label target and full plot geometry.
+        // Desktop keeps its existing exact raycast and hover behavior.
+        let touchStart=null, lastTouchTap=0;
+        const activeTouches=new Set();
+        function pickTouchPlot(e) {
+            const rect=renderer.domElement.getBoundingClientRect();
+            camera.updateMatrixWorld();
+            scene.updateMatrixWorld(true);
+            let nearest=null, nearestDistance=24;
+            for(const [plotNo,label] of Object.entries(plotButtons)) {
+                if(!label.visible || !plotGroups[plotNo]?.visible || plotGroups[plotNo]?.userData?.filterMatch===false) continue;
+                const point=label.getWorldPosition(new THREE.Vector3()).project(camera);
+                if(point.z < -1 || point.z > 1 || Math.abs(point.x)>1 || Math.abs(point.y)>1) continue;
+                const x=rect.left+(point.x+1)*rect.width/2;
+                const y=rect.top+(1-point.y)*rect.height/2;
+                const distance=Math.hypot(e.clientX-x,e.clientY-y);
+                if(distance<nearestDistance) {nearestDistance=distance;nearest=plotNo;}
+            }
+            if(nearest) return nearest;
+            mouse.set(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+            raycaster.setFromCamera(mouse,camera);
+            const targets=[],owners=new Map();
+            for(const [plotNo,group] of Object.entries(plotGroups)) {
+                if(!group.visible || group.userData?.filterMatch===false) continue;
+                group.traverseVisible(object=>{
+                    if(object.isMesh || object.isSprite) {targets.push(object);owners.set(object,plotNo);}
+                });
+            }
+            const hit=raycaster.intersectObjects(targets,false)[0];
+            return hit ? owners.get(hit.object) : null;
+        }
+        container.addEventListener('pointerdown',e=>{
+            if(e.pointerType==='mouse' || e.target!==renderer.domElement) return;
+            activeTouches.add(e.pointerId);
+            if(activeTouches.size!==1) {touchStart=null;return;}
+            touchStart={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};
+        });
+        container.addEventListener('pointermove',e=>{
+            if(touchStart?.id===e.pointerId && Math.hypot(e.clientX-touchStart.x,e.clientY-touchStart.y)>10) touchStart.moved=true;
+        });
+        container.addEventListener('pointerup',e=>{
+            if(e.pointerType==='mouse') return;
+            const tap=touchStart?.id===e.pointerId && !touchStart.moved && activeTouches.size===1;
+            activeTouches.delete(e.pointerId);touchStart=null;
+            lastTouchTap=Date.now();
+            if(!tap) return;
+            const plotNo=pickTouchPlot(e);
+            if(plotNo) selectPlot(plotNo,true);
+        });
+        container.addEventListener('pointercancel',e=>{activeTouches.delete(e.pointerId);touchStart=null;lastTouchTap=Date.now();});
+
         container.addEventListener('mousemove', (e) => {
             const c = getCanvasCoords(e);
             mouse.x = c.x;
@@ -1753,7 +1881,7 @@
 
             raycaster.setFromCamera(mouse, camera);
             const targets = [];
-            Object.values(plotGroups).filter(group => group.visible).forEach(group => group.traverseVisible(object => {
+            Object.values(plotGroups).filter(group => group.visible && group.userData?.filterMatch!==false).forEach(group => group.traverseVisible(object => {
                 if ((object.isMesh && !object.userData.sharedHouseGeometry) || object.isSprite) targets.push(object);
             }));
             const hits = raycaster.intersectObjects(targets, false);
@@ -1791,13 +1919,14 @@
         });
 
         container.addEventListener('click', (e) => {
+            if(Date.now()-lastTouchTap<700) return;
             const c = getCanvasCoords(e);
             mouse.x = c.x;
             mouse.y = c.y;
 
             raycaster.setFromCamera(mouse, camera);
             const targets = [];
-            Object.values(plotGroups).filter(group => group.visible).forEach(group => group.traverseVisible(object => {
+            Object.values(plotGroups).filter(group => group.visible && group.userData?.filterMatch!==false).forEach(group => group.traverseVisible(object => {
                 if ((object.isMesh && !object.userData.sharedHouseGeometry) || object.isSprite) targets.push(object);
             }));
             const hits = raycaster.intersectObjects(targets, false);
@@ -1934,21 +2063,15 @@
             });
         });
 
-        // Search Input
-        const searchInput = document.getElementById('plotSearchInput');
-        if (searchInput) {
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const plotNo = searchInput.value.trim();
-                    if (plotButtons[plotNo]) {
-                        selectPlot(plotNo, true);
-                    } else {
-                        searchInput.style.outline = '2px solid #ef4444';
-                        setTimeout(() => searchInput.style.outline = 'none', 1200);
-                    }
-                }
-            });
+        // The same action supports Enter and the visible touch-friendly button.
+        const searchInput=document.getElementById('plotSearchInput');
+        function submitPlotSearch() {
+            const plotNo=searchInput.value.trim();
+            if(plotButtons[plotNo]) {searchInput.blur();selectPlot(plotNo,true);}
+            else {searchInput.style.outline='2px solid #ef4444';setTimeout(()=>searchInput.style.outline='none',1200);}
         }
+        searchInput?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();submitPlotSearch();}});
+        document.getElementById('plotSearchSubmit')?.addEventListener('click',submitPlotSearch);
 
         // Close Modal
         const closeBtn = document.getElementById('modalCloseBtn');
@@ -2203,7 +2326,7 @@
                 document.querySelectorAll('.btn-cam-preset').forEach(b => b.classList.remove('active'));
                 button.classList.add('active');
                 const preset = (CAMERA_PRESETS[button.dataset.preset] || CAMERA_PRESETS.isometric).pos;
-                animateCameraTo(fittedCameraPosition(preset), center());
+                animateCameraTo(fittedCameraPosition(preset), controls.target.clone());
             });
         });
         document.getElementById('threeToggleLayoutBtn')?.addEventListener('click', event => {
@@ -2280,6 +2403,7 @@
         if (!renderer) {
             initThreeScene();
             if (!uiReady) { setupUI(); uiReady = true; }
+            filterPlots(activeFilterStatus);
         } else {
             const container = document.getElementById('threeCanvasContainer');
             camera.aspect = container.clientWidth / Math.max(container.clientHeight, 1);
@@ -2287,6 +2411,14 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             startAnimationLoop();
         }
+    };
+    window.setAvatar3StatusFilter = status => {
+        activeFilterStatus=String(status || 'ALL').toUpperCase();
+        if(renderer) filterPlots(activeFilterStatus);
+    };
+    window.setAvatar3FinderMatches = numbers => {
+        window.smartFinderPlotNumbers=numbers;
+        if (renderer) filterPlots(activeFilterStatus);
     };
     window.activate3DSatelliteView = active => {
         if (!active) window.activateAvatar3View(false);
@@ -2301,7 +2433,7 @@
         document.querySelectorAll('.btn-cam-preset').forEach(button=>button.classList.toggle('active',button.dataset.preset===presetName));
         const preset = CAMERA_PRESETS[presetName];
         const target = layoutFocusCenter();
-        animateCameraTo(fittedCameraPosition(preset.pos), target);
+        animateCameraTo(fittedCameraPosition(preset.pos), controls.target.clone());
     };
     window.getAvatar3SceneState = () => ({
         active: isActive, plotCount: Object.keys(plotGroups).length,

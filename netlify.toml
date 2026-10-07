@@ -7,12 +7,19 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
   included_files = ["avatar3_data.json", "avatar1_data.json", "avatar2_digi/data.json"]
-[[edge_functions]]
-  function = "staff-gate"
-  path = "/*"
 [[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "same-origin"
     Cache-Control = "private, no-store"
+
+[[headers]]
+  for = "/avatar3_satellite_overlay-9cd82c6fad.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*-park1.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"

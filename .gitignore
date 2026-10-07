@@ -12,3 +12,6 @@ __pycache__/
 .env.*
 !.env.example
 
+# Local attachment copies and preview process output
+.codex-remote-attachments/
+design-review/preview-*.log

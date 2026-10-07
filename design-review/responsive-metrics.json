@@ -1,0 +1,102 @@
+[
+  {
+    "header": 142.5,
+    "legendCollapsed": true,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 461.5,
+    "overflow": 320,
+    "view": "satellite",
+    "width": 320
+  },
+  {
+    "header": 142.5,
+    "legendCollapsed": true,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 461.5,
+    "overflow": 320,
+    "view": "3d",
+    "width": 320
+  },
+  {
+    "header": 142.5,
+    "legendCollapsed": true,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 593.5,
+    "overflow": 393,
+    "view": "satellite",
+    "width": 393
+  },
+  {
+    "header": 142.5,
+    "legendCollapsed": true,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 593.5,
+    "overflow": 393,
+    "view": "3d",
+    "width": 393
+  },
+  {
+    "header": 116.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 839.5,
+    "overflow": 768,
+    "view": "satellite",
+    "width": 768
+  },
+  {
+    "header": 116.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 839.5,
+    "overflow": 768,
+    "view": "3d",
+    "width": 768
+  },
+  {
+    "header": 101.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 730.5,
+    "overflow": 1440,
+    "view": "satellite",
+    "width": 1440
+  },
+  {
+    "header": 101.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 730.5,
+    "overflow": 1440,
+    "view": "3d",
+    "width": 1440
+  },
+  {
+    "header": 101.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 910.5,
+    "overflow": 1920,
+    "view": "satellite",
+    "width": 1920
+  },
+  {
+    "header": 101.5,
+    "legendCollapsed": false,
+    "legendOverSearch": false,
+    "legendVisible": true,
+    "mapHeight": 910.5,
+    "overflow": 1920,
+    "view": "3d",
+    "width": 1920
+  }
+]

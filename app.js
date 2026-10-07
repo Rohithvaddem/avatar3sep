@@ -27,6 +27,7 @@ let isSatelliteActive = false;
 let is3DViewActive = false;
 let leafletMarkers = {};
 let activeSearchPlot = null;
+let selectedVisitPlot = null;
 let miniMap = null;
 let miniMapRect = null;
 let simulatedLocks = {};
@@ -442,6 +443,7 @@ function hidePlotHoverTooltip() {
 }
 
 function renderPlotDots() {
+    queueMicrotask(applySmartFinderHighlights);
     plotsOverlay.innerHTML = '';
     
     const comingSoonOverlay = document.getElementById('comingSoonOverlay');
@@ -577,9 +579,12 @@ function renderPlotDots() {
 // ----------------------------------------------------
 
 function setupMapControls() {
+    const chromeTarget=target=>target.closest?.('.map-tool-strip,#facingCompass,.map-controls,#floatingLegendCard,.gis-layer-control,.finder-result-banner');
+    let pinchStart=null;
     // Mouse dragging to pan
     mapViewport.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return; // Left click only
+        if(chromeTarget(e.target)) return;
         isDragging = true;
         startX = e.clientX - panX;
         startY = e.clientY - panY;
@@ -613,6 +618,15 @@ function setupMapControls() {
 
     // Touch support for mobile panning
     mapViewport.addEventListener('touchstart', (e) => {
+        if(chromeTarget(e.target)||isSatelliteActive||is3DViewActive) return;
+        if(e.touches.length===2) {
+            isDragging=false;
+            const rect=mapViewport.getBoundingClientRect();
+            const x=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left;
+            const y=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top;
+            pinchStart={distance:Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY),scale:zoomScale,x:(x-panX)/zoomScale,y:(y-panY)/zoomScale};
+            return;
+        }
         if (e.touches.length === 1) {
             isDragging = true;
             startX = e.touches[0].clientX - panX;
@@ -623,14 +637,24 @@ function setupMapControls() {
     });
 
     mapViewport.addEventListener('touchmove', (e) => {
+        if(pinchStart&&e.touches.length===2) {
+            e.preventDefault();
+            const rect=mapViewport.getBoundingClientRect();
+            const distance=Math.hypot(e.touches[1].clientX-e.touches[0].clientX,e.touches[1].clientY-e.touches[0].clientY);
+            zoomScale=Math.min(3,Math.max(minPresetZoomScale,pinchStart.scale*distance/Math.max(1,pinchStart.distance)));
+            panX=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left-pinchStart.x*zoomScale;
+            panY=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top-pinchStart.y*zoomScale;
+            applyTransform(true);return;
+        }
         if (!isDragging || e.touches.length !== 1) return;
         panX = e.touches[0].clientX - startX;
         panY = e.touches[0].clientY - startY;
         applyTransform(true);
         fadeMapTip();
-    });
+    },{passive:false});
 
     mapViewport.addEventListener('touchend', (e) => {
+        if(pinchStart){pinchStart=null;isDragging=false;return;}
         if (isDragging) {
             isDragging = false;
             if (e.changedTouches.length === 1) {
@@ -641,6 +665,7 @@ function setupMapControls() {
             }
         }
     });
+    mapViewport.addEventListener('touchcancel',()=>{pinchStart=null;isDragging=false;});
 
     // Scroll wheel to zoom
     mapViewport.addEventListener('wheel', (e) => {
@@ -688,7 +713,7 @@ function setupMapControls() {
                 if (leafletMap) {
                     e.stopPropagation();
                     const activeLoc = getActiveProjectCenter();
-                    leafletMap.flyTo(activeLoc, 17, { duration: 1.2 });
+                    fitSatelliteLayout();
                 }
             } else {
                 fitMapToViewport();
@@ -725,8 +750,12 @@ function adjustZoom(factor) {
 }
 
 function fitMapToViewport() {
-    const vWidth = mapViewport.clientWidth;
-    const vHeight = mapViewport.clientHeight;
+    const shell=document.body.classList.contains('layout-shell');
+    const small=window.innerWidth<=992;
+    const fitLeft=shell&&!small?(document.getElementById('floatingLegendCard')?.classList.contains('collapsed')?186:(document.getElementById('floatingLegendCard')?.getBoundingClientRect().width||224)+36):12;
+    const fitTop=shell?(112):0;
+    const vWidth = mapViewport.clientWidth-(shell?(small?24:fitLeft+72):0);
+    const vHeight = mapViewport.clientHeight-(shell?(fitTop+(small?276:72)):0);
     
     let height = 576;
     if (currentProject === 'avatar2') {
@@ -736,13 +765,13 @@ function fitMapToViewport() {
     }
     
     // Background original dims: width: 1024, height: dynamic
-    const fitScale = Math.min(vWidth / 1024, vHeight / height) * 0.95; // 5% margins
+    const fitScale = Math.min(vWidth / 1024, vHeight / height) * (document.body.classList.contains('layout-shell') ? 0.985 : 0.95);
     minPresetZoomScale = Math.max(fitScale, 0.1);
     zoomScale = minPresetZoomScale;
     
     // Centering calculations
-    panX = (vWidth - 1024 * zoomScale) / 2;
-    panY = (vHeight - height * zoomScale) / 2;
+    panX = (vWidth - 1024 * zoomScale) / 2+(shell?fitLeft:0);
+    panY = (vHeight - height * zoomScale) / 2+fitTop;
     // Avatar 3's approved framing sits slightly below the viewport center.
     if (currentProject === 'avatar3') {
         panY += Math.min(vHeight * 0.012, Math.max(0, panY));
@@ -782,10 +811,10 @@ function setupSearch() {
             searchSuggestions.style.display = 'block';
             return;
         }
-        activeFilters.facing = null;
-        activeFilters.status = null;
+        if(!document.getElementById('facingCompass')) {activeFilters.facing = null;activeFilters.status = null;}
         document.querySelectorAll('.filter-pill.active, .legend-item.active').forEach(el => el.classList.remove('active'));
         searchInput.value = plotNo;
+        searchInput.blur();
         searchClearBtn.style.display = 'block';
         searchSuggestions.style.display = 'none';
         sidebar.classList.remove('show');
@@ -861,6 +890,7 @@ function renderSearchSuggestions(query) {
             div.addEventListener('click', () => {
                 focusOnPlot(plotNo);
                 searchInput.value = plotNo;
+        searchInput.blur();
                 searchSuggestions.style.display = 'none';
             });
             searchSuggestions.appendChild(div);
@@ -875,8 +905,8 @@ function focusOnPlot(plotNo) {
     const coordsSource = avatarCoordsPool[currentProject] || {};
     const coords = coordsSource[plotNo];
     if (!coords) return;
-    activeFilters.facing = null;
-    activeFilters.status = null;
+    selectedVisitPlot = {project:currentProject,plotNo:String(plotNo)};
+    if(!document.getElementById('facingCompass')) {activeFilters.facing = null;activeFilters.status = null;}
     document.querySelectorAll('.filter-pill.active, .legend-item.active').forEach(el => el.classList.remove('active'));
     sidebar.classList.remove('show');
     document.querySelector('.sidebar-backdrop')?.classList.remove('active');
@@ -892,6 +922,8 @@ function focusOnPlot(plotNo) {
     
     const dot = document.getElementById(`plot-dot-${plotNo}`);
     if (dot) dot.classList.add('highlighted');
+
+    if (is3DViewActive && window.select3DPlot) { window.select3DPlot(String(plotNo), true); return; }
 
     // Leaflet Satellite Focus & Highlight
     if (leafletMap) {
@@ -913,7 +945,11 @@ function focusOnPlot(plotNo) {
         const lng = siteBounds.west + (coords.left / width2D) * (siteBounds.east - siteBounds.west);
         const lat = siteBounds.north - (coords.top / height2D) * (siteBounds.north - siteBounds.south);
         
-        leafletMap.setView([lat, lng], 19);
+        const target=document.querySelector(`svg [data-plot="${plotNo}"]`);
+        if(target && isSatelliteActive) {
+            const rect=target.getBoundingClientRect(), mapRect=leafletMap.getContainer().getBoundingClientRect();
+            leafletMap.setView(leafletMap.containerPointToLatLng([rect.left+rect.width/2-mapRect.left, rect.top+rect.height/2-mapRect.top]),19);
+        } else leafletMap.setView([lat, lng], 19);
     }
     
     let x2d = coords.left;
@@ -928,7 +964,7 @@ function focusOnPlot(plotNo) {
     // Zoom close and Center on coordinates
     zoomScale = 2.0; // close up zoom
     const vWidth = mapViewport.clientWidth;
-    const vHeight = mapViewport.clientHeight;
+    const vHeight = mapViewport.clientHeight - (document.body.classList.contains("layout-shell") ? 64 : 0);
     
     panX = vWidth / 2 - x2d * zoomScale;
     panY = vHeight / 2 - y2d * zoomScale;
@@ -968,7 +1004,7 @@ function setupFilters() {
         applyFilters();
     });
 
-    document.getElementById('facingResetBtn').addEventListener('click', () => {
+    document.getElementById('facingResetBtn')?.addEventListener('click', () => {
         document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
         activeFilters.facing = null;
         applyFilters();
@@ -976,13 +1012,23 @@ function setupFilters() {
 }
 
 function matchesPlotFacing(facing, selected) {
+    if(Array.isArray(selected)) return selected.some(value=>matchesPlotFacing(facing,value));
     const directions = value => String(value).toLowerCase().match(/north|south|east|west/g) || [];
     const actual = directions(facing);
     const wanted = directions(selected);
-    return wanted.length > 0 && wanted.every(direction => actual.includes(direction));
+    return wanted.length > 0 && actual.length === wanted.length && wanted.every(direction => actual.includes(direction));
 }
 
+document.addEventListener('facing-selection-changed',event=>{
+    activeFilters.facing=event.detail.facings.length?event.detail.facings:null;
+    applyFilters();
+});
 function applyFilters() {
+    document.querySelectorAll('.floating-legend-item').forEach(row=>{
+        const selected=activeFilters.status===row.dataset.status;
+        row.classList.toggle('active',selected);
+        row.setAttribute('aria-pressed',String(selected));
+    });
     const dots = document.querySelectorAll('.plot-dot');
     
     dots.forEach(dot => {
@@ -1006,13 +1052,16 @@ function applyFilters() {
         
         // 3. Check Status Filter
         if (activeFilters.status) {
-            matchesStatus = String(status).toLowerCase().trim() === activeFilters.status.toLowerCase().trim();
+            matchesStatus = String(status).toLowerCase().trim() === activeFilters.status.toLowerCase().trim() || (currentProject==='avatar3' && activeFilters.status==='AVAILABLE' && ['MORTGAGE','MORTAGAGE','RESALE'].includes(String(status).toUpperCase()));
         }
         
+        const finderMatch=!Array.isArray(window.smartFinderPlotNumbers)||window.smartFinderPlotNumbers.includes(String(plotNo));
+        dot.disabled=!(matchesFacing && matchesStatus && matchesSearch && finderMatch);
+        dot.tabIndex=dot.disabled?-1:0;
         dot.classList.toggle('facing-highlighted', Boolean(activeFilters.facing) && matchesFacing && matchesStatus && matchesSearch);
         dot.classList.remove('filtered-out', 'search-filtered');
         // Apply filtered visibility
-        if (matchesFacing && matchesStatus && matchesSearch) {
+        if (matchesFacing && matchesStatus && matchesSearch && finderMatch) {
             dot.classList.remove('filtered-out');
             dot.classList.remove('search-filtered');
         } else {
@@ -1025,6 +1074,21 @@ function applyFilters() {
         }
     });
 
+    document.querySelectorAll('svg [data-plot]').forEach(element=>{
+        const plot=(avatarDataPool.avatar3 || []).find(row=>String(row.plot_no)===element.dataset.plot);
+        if (!plot) return;
+        const status=String(plot.plot_status || '').toUpperCase();
+        const matchesStatus=!activeFilters.status || status===activeFilters.status || (activeFilters.status==='AVAILABLE' && ['MORTGAGE','MORTAGAGE','RESALE'].includes(status));
+        const matchesFacing=!activeFilters.facing || matchesPlotFacing(plot.facing,activeFilters.facing);
+        const searchMatch=!activeSearchPlot || String(plot.plot_no)===String(activeSearchPlot);
+        element.classList.toggle('filtered-out',!(matchesStatus && matchesFacing && searchMatch));
+    });
+    window.avatar3FacingPlotNumbers = activeFilters.facing ? (avatarDataPool.avatar3 || []).filter(plot=>matchesPlotFacing(plot.facing,activeFilters.facing)).map(plot=>String(plot.plot_no)) : null;
+    window.avatar3SearchPlotNumber=activeSearchPlot;
+    window.setAvatar3StatusFilter?.(activeFilters.status || 'ALL');
+    const matching=(avatarDataPool[currentProject]||[]).filter(plot=> (!activeFilters.facing || matchesPlotFacing(plot.facing,activeFilters.facing)) && (!activeFilters.status || String(plot.plot_status).toUpperCase()===activeFilters.status || (activeFilters.status==='AVAILABLE' && ['MORTGAGE','MORTAGAGE','RESALE'].includes(String(plot.plot_status).toUpperCase()))) && (!activeSearchPlot || String(plot.plot_no)===String(activeSearchPlot)) && (!Array.isArray(window.smartFinderPlotNumbers) || window.smartFinderPlotNumbers.includes(String(plot.plot_no))));
+    if(Array.isArray(window.smartFinderPlotNumbers)){const resultCount=document.getElementById('matchedPlotCount');if(resultCount)resultCount.textContent=String(matching.length);}
+    document.dispatchEvent(new CustomEvent('plot-filters-changed',{detail:{facings:activeFilters.facing||[],count:matching.length,total:(avatarDataPool[currentProject]||[]).length}}));
     // Synchronize filters on Leaflet markers
     if (leafletMap) {
         Object.keys(leafletMarkers).forEach(plotNo => {
@@ -1044,6 +1108,37 @@ function applyFilters() {
 function formatNotesList(notes) {
     if (!Array.isArray(notes) || notes.length === 0) return '<div style="color: var(--text-muted); font-style: italic;">No notes recorded.</div>';
     return notes.map(note => `<div style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 4px; font-size: 11px; word-break: break-word;">${note}</div>`).join('');
+}
+
+function escapeDocumentText(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+function showDocumentPreview(html, title) {
+    document.getElementById('documentPreviewDialog')?.remove();
+    const previousFocus = document.activeElement;
+    const dialog = document.createElement('dialog');
+    dialog.id = 'documentPreviewDialog';
+    dialog.className = 'document-preview-dialog';
+    dialog.setAttribute('aria-label', title);
+    const header = document.createElement('header');
+    const heading = document.createElement('h3');
+    heading.textContent = title;
+    const print = document.createElement('button');
+    print.type = 'button'; print.textContent = 'Print / Save PDF';
+    print.addEventListener('click', () => frame.contentWindow.print());
+    const close = document.createElement('button');
+    close.type = 'button'; close.textContent = 'Close';
+    close.setAttribute('aria-label', 'Close document preview');
+    const frame = document.createElement('iframe');
+    frame.title = title;
+    // Keep generated document code isolated; permit its print dialog and share links.
+    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-modals allow-popups');
+    frame.srcdoc = html;
+    close.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => { dialog.remove(); previousFocus?.focus(); });
+    const actions = document.createElement('div'); actions.className = 'document-preview-actions';
+    actions.append(print, close); header.append(heading, actions); dialog.append(header, frame);
+    document.body.append(dialog); dialog.showModal(); close.focus();
 }
 
 function exportPriceQuote(plotNo, customTerms) {
@@ -1127,19 +1222,15 @@ function exportPriceQuote(plotNo, customTerms) {
 
     const fmt = (v) => '₹ ' + Math.round(v).toLocaleString('en-IN');
 
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-        alert("Pop-up blocked! Please allow pop-ups to generate the Price Quote.");
-        return;
-    }
-
     const todayStr = new Date().toLocaleDateString('en-GB').replace(/\//g, '.');
 
-    printWindow.document.write(`
+    const quoteHtml = `
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Price Quote - Plot #${item.plot_no} - ${projectMeta.title}</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Price Quote - Plot #${item.plot_no} - ${escapeDocumentText(projectMeta.title)}</title>
             <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
             <style>
@@ -1346,7 +1437,7 @@ function exportPriceQuote(plotNo, customTerms) {
                 <table class="q-table">
                     <tr>
                         <td style="width: 20%; font-weight: 700; background: #f8fafc;" contenteditable="true">Client Name</td>
-                        <td style="width: 80%; font-weight: 700;" class="bg-blue" id="lblClientName" contenteditable="true">${customerName || '-'}</td>
+                        <td style="width: 80%; font-weight: 700;" class="bg-blue" id="lblClientName" contenteditable="true">${escapeDocumentText(customerName || '-')}</td>
                     </tr>
                     <tr>
                         <td style="font-weight: 700; background: #f8fafc;" contenteditable="true">Address</td>
@@ -1367,9 +1458,9 @@ function exportPriceQuote(plotNo, customTerms) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="font-weight: 800;" contenteditable="true">${projectMeta.title}</td>
+                            <td style="font-weight: 800;" contenteditable="true">${escapeDocumentText(projectMeta.title)}</td>
                             <td style="font-weight: 700; text-align: center;" contenteditable="true">${item.plot_no}</td>
-                            <td style="font-weight: 700; text-align: center; text-transform: uppercase;" contenteditable="true">${facingStr}</td>
+                            <td style="font-weight: 700; text-align: center; text-transform: uppercase;" contenteditable="true">${escapeDocumentText(facingStr)}</td>
                             <td style="text-align: right;" id="lblPerSqYd" contenteditable="true">${fmt(defaultBaseRate)}</td>
                             <td class="bg-yellow-highlight" style="text-align: right; font-weight: 700;" id="lblOriginalTotalCost" contenteditable="true">${fmt(Math.round(plotAreaYds * defaultBaseRate))}</td>
                         </tr>
@@ -1389,18 +1480,18 @@ function exportPriceQuote(plotNo, customTerms) {
                     <tbody>
                         <tr>
                             <td contenteditable="true">East Plot Premium</td>
-                            <td style="text-align: center;" class="bg-blue" id="lblEastRate" contenteditable="true">${isEast ? '₹ 200' : '₹ 0'}</td>
-                            <td style="text-align: right;" class="bg-blue" id="lblEastTotal" contenteditable="true">${fmt(isEast ? plotAreaYds * 200 : 0)}</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblEastRate" contenteditable="true">${fmt(initialEastRate)}</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblEastTotal" contenteditable="true">${fmt(plotAreaYds * initialEastRate)}</td>
                         </tr>
                         <tr>
                             <td contenteditable="true">Corner Plot Premium</td>
-                            <td style="text-align: center;" class="bg-blue" id="lblCornerRate" contenteditable="true">${isCorner ? '₹ 500' : '₹ 0'}</td>
-                            <td style="text-align: right;" class="bg-blue" id="lblCornerTotal" contenteditable="true">${fmt(isCorner ? plotAreaYds * 500 : 0)}</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblCornerRate" contenteditable="true">${fmt(initialCornerRate)}</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblCornerTotal" contenteditable="true">${fmt(plotAreaYds * initialCornerRate)}</td>
                         </tr>
                         <tr>
                             <td contenteditable="true">Mortgage Plot Charge</td>
-                            <td style="text-align: center;" class="bg-blue" id="lblMortgageRate" contenteditable="true">${isMortgage ? '₹ 300' : '₹ 0'}</td>
-                            <td style="text-align: right;" class="bg-blue" id="lblMortgageTotal" contenteditable="true">${fmt(isMortgage ? plotAreaYds * 300 : 0)}</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblMortgageRate" contenteditable="true">${fmt(initialMortgageRate)}</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblMortgageTotal" contenteditable="true">${fmt(plotAreaYds * initialMortgageRate)}</td>
                         </tr>
                         <tr>
                             <td contenteditable="true">Bank Loan Processing Extra</td>
@@ -1584,8 +1675,8 @@ function exportPriceQuote(plotNo, customTerms) {
                         return '₹ ' + Math.round(val).toLocaleString('en-IN');
                     }
 
-                    function updateCalculations() {
-                        const active = document.activeElement;
+                    function updateCalculations(event) {
+                        const active = event?.target || null;
                         const areaEl = document.getElementById('lblPlotArea');
                         const perSqYdEl = document.getElementById('lblPerSqYd');
                         const originalTotalCostEl = document.getElementById('lblOriginalTotalCost');
@@ -1633,7 +1724,7 @@ function exportPriceQuote(plotNo, customTerms) {
                         // If user edits Discount directly, calculate baseClosingPrice from stdFullListRate - Discount
                         if (active === discountEl) {
                             const typedDiscount = parseNum(discountEl.innerText);
-                            netClosingRate = Math.max(0, stdFullListRate - typedDiscount);
+                            netClosingRate = Math.max(0, stdFullListRate - typedDiscount + (plotArea > 0 ? ${spotDiscount} / plotArea : 0));
                             baseClosingPrice = Math.max(0, netClosingRate - (eastRate + cornerRate + mortgageRate + bankLoanRate));
                             if (closingPriceEl) closingPriceEl.innerText = fmt(baseClosingPrice);
                         }
@@ -1663,13 +1754,13 @@ function exportPriceQuote(plotNo, customTerms) {
                         if (totalValueTotalEl && totalValueTotalEl !== active) totalValueTotalEl.innerText = fmt(currentExtrasValueTotal);
 
                         // Calculate Discount per sq.yd (stdFullListRate - netClosingRate) - Includes any zeroed/removed add-ons!
-                        const discountPerSqYd = Math.max(0, stdFullListRate - netClosingRate);
+                        const discountPerSqYd = Math.max(0, stdFullListRate - netClosingRate + (plotArea > 0 ? ${spotDiscount} / plotArea : 0));
                         if (discountEl && discountEl !== active) {
                             discountEl.innerText = fmt(discountPerSqYd);
                         }
 
                         // Grand Total Amount after discount in Price Quotation section
-                        const grandTotalAmount = Math.round(plotArea * netClosingRate);
+                        const grandTotalAmount = Math.max(0, Math.round(plotArea * netClosingRate) - ${spotDiscount});
                         const totalAmtEl = document.getElementById('lblTotalAmount');
                         if (totalAmtEl && totalAmtEl !== active) totalAmtEl.innerText = fmt(grandTotalAmount);
 
@@ -1716,71 +1807,11 @@ function exportPriceQuote(plotNo, customTerms) {
                         const structTotalEl = document.getElementById('lblStructTotal');
                         if (structTotalEl && structTotalEl !== active) structTotalEl.innerText = fmt(grandTotalAmount);
 
-                    let scheduleRowCount = 3;
-
-                    function bindScheduleCell(pctEl, amtEl) {
-                        if (!pctEl || !amtEl) return;
-                        [pctEl, amtEl].forEach(el => {
-                            el.addEventListener('input', updateCalculations);
-                            el.addEventListener('keyup', updateCalculations);
-                            el.addEventListener('blur', function() {
-                                if (el === pctEl) {
-                                    const raw = pctEl.innerText.replace(/[^0-9.]/g, '');
-                                    if (raw !== '') {
-                                        const num = parseFloat(raw);
-                                        if (!isNaN(num)) pctEl.innerText = (num % 1 === 0 ? num.toFixed(0) : num.toFixed(1)) + '%';
-                                    }
-                                } else if (el === amtEl) {
-                                    const val = parseNum(amtEl.innerText);
-                                    if (val > 0) amtEl.innerText = fmt(val);
-                                }
-                                updateCalculations();
-                            });
-                        });
-                    }
-
-                    // Update Payment Schedule Live Percentage & Amount Calculation
-                    for (let idx = 1; idx <= scheduleRowCount; idx++) {
-                        const pctEl = document.getElementById('lblPct' + idx);
-                        const amtEl = document.getElementById('lblAmt' + idx);
-
-                        if (pctEl && amtEl) {
-                            if (active === pctEl) {
-                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
-                                if (rawPctStr !== '') {
-                                    const pctVal = parseFloat(rawPctStr);
-                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
-                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
-                                        amtEl.innerText = fmt(calcAmt);
-                                    }
-                                } else {
-                                    amtEl.innerText = '';
-                                }
-                            } else if (active === amtEl) {
-                                const rawAmtStr = amtEl.innerText.replace(/[^0-9.]/g, '');
-                                if (rawAmtStr !== '') {
-                                    const amtVal = parseFloat(rawAmtStr);
-                                    if (!isNaN(amtVal) && grandTotalAmount > 0) {
-                                        const calcPct = (amtVal / grandTotalAmount) * 100;
-                                        const pctFormatted = (calcPct % 1 === 0 ? calcPct.toFixed(0) : calcPct.toFixed(1)) + '%';
-                                        pctEl.innerText = pctFormatted;
-                                    }
-                                } else {
-                                    pctEl.innerText = '';
-                                }
-                            } else if (pctEl.innerText.trim() !== '') {
-                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
-                                if (rawPctStr !== '') {
-                                    const pctVal = parseFloat(rawPctStr);
-                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
-                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
-                                        amtEl.innerText = fmt(calcAmt);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
+                    const reg75=Math.round(bankTotal*.075);
+                    const mutation=Math.max(800,Math.round(bankTotal*.001));
+                    document.getElementById('lblReg75').innerText=fmt(reg75);
+                    document.getElementById('lblMutation').innerText=mutation.toLocaleString('en-IN');
+                    document.getElementById('lblRegTotal').innerText=fmt(reg75+1000+100+50+5000+mutation);
                     updateScheduleRows(grandTotalAmount, active);
 
                     const scheduleTotalEl = document.getElementById('lblScheduleTotal');
@@ -1793,7 +1824,6 @@ function exportPriceQuote(plotNo, customTerms) {
                     if (!pctEl || !amtEl) return;
                     [pctEl, amtEl].forEach(el => {
                         el.addEventListener('input', updateCalculations);
-                        el.addEventListener('keyup', updateCalculations);
                         el.addEventListener('blur', function() {
                             if (el === pctEl) {
                                 const raw = pctEl.innerText.replace(/[^0-9.]/g, '');
@@ -1859,10 +1889,9 @@ function exportPriceQuote(plotNo, customTerms) {
                     const el = document.getElementById(id);
                     if (el) {
                         el.addEventListener('input', updateCalculations);
-                        el.addEventListener('keyup', updateCalculations);
                         el.addEventListener('blur', function() {
                             const val = parseNum(el.innerText);
-                            if (val > 0) el.innerText = fmt(val);
+                            if (val > 0) el.innerText = id === 'lblPlotArea' ? String(val) : fmt(val);
                             updateCalculations();
                         });
                     }
@@ -1907,8 +1936,8 @@ function exportPriceQuote(plotNo, customTerms) {
             </script>
         </body>
         </html>
-    `);
-    printWindow.document.close();
+    `;
+    showDocumentPreview(quoteHtml, "Price quote — Plot #" + plotNo);
 }
 
 // ----------------------------------------------------
@@ -1944,17 +1973,11 @@ function exportDigitalAllotment(plotNo, customTerms) {
     const qrData = encodeURIComponent(`ASPIREALTY OFFICIAL ALLOTMENT CERTIFICATE\nCert No: ${certNo}\nProject: ${projectMeta.title}\nPlot No: ${plotNo}\nPlot Area: ${plotAreaYds} Sq.Yds\nClient: ${customerName}\nTotal Value: ${fmt(totalAmount)}\nDirector Verified & Approved`);
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${qrData}`;
 
-    const certWindow = window.open('', '_blank');
-    if (!certWindow) {
-        alert("Pop-up blocked! Please allow pop-ups to generate the Digital Allotment Certificate.");
-        return;
-    }
-
     const shareText = encodeURIComponent(`*ASPIREALTY INFRA DEVELOPERS*\nOfficial Provisional Plot Allotment Certificate\n\n📌 *Project*: ${projectMeta.title}\n🏡 *Plot No*: ${plotNo}\n📐 *Area*: ${plotAreaYds} Sq. Yards (${facingStr} Facing)\n👤 *Client*: ${customerName}\n💰 *Agreed Deal Value*: ${fmt(totalAmount)}\n📜 *Certificate No*: ${certNo}\n\nVerified and digitally authorized by Director.`);
     const whatsappUrl = `https://wa.me/?text=${shareText}`;
     const mailtoUrl = `mailto:?subject=${encodeURIComponent(`Provisional Plot Allotment Certificate - Plot #${plotNo}`)}&body=${shareText}`;
 
-    certWindow.document.write(`
+    const certificateHtml = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -2097,8 +2120,8 @@ function exportDigitalAllotment(plotNo, customTerms) {
             </div>
         </body>
         </html>
-    `);
-    certWindow.document.close();
+    `;
+    showDocumentPreview(certificateHtml, "Allotment certificate — Plot #" + plotNo);
 }
 
 // ----------------------------------------------------
@@ -2289,6 +2312,7 @@ function openDealSimulator(plotNo) {
 }
 
 function openPlotModal(plotNo) {
+    selectedVisitPlot = {project:currentProject,plotNo:String(plotNo)};
     const item = plotData.find(p => String(p.plot_no) === String(plotNo)) || {
         plot_no: plotNo,
         plot_size: 'N/A',
@@ -2406,6 +2430,7 @@ function openPlotModal(plotNo) {
                 <span class="detail-val">${item.facing || 'N/A'}</span>
             </div>
 
+            ${isAdminLoggedIn && item.mortgage_reference === true ? '<div class="detail-row"><span class="detail-label">Staff reference</span><span class="mortgage-reference-tag">Mortgage plot</span></div>' : ''}
             ${currentProject === 'avatar3' ? '<div class="detail-row"><span class="detail-label">Reference / Share</span><span class="detail-val">' + (item.reference_name || 'ASPIREALTY') + '</span></div>' : ''}
             ${emiHtml}
             ${adminCrmHtml}
@@ -2592,10 +2617,16 @@ function updateStatistics() {
         statMortgagePlots.textContent = statusCounts['MORTGAGE'];
     }
     
+    let summary=document.getElementById('headerStatusCounts');
+    if(!summary) { summary=document.createElement('div');summary.id='headerStatusCounts';summary.className='header-status-counts';document.querySelector('.inventory-summary').appendChild(summary); }
+    summary.innerHTML=[['HOLD','Hold'],['REGISTERED','Registered'],['RESALE','Resale']].map(([status,label])=>`<span style="--count-color:${getStatusColor(status)}"><i aria-hidden="true"></i>${label} <strong>${statusCounts[status]||0}</strong></span>`).join('');
+
     // Render Legend & Stats in Sidebar & Floating Card
     if (statusLegendList) statusLegendList.innerHTML = '';
     const floatingLegendBody = document.getElementById('floatingLegendBody');
     if (floatingLegendBody) floatingLegendBody.innerHTML = '';
+    const legendTotal=document.getElementById('legendTotalCount');
+    if(legendTotal) legendTotal.textContent=statTotalPlots.textContent+' plots';
 
     const displayStatuses = [
         { label: 'AVAILABLE', status: 'AVAILABLE' },
@@ -2607,7 +2638,7 @@ function updateStatistics() {
     ];
 
     displayStatuses.forEach(item => {
-        const count = statusCounts[item.status] || 0;
+        const count = item.status === 'AVAILABLE' ? Number(statAvailablePlots.textContent) : (statusCounts[item.status] || 0);
         const color = getStatusColor(item.status);
         
         // Sidebar Row
@@ -2642,6 +2673,7 @@ function updateStatistics() {
         if (floatingLegendBody) {
             const floatItem = document.createElement('div');
             floatItem.className = 'floating-legend-item';
+            floatItem.dataset.status = item.status;
             if (activeFilters.status === item.status) floatItem.classList.add('active');
             floatItem.style.setProperty('--status-color', color);
             
@@ -3240,6 +3272,36 @@ function setupAdminState() {
             });
         }
     }
+    if (isAdminLoggedIn) {
+        const referenceButton=document.createElement('button');
+        referenceButton.type='button';referenceButton.className='admin-login-btn mortgage-reference-control';
+        referenceButton.textContent='Mortgage plot reference';
+        referenceButton.addEventListener('click',openMortgageReference);
+        sidebarFooter.prepend(referenceButton);
+    }
+}
+
+function openMortgageReference() {
+    if (!isAdminLoggedIn) return;
+    const plots=plotData.filter(plot=>plot.mortgage_reference===true);
+    const dialog=document.createElement('dialog');
+    dialog.className='mortgage-reference-dialog'; dialog.setAttribute('aria-label','Mortgage plot reference');
+    const heading=document.createElement('h3'); heading.textContent='Mortgage plot reference';
+    const explanation=document.createElement('p');
+    explanation.textContent='This tag stays with the plot when its sale status changes. Staff reference only.';
+    const close=document.createElement('button'); close.type='button'; close.textContent='Close';
+    close.addEventListener('click',()=>dialog.close());
+    const header=document.createElement('header');header.append(heading,close);
+    const list=document.createElement('div');list.className='mortgage-reference-list';
+    if (!plots.length) list.textContent='No mortgage plots recorded for this project.';
+    plots.forEach(plot=>{
+        const button=document.createElement('button');button.type='button';
+        button.textContent='Plot #'+plot.plot_no+' · '+plot.plot_status;
+        button.addEventListener('click',()=>{dialog.close();openPlotModal(String(plot.plot_no));});
+        list.append(button);
+    });
+    dialog.append(header,explanation,list);document.body.append(dialog);
+    dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
 }
 
 function shareLayoutLink() {
@@ -3602,15 +3664,15 @@ function setupSatelliteToggle() {
             mapContainer.style.display = 'none';
             document.getElementById('threeMapContainer').style.display = 'block';
             if (mapTip) mapTip.style.display = 'none';
-            document.querySelector('.project-name').textContent = 'Avatar 3';
-            for (const id of ['floatingLegendCard', 'searchSection', 'filtersSection']) {
+            document.querySelector('.project-name').innerHTML = '<img class="project-wordmark" src="assets/avatar3-wordmark.png" alt="Avatar 3" width="110" height="24">';
+            for (const id of ['searchSection', 'filtersSection']) {
                 const element = document.getElementById(id);
                 if (element) element.style.display = 'none';
             }
             if (window.activateAvatar3View) window.activateAvatar3View(true);
         }
         requestAnimationFrame(() => {
-            if (isSatelliteActive && leafletMap) leafletMap.invalidateSize();
+            if (isSatelliteActive && leafletMap) {leafletMap.invalidateSize();fitSatelliteLayout();}
             window.dispatchEvent(new Event('resize'));
             if (view === 'schematic') fitMapToViewport();
         });
@@ -3620,11 +3682,32 @@ function setupSatelliteToggle() {
     document.getElementById('btn3DView')?.addEventListener('click', () => selectView('3d'));
 }
 
+let satellitePlotFrame = null;
+let satelliteStatusOverlay = null;
 let layoutsGroup = null;
 let regionalRoadsGroup = null;
 let localRoadsGroup = null;
 let projectMarkersGroup = null;
 
+function fitSatelliteLayout() {
+    if (!leafletMap || !isSatelliteActive) return;
+    if (currentProject==='avatar3' && satellitePlotFrame) {
+        const small=window.innerWidth<=600;
+        let footprint=satellitePlotFrame.bounds;
+        const marks=satelliteStatusOverlay?.getElement()?.querySelectorAll('[data-plot]');
+        if(marks?.length) {
+            const rects=Array.from(marks,element=>element.getBoundingClientRect());
+            const left=Math.min(...rects.map(r=>r.left)),right=Math.max(...rects.map(r=>r.right));
+            const top=Math.min(...rects.map(r=>r.top)),bottom=Math.max(...rects.map(r=>r.bottom));
+            const host=leafletMap.getContainer().getBoundingClientRect();
+            const marginX=(right-left)*.12,marginY=(bottom-top)*.06;
+            footprint=L.latLngBounds(leafletMap.containerPointToLatLng([left-host.left-marginX,top-host.top-marginY]),leafletMap.containerPointToLatLng([right-host.left+marginX,bottom-host.top+marginY]));
+        }
+        const shell=document.body.classList.contains('layout-shell');
+        const compact=window.innerWidth<=992;
+        leafletMap.fitBounds(footprint,{paddingTopLeft:[shell?(compact?12:(document.getElementById('floatingLegendCard')?.classList.contains('collapsed')?186:(document.getElementById('floatingLegendCard')?.getBoundingClientRect().width||224)+36)):(small?12:24),shell?(112):(small?80:40)],paddingBottomRight:[shell?(compact?12:72):(small?12:230),shell?(compact?276:72):24],maxZoom:19,animate:false});
+    } else leafletMap.setView(getActiveProjectCenter(),17);
+}
 function toggleSatelliteView() {
     closePlotModal();
     const btnSchematic = document.getElementById('btnSchematicView');
@@ -3664,7 +3747,7 @@ function toggleSatelliteView() {
                 }
                 // Recenter map on active project center
                 const loc = getActiveProjectCenter();
-                leafletMap.setView(loc, 17);
+                fitSatelliteLayout();
             }
         }
         
@@ -3938,7 +4021,9 @@ function initLeafletMap() {
         for (let i = 0; i < groundOverlays.length; i++) {
             const overlayNode = groundOverlays[i];
             const name = overlayNode.getElementsByTagName('name')[0]?.textContent || 'Layout Overlay';
-            const href = overlayNode.getElementsByTagName('href')[0]?.textContent || '';
+            const originalHref = overlayNode.getElementsByTagName('href')[0]?.textContent || '';
+            const digitalAvatar3 = originalHref.endsWith('avatar_3_layout-removebg-preview.png');
+            const href = digitalAvatar3 ? 'avatar3_satellite_overlay-park1.svg' : originalHref;
             const latLonBox = overlayNode.getElementsByTagName('LatLonBox')[0];
             const visibilityNode = overlayNode.getElementsByTagName('visibility')[0];
             const isVisible = visibilityNode ? visibilityNode.textContent !== '0' : true;
@@ -3978,6 +4063,18 @@ function initLeafletMap() {
                     });
                 }
                 layoutsGroup.addLayer(leafletOverlay);
+                if(digitalAvatar3) {
+                    satellitePlotFrame={bounds,rotation};
+                    requestAnimationFrame(fitSatelliteLayout);
+                    refreshLeafletMarkers();
+                    // Keep the registered footprint; source detail comes from the high-res image.
+                    const image=leafletOverlay.getElement();
+                    if(image) {
+                        image.style.maskImage=image.style.webkitMaskImage=`url("${originalHref}")`;
+                        image.style.maskSize=image.style.webkitMaskSize='100% 100%';
+                        image.style.maskRepeat=image.style.webkitMaskRepeat='no-repeat';
+                    }
+                }
 
             }
         }
@@ -4160,9 +4257,31 @@ function setupLayerToggles() {
 }
 
 function refreshLeafletMarkers() {
-    // Disabled plot markers rendering in Satellite GIS View as per user request.
-    // The user will coordinate map them themselves.
-    return;
+    if (!satellitePlotFrame || !layoutsGroup) return;
+    const palette = {AVAILABLE:'#1E8A4C', SOLD:'#C62F2F', BOOKED:'#C62F2F', MORTGAGE:'#7A3FC4', MORTAGAGE:'#7A3FC4', HOLD:'#B45309', REGISTERED:'#475569', RESALE:'#0369A1'};
+    const coords = avatarCoordsPool.avatar3 || {};
+    const marks = (avatarDataPool.avatar3 || []).map(plot => {
+        const c=coords[plot.plot_no]; if(!c) return '';
+        const x=c.left, y=c.top*1406/1579, status=String(plot.plot_status).toUpperCase(), color=palette[status] || '#475569';
+        const square=status==='MORTGAGE'||status==='MORTAGAGE'||status==='HOLD';
+        const shape=square ? `<rect x="${x-13}" y="${y-13}" width="26" height="26" rx="4"/>` : `<circle cx="${x}" cy="${y}" r="13"/>`;
+        return `<g data-plot="${Number(plot.plot_no)}"><circle cx="${x}" cy="${y}" r="20" fill="transparent"/><g fill="${color}" stroke="white" stroke-width="1.5">${shape}</g><text x="${x}" y="${y}" dominant-baseline="central" text-anchor="middle" fill="white" font-family="Arial" font-weight="700" font-size="${String(plot.plot_no).length===3?13:15}">${Number(plot.plot_no)}</text></g>`;
+    }).join('');
+    if(satelliteStatusOverlay) layoutsGroup.removeLayer(satelliteStatusOverlay);
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 2500 1406');svg.setAttribute('preserveAspectRatio','none');svg.innerHTML=marks;
+    svg.style.pointerEvents='none';
+    svg.querySelectorAll('[data-plot]').forEach(group=>{
+        group.style.pointerEvents='all';group.style.cursor='pointer';
+        const plotNo=group.dataset.plot;
+        group.addEventListener('mousemove',event=>showPlotHoverTooltip(event,plotNo));
+        group.addEventListener('mouseleave',hidePlotHoverTooltip);
+        group.addEventListener('click',event=>{L.DomEvent.stopPropagation(event);hidePlotHoverTooltip();openPlotModal(plotNo);});
+    });
+    const {bounds,rotation}=satellitePlotFrame;
+    const RotatedSvg=L.SVGOverlay.extend({_applyLayoutRotation:L.ImageOverlay.Rotated.prototype._applyLayoutRotation,_reset:L.ImageOverlay.Rotated.prototype._reset,_animateZoom:L.ImageOverlay.Rotated.prototype._animateZoom});
+    satelliteStatusOverlay=new RotatedSvg(svg,bounds,{rotation,interactive:true});
+    layoutsGroup.addLayer(satelliteStatusOverlay);
+    applySmartFinderHighlights();
 }
 
 function applyLeafletMarkerFilters(marker, el) {
@@ -4197,7 +4316,7 @@ function updateSidebarAndHeaderForProject(project) {
             approvedBadge.innerHTML = '<i class="fa-solid fa-cube" style="color: #c084fc;"></i> DTCP Approved';
         }
         if (projectNameEl) {
-            projectNameEl.textContent = 'Avatar 3';
+            projectNameEl.innerHTML = '<img class="project-wordmark" src="assets/avatar3-wordmark.png" alt="Avatar 3" width="110" height="24">';
         }
         if (comingSoonOverlay) {
             comingSoonOverlay.style.display = 'none';
@@ -4237,8 +4356,8 @@ function updateSidebarAndHeaderForProject(project) {
             if (typeof window.updateSidebarEmi === 'function') window.updateSidebarEmi();
         }
     } else {
-        if (searchSection) searchSection.style.display = 'none';
-        if (filtersSection) filtersSection.style.display = 'none';
+        if (searchSection) searchSection.style.display = document.body.classList.contains('layout-shell') ? 'block' : 'none';
+        if (filtersSection) filtersSection.style.display = document.body.classList.contains('layout-shell') ? 'block' : 'none';
         if (legendSection) legendSection.style.display = 'none';
         if (sidebarEmiSection) sidebarEmiSection.style.display = 'none';
         if (headerStats) headerStats.style.display = 'none';
@@ -4580,8 +4699,20 @@ function setupSiteVisitBooking() {
 
     if (floatBtn && backdrop) {
         floatBtn.addEventListener('click', () => {
-            const projectSelect = document.getElementById('visitProjectSelect');
-            if (projectSelect) projectSelect.selectedIndex = ['avatar1', 'avatar2', 'avatar3'].indexOf(currentProject);
+            const preferences=document.getElementById('visitPreferences');
+            if (preferences && selectedVisitPlot?.project===currentProject) {
+                const plot=plotData.find(item=>String(item.plot_no)===selectedVisitPlot.plotNo);
+                if(plot) {
+                    const previous=preferences.dataset.selectedPlotLine;
+                    let manual=preferences.value;
+                    if(previous) manual=manual.split('\n').filter(line=>line!==previous).join('\n').trim();
+                    const line='Preferred plot: #'+plot.plot_no+(plot.facing?' ('+plot.facing+' facing)':'');
+                    preferences.value=line+(manual?'\n'+manual:'');
+                    preferences.dataset.selectedPlotLine=line;
+                    const optional=preferences.closest('details');if(optional) optional.open=true;
+                }
+            }
+            closePlotModal();
             backdrop.classList.add('show');
             const dateInput = document.getElementById('visitDate');
             if (dateInput) {
@@ -4607,13 +4738,12 @@ function setupSiteVisitBooking() {
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const project = document.getElementById('visitProjectSelect')?.value;
+            const project = 'Aspirealty Avatar 3';
             const date = document.getElementById('visitDate')?.value;
-            const time = document.getElementById('visitTimeSlot')?.value;
             const name = document.getElementById('visitName')?.value;
             const phone = document.getElementById('visitPhone')?.value;
             const preferences = document.getElementById('visitPreferences')?.value?.trim();
-            const cab = document.getElementById('visitCabPickup')?.checked;
+            const cab = true;
 
             // Construct formatted WhatsApp message for instant sales notification
             const cabText = cab ? 'YES (AC Cab Pick-up Required)' : 'NO (Self-Travel)';
@@ -4623,7 +4753,6 @@ function setupSiteVisitBooking() {
 ------------------------------------
 • *Project:* ${project}
 • *Visit Date:* ${date}
-• *Time Slot:* ${time}
 • *Customer Name:* ${name}
 • *Phone Number:* ${phone}${preferencesText}
 • *Cab Pick-up:* ${cabText}
@@ -4635,7 +4764,7 @@ _Sent via Aspirealty Interactive Viewer_`;
             const encodedMsg = encodeURIComponent(waMessage);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${salesNumber}&text=${encodedMsg}`;
 
-            console.log('Site Visit Booked:', { project, date, time, name, phone, preferences, cab, whatsappUrl });
+            console.log('Site visit request prepared.');
 
             if (successMsg) {
                 successMsg.style.display = 'block';
@@ -4717,6 +4846,32 @@ function setupMapTipTimer() {
 // ----------------------------------------------------
 // Smart Plot Finder Quiz Handler
 // ----------------------------------------------------
+let smartFinderCriteria=null;
+function matchesSmartFinder(plot, criteria, project) {
+    const status=String(plot.plot_status || '').toUpperCase().trim();
+    const facing=String(plot.facing || '').trim().toLowerCase();
+    const size=parseFloat(String(plot.plot_size || '').replace(/[^0-9.]/g,''));
+    const statusMatch=criteria.status!=='AVAILABLE' || status==='AVAILABLE' || (project==='avatar3' && ['MORTGAGE','MORTAGAGE','RESALE'].includes(status));
+    const sizeMatch=criteria.size==='all' || (criteria.size==='150-200' && size>=150 && size<=200) || (criteria.size==='201-300' && size>200 && size<=300) || (criteria.size==='301+' && size>300);
+    const facingMatch=criteria.facing==='all' || (criteria.facing==='East' && facing.includes('east')) || (criteria.facing==='West' && facing.includes('west')) || (criteria.facing==='North' && (facing.includes('north') || facing.includes('south'))) || (criteria.facing==='Corner' && (facing.includes('cross') || facing.includes('corner') || facing.includes('-')));
+    return statusMatch && sizeMatch && facingMatch;
+}
+function applySmartFinderHighlights() {
+    const numbers=smartFinderCriteria ? (avatarDataPool[currentProject] || []).filter(plot=>Number(plot.plot_no)>0 && matchesSmartFinder(plot,smartFinderCriteria,currentProject)).map(plot=>String(plot.plot_no)) : null;
+    window.smartFinderPlotNumbers=numbers;
+    const matches=numbers===null ? null : new Set(numbers);
+    document.querySelectorAll('.plot-dot, svg [data-plot]').forEach(element=>{
+        const no=element.dataset.plotNo || element.dataset.plot;
+        element.classList.toggle('matched-finder-dot',matches!==null && matches.has(no));
+        element.classList.toggle('dimmed-finder-dot',matches!==null && !matches.has(no));
+    });
+    document.getElementById('matchedPlotCount')?.replaceChildren(String(numbers?.length || 0));
+    const banner=document.getElementById('finderResultBanner');
+    if(banner) banner.style.display=matches===null?'none':'flex';
+    window.setAvatar3FinderMatches?.(numbers);
+    if(document.getElementById('facingCompass')) applyFilters();
+}
+
 function setupSmartPlotFinder() {
     const backdrop = document.getElementById('smartFinderModalBackdrop');
     const closeBtn = document.getElementById('smartFinderCloseBtn');
@@ -4761,75 +4916,15 @@ function setupSmartPlotFinder() {
     });
 
     function runFinderQuiz() {
-        const sizeVal = document.querySelector('#finderSizeOptions .finder-chip.active')?.dataset.value || 'all';
-        const facingVal = document.querySelector('#finderFacingOptions .finder-chip.active')?.dataset.value || 'all';
-        const statusVal = document.querySelector('#finderStatusOptions .finder-chip.active')?.dataset.value || 'AVAILABLE';
-
-        const dataSource = avatarDataPool[currentProject] || [];
-        const plotDots = document.querySelectorAll('.plot-dot');
-        let matchCount = 0;
-
-        plotDots.forEach(dot => {
-            const plotNo = dot.dataset.plotNo;
-            const detail = dataSource.find(p => String(p.plot_no) === String(plotNo)) || {};
-            
-            const plotStatus = String(detail.plot_status || dot.dataset.status || 'AVAILABLE').toUpperCase().trim();
-            const plotFacing = String(detail.facing || dot.dataset.facing || '').trim();
-            const rawSize = parseFloat(String(detail.plot_size || '').replace(/[^0-9.]/g, ''));
-            const plotSize = isNaN(rawSize) || rawSize <= 0 ? 200 : rawSize;
-
-            // Check Status Match
-            let statusMatch = true;
-            if (statusVal === 'AVAILABLE') {
-                statusMatch = plotStatus === 'AVAILABLE' || (currentProject === 'avatar3' && ['MORTGAGE', 'MORTAGAGE', 'RESALE'].includes(plotStatus));
-            }
-
-            // Check Size Match
-            let sizeMatch = true;
-            if (sizeVal === '150-200') {
-                sizeMatch = plotSize >= 150 && plotSize <= 200;
-            } else if (sizeVal === '201-300') {
-                sizeMatch = plotSize > 200 && plotSize <= 300;
-            } else if (sizeVal === '301+') {
-                sizeMatch = plotSize > 300;
-            }
-
-            // Check Facing Match
-            let facingMatch = true;
-            if (facingVal === 'East') {
-                facingMatch = plotFacing.toLowerCase().includes('east');
-            } else if (facingVal === 'West') {
-                facingMatch = plotFacing.toLowerCase().includes('west');
-            } else if (facingVal === 'North') {
-                facingMatch = plotFacing.toLowerCase().includes('north') || plotFacing.toLowerCase().includes('south');
-            } else if (facingVal === 'Corner') {
-                facingMatch = plotFacing.toLowerCase().includes('cross') || plotFacing.toLowerCase().includes('corner') || plotFacing.includes('-');
-            }
-
-            const isMatched = statusMatch && sizeMatch && facingMatch;
-
-            if (isMatched) {
-                dot.classList.add('matched-finder-dot');
-                dot.classList.remove('dimmed-finder-dot');
-                matchCount++;
-            } else {
-                dot.classList.remove('matched-finder-dot');
-                dot.classList.add('dimmed-finder-dot');
-            }
-        });
-
-        if (matchedCountEl) matchedCountEl.textContent = matchCount;
-        if (resultBanner) resultBanner.style.display = 'flex';
-        closeModal();
+        smartFinderCriteria = {
+            size:document.querySelector('#finderSizeOptions .finder-chip.active')?.dataset.value || 'all',
+            facing:document.querySelector('#finderFacingOptions .finder-chip.active')?.dataset.value || 'all',
+            status:document.querySelector('#finderStatusOptions .finder-chip.active')?.dataset.value || 'AVAILABLE'
+        };
+        applySmartFinderHighlights(); closeModal();
     }
-
     function clearFinderMatches() {
-        const plotDots = document.querySelectorAll('.plot-dot');
-        plotDots.forEach(dot => {
-            dot.classList.remove('matched-finder-dot');
-            dot.classList.remove('dimmed-finder-dot');
-        });
-        if (resultBanner) resultBanner.style.display = 'none';
+        smartFinderCriteria=null; applySmartFinderHighlights();
     }
 
     if (runBtn) runBtn.addEventListener('click', runFinderQuiz);
@@ -4930,3 +5025,5 @@ const viewportResizeObserver = new ResizeObserver(() => {
 });
 viewportResizeObserver.observe(mapViewport);
 if (window.innerWidth <= 600) document.getElementById('floatingLegendCard')?.classList.add('collapsed');
+
+document.addEventListener('map-chrome-resized',()=>{requestAnimationFrame(()=>{if(is3DViewActive)window.reset3DCamera?.();else if(isSatelliteActive)fitSatelliteLayout();else fitMapToViewport();});});
