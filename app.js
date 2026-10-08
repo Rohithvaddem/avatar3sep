@@ -753,9 +753,9 @@ function fitMapToViewport() {
     const shell=document.body.classList.contains('layout-shell');
     const small=window.innerWidth<=992;
     const fitLeft=shell&&!small?(document.getElementById('floatingLegendCard')?.classList.contains('collapsed')?186:(document.getElementById('floatingLegendCard')?.getBoundingClientRect().width||224)+36):12;
-    const fitTop=shell?(112):0;
-    const vWidth = mapViewport.clientWidth-(shell?(small?24:fitLeft+72):0);
-    const vHeight = mapViewport.clientHeight-(shell?(fitTop+(small?276:72)):0);
+    const fitTop=shell?(small?104:112):0;
+    let vWidth = mapViewport.clientWidth-(shell?(small?(window.innerWidth>=600?84:24):fitLeft+72):0);
+    const vHeight = mapViewport.clientHeight-(shell?(fitTop+(small?(window.innerWidth>=600?124:(document.body.classList.contains('finder-results-visible')?266:188)):72)):0);
     
     let height = 576;
     if (currentProject === 'avatar2') {
@@ -764,6 +764,14 @@ function fitMapToViewport() {
         height = 647;
     }
     
+    // Use full tablet width when the contained image naturally clears the zoom stack.
+    if(shell && small && window.innerWidth>=600){
+        const fullWidth=mapViewport.clientWidth-24;
+        const candidateScale=Math.min(fullWidth/1024,vHeight/height)*.985;
+        const candidateBottom=fitTop+(vHeight+height*candidateScale)/2+vHeight*.012;
+        const zoomTop=document.querySelector('.map-controls').getBoundingClientRect().top-mapViewport.getBoundingClientRect().top;
+        if(candidateBottom<=zoomTop-16)vWidth=fullWidth;
+    }
     // Background original dims: width: 1024, height: dynamic
     const fitScale = Math.min(vWidth / 1024, vHeight / height) * (document.body.classList.contains('layout-shell') ? 0.985 : 0.95);
     minPresetZoomScale = Math.max(fitScale, 0.1);
@@ -2311,7 +2319,17 @@ function openDealSimulator(plotNo) {
     });
 }
 
+function highlightSelectedPlot(plotNo) {
+    document.body.classList.toggle('plot-details-open',plotNo!=null);
+    document.querySelectorAll('.plot-dot,svg [data-plot],.leaflet-plot-marker').forEach(element=>{
+        const selected=plotNo!=null&&String(element.dataset.plotNo||element.dataset.plot)===String(plotNo);
+        element.classList.toggle('selected-plot-location',selected);
+        if(element.classList.contains('plot-dot'))element.setAttribute('aria-pressed',String(selected));
+    });
+    window.highlight3DPlotLocation?.(plotNo);
+}
 function openPlotModal(plotNo) {
+    highlightSelectedPlot(plotNo);
     selectedVisitPlot = {project:currentProject,plotNo:String(plotNo)};
     const item = plotData.find(p => String(p.plot_no) === String(plotNo)) || {
         plot_no: plotNo,
@@ -2559,6 +2577,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 function closePlotModal() {
+    highlightSelectedPlot(null);
     modalBackdrop.classList.remove('show');
     
     // Reset active search query & filters when modal is closed

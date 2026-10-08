@@ -394,3 +394,12 @@ body.layout-shell #floatingLegendCard{transition:none!important}
 @media(min-width:600px) and (max-width:992px){body.layout-shell .project-name img{width:110px!important;height:24px!important}}
 body.layout-shell .map-tool-strip:has(.mobile-view-menu[open]){z-index:1160!important}
 @media(max-width:992px){body.layout-shell .map-viewport:has(.facing-compass.shrinking) #finderResultBanner{visibility:hidden}}
+/* Selected location remains distinct without changing its status colour. */
+body.layout-shell .plot-dot.selected-plot-location{z-index:30!important;outline:3px solid #f59e0b!important;outline-offset:3px;animation:selected-location-pulse 1.4s ease-out infinite!important}
+@keyframes selected-location-pulse{0%,100%{box-shadow:0 0 0 5px rgba(245,158,11,.5)}65%{box-shadow:0 0 0 16px rgba(245,158,11,0)}}
+svg [data-plot].selected-plot-location>circle:first-child{fill:rgba(245,158,11,.12);stroke:#f59e0b;stroke-width:4;animation:selected-svg-pulse 1.4s ease-in-out infinite}
+@keyframes selected-svg-pulse{50%{stroke-width:8;stroke-opacity:.5}}
+@media(prefers-reduced-motion:reduce){body.layout-shell .plot-dot.selected-plot-location,svg [data-plot].selected-plot-location>circle:first-child{animation:none!important}}
+body.layout-shell.plot-details-open #modalBackdrop{background:rgba(14,42,71,.22)!important;backdrop-filter:none!important}
+/* Tablet controls use the bottom row rather than reserving an expanded dial column. */
+@media(min-width:600px) and (max-width:992px){body.layout-shell .facing-compass{bottom:12px!important}body.layout-shell .facing-compass.expanded,body.layout-shell .facing-compass.shrinking{bottom:76px!important}body.layout-shell #floatingLegendCard.collapsed{left:124px!important;bottom:12px!important}body.layout-shell #finderResultBanner{left:320px!important;right:72px!important;bottom:12px!important}}

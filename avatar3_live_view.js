@@ -271,7 +271,7 @@
         const worldPerPixel = 2 * depth * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))
             / Math.max(renderer.domElement.clientHeight, 1);
         const projectedWidth = 2.4 * calibration.scale / worldPerPixel;
-        const selected = selectedPlotNo === label.userData.plotNo;
+        const selected = selectedPlotNo!=null && String(selectedPlotNo) === String(label.userData.plotNo);
         const pixels = THREE.MathUtils.clamp(projectedWidth, selected ? 22 : 13.5, selected ? 42 : 36);
         const size = pixels * worldPerPixel;
         label.scale.set(size / Math.max(calibration.scale * calibration.width, .01),
@@ -1587,7 +1587,7 @@
 
             // Beacon pulsing
             if (beaconRing && beaconRing.visible) {
-                const s = 1 + Math.sin(performance.now() * 0.003) * 0.15;
+                const s = window.matchMedia('(prefers-reduced-motion: reduce)').matches?1:1 + Math.sin(performance.now() * 0.003) * 0.15;
                 beaconRing.scale.set(s, s, 1);
             }
 
@@ -2470,6 +2470,13 @@
         );
     }
     // Global helpers
+    window.highlight3DPlotLocation=plotNo=>{
+        selectedPlotNo=plotNo==null?null:String(plotNo);
+        const group=plotGroups[selectedPlotNo];
+        if(beaconRing){beaconRing.visible=Boolean(group);if(group){beaconRing.position.set(group.position.x,.15,group.position.z);beaconRing.material.color.set(0xf59e0b);}}
+        if(beaconLight){beaconLight.intensity=group?2.5:0;if(group){beaconLight.position.set(group.position.x,7,group.position.z);beaconLight.color.set(0xf59e0b);}}
+        updatePlotLabels();
+    };
     window.select3DPlot = selectPlot;
     window.layoutWorldGroup = layoutWorldGroup;
     window.scene = scene;

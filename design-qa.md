@@ -58,3 +58,11 @@ Follow-up evidence: design-review/visible-project-chips-desktop.png and design-r
 - Browser checked at 320, 327, 390, 768, 1024 and 1440px, including 327×691, iPad 768×1024 and shorter desktop 1024×650. No horizontal overflow, fixed header heights, no default compass/map overlap. iPad portrait schematic footprint is approximately 733px wide.
 - Expanded desktop legend checked in schematic, satellite and 3D; mobile credits and layers checked; all 18 tests and build pass. No deployment.
 - Evidence: chrome-desktop-final.png, chrome-mobile-final.png, chrome-ipad-portrait.png, chrome-3d-desktop.png in design-review.
+
+## Schematic contain-fit correction
+- Found compact fit always reserved 276px below the image for an expanded dial, leaving just 227px for the image at 790×751.
+- Default phone reservation now uses the compact controls; tablets dock compass/status in a bottom row. Tablet right margin is reserved only when the fitted image would intersect the zoom stack.
+- Same reported viewport now displays a 678px image, up from 398px. Tall 768×1024 iPad retains 733px full-width fit.
+- Browser checked 320×691, 390×844, 600×800, 768×1024, 790×751, 1024×768 and 1440×900. No default image/compass/status/zoom overlap or horizontal overflow.
+- Finder toast spacing rechecked on phone; image bottom 435px, toast top 514px. Build and 18 tests pass. Local only; not deployed or pushed.
+- Screenshot: design-review/schematic-fit-tablet-fixed.png.
