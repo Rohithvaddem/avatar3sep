@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="avatar3_page_design.css?v=3">
     <link rel="stylesheet" href="avatar3_reference_design.css?v=2">
     <link rel="stylesheet" href="avatar3_light.css?v=1">
-    <link rel="stylesheet" href="avatar3_rds.css?v=2">
+    <link rel="stylesheet" href="avatar3_rds.css?v=3">
 </head>
 
 <body data-project="avatar3">
@@ -228,6 +228,10 @@
                         <a href="https://sketchfab.com/3d-models/modern-lego-house-04d6f854fad246b999419ff8cf5ab309" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">Modern Lego House — Arrcaz</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">CC BY 4.0</a> · Simplified for this layout
                     </div>
                     <div id="threeCanvasContainer" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
+                    <div id="threeCinematicOverlay" hidden>
+                        <span id="threeCinematicCaption" aria-live="polite"></span>
+                        <button type="button" id="threeCinematicStop">Stop tour · Esc</button>
+                    </div>
 
 <header class="modal-3d-header">
                 <div class="modal-3d-title-group">
@@ -247,6 +251,11 @@
 
                 <!-- Toolbar / Presets -->
                 <div class="modal-3d-toolbar" id="threeMapToolbar">
+                    <div class="toolbar-group" aria-label="Cinematic shots">
+                        <button class="toolbar-btn" data-cinematic="road">Road shot · 4s</button>
+                        <button class="toolbar-btn" data-cinematic="aerial">Aerial shot · 10s</button>
+                        <button class="toolbar-btn" data-cinematic="tour">Play cinematic tour</button>
+                    </div>
                     <!-- Camera Presets -->
                     <div class="toolbar-group">
                         <button class="toolbar-btn btn-cam-preset active" data-preset="isometric" title="Isometric 45° Angle">
@@ -807,7 +816,7 @@
                 <script src="downloaded_streetlight_data.js?v=1"></script>
                 <script src="downloaded_trees_data.js?v=1"></script>
                 <script src="downloaded_bench_data.js?v=1"></script>
-                <script src="avatar3_live_view.js?v=23"></script>
+                <script src="avatar3_live_view.js?v=24"></script>
                 <script src="app.js?v=30"></script>
 <script src="avatar3_rds.js"></script>
 </body>

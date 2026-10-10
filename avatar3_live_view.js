@@ -66,6 +66,7 @@
     let targetStartPos = null;
     let targetEndPos = null;
     let cameraAnimProgress = 1;
+    let cinematic = null;
     const CAMERA_ANIM_SPEED = 0.045;
 
     // Dimensions & Calibration
@@ -225,6 +226,7 @@
             size * .625 / Math.max(calibration.scale, .01), 1);
     }
     function updatePlotLabels() {
+        if (cinematic) return;
         Object.values(plotButtons).forEach(label => {
             scalePlotLabel(label);
             label.visible = !isLayoutOnly && label.parent.visible;
@@ -1511,7 +1513,7 @@
             lastFrameTime = now;
 
             // Move the single car across the layout
-            updateSingleCar(delta);
+            if (!cinematic || cinematic.shot === 'aerial') updateSingleCar(delta);
 
             // Smooth camera glide
             if (isCameraAnimating) {
@@ -1538,7 +1540,8 @@
                 beaconRing.scale.set(s, s, 1);
             }
 
-            if (controls) controls.update();
+            if (controls && !cinematic) controls.update();
+            updateCinematic(now);
             updatePlotLabels();
             if (sunMarker && sunMarker.visible) sunMarker.position.copy(camera.position).addScaledVector(sunMarker.userData.direction,1800);
             updateHouseDetailLevels();
@@ -1552,6 +1555,94 @@
     }
 
     const houseWorldPosition = new THREE.Vector3();
+    function startCinematic(shot, sequence = false) {
+        if (!camera || !controls || !layoutWorldGroup) return;
+        stopCinematic();
+        const previous = {
+            position:camera.position.clone(), target:controls.target.clone(), enabled:controls.enabled,
+            autoRotate:isAutoRotating, fov:camera.fov,
+            labels:Object.values(plotButtons).map(label => [label,label.visible]),
+            car:singleCarMesh?.position.clone(), yaw:singleCarMesh?.rotation.y,
+            carTarget:singleCarState?.targetIndex, carYaw:singleCarState?.currentYaw
+        };
+        isCameraAnimating = false;
+        isAutoRotating = false;
+        controls.autoRotate = false;
+        controls.enabled = false;
+        Object.values(plotButtons).forEach(label => label.visible = false);
+        document.getElementById('threeInspectDrawer')?.classList.remove('open');
+        if (typeof closePlotModal === 'function') closePlotModal();
+        hideHoverTooltip();
+        cinematic = {shot, sequence, previous, started:performance.now(), duration:shot === 'road' ? 4000 : 10000};
+        const host = document.getElementById('threeMapContainer');
+        host.classList.add('cinematic-playing');
+        document.getElementById('threeCinematicOverlay').hidden = false;
+        prepareCinematicShot();
+        updateCinematic(cinematic.started);
+    }
+
+    function prepareCinematicShot() {
+        if (cinematic.shot === 'aerial') {
+            // Frame the full layout, including its entrance, on wide and narrow screens.
+            const bounds = layoutBounds();
+            const size = bounds.getSize(new THREE.Vector3());
+            cinematic.center = bounds.getCenter(new THREE.Vector3());
+            const vertical = THREE.MathUtils.degToRad(camera.fov);
+            const horizontal = 2 * Math.atan(Math.tan(vertical/2) * camera.aspect);
+            cinematic.radius = Math.max(size.x,size.z) / (2*Math.tan(Math.min(vertical,horizontal)/2)) * 1.3;
+        }
+        document.getElementById('threeCinematicCaption').textContent = cinematic.shot === 'road'
+            ? 'AVATAR 3 · Street lights' : 'AVATAR 3 · Aerial layout';
+    }
+
+    function updateCinematic(now) {
+        if (!cinematic) return;
+        const progress = Math.min(1,Math.max(0,(now-cinematic.started)/cinematic.duration));
+        if (cinematic.shot === 'road') {
+            // Avenue 3 follows the existing car's surveyed road waypoints.
+            layoutWorldGroup.updateMatrixWorld(true);
+            const travel = progress * 18;
+            camera.position.copy(new THREE.Vector3(6,1.7,52-travel).applyMatrix4(layoutWorldGroup.matrixWorld));
+            controls.target.copy(new THREE.Vector3(6,1.1,35-travel).applyMatrix4(layoutWorldGroup.matrixWorld));
+            if (singleCarMesh) {
+                singleCarMesh.position.set(6,.45,42-travel);
+                singleCarMesh.rotation.y = Math.PI;
+            }
+        } else {
+            const angle = THREE.MathUtils.degToRad(25+progress*18);
+            const radius = cinematic.radius * (1-progress*.05);
+            camera.position.copy(cinematic.center).add(new THREE.Vector3(
+                Math.sin(angle)*radius*.72,radius*.82,Math.cos(angle)*radius*.72));
+            controls.target.copy(cinematic.center);
+        }
+        camera.lookAt(controls.target);
+        if (progress < 1) return;
+        if (cinematic.sequence && cinematic.shot === 'road') {
+            cinematic.shot = 'aerial'; cinematic.started = now; cinematic.duration = 10000;
+            prepareCinematicShot();
+        } else stopCinematic();
+    }
+
+    function stopCinematic() {
+        if (!cinematic) return;
+        const previous = cinematic.previous;
+        cinematic = null;
+        camera.position.copy(previous.position);
+        controls.target.copy(previous.target);
+        controls.enabled = previous.enabled;
+        isAutoRotating = previous.autoRotate;
+        camera.fov = previous.fov;
+        camera.updateProjectionMatrix();
+        previous.labels.forEach(([label,visible]) => label.visible = visible);
+        if (singleCarMesh && previous.car) {
+            singleCarMesh.position.copy(previous.car); singleCarMesh.rotation.y = previous.yaw;
+            singleCarState.targetIndex = previous.carTarget; singleCarState.currentYaw = previous.carYaw;
+        }
+        document.getElementById('threeMapContainer').classList.remove('cinematic-playing');
+        document.getElementById('threeCinematicOverlay').hidden = true;
+        controls.update();
+    }
+
     function updateHouseDetailLevels() {
         if (!camera || !scene || !houseLods.size) return;
         scene.updateMatrixWorld();
@@ -1897,6 +1988,12 @@
     }
 
     function setupUI() {
+        document.querySelectorAll('[data-cinematic]').forEach(button => button.addEventListener('click', () => {
+            const shot = button.dataset.cinematic;
+            startCinematic(shot === 'tour' ? 'road' : shot,shot === 'tour');
+        }));
+        document.getElementById('threeCinematicStop').addEventListener('click',stopCinematic);
+        window.addEventListener('keydown',event => { if (event.key === 'Escape') stopCinematic(); });
         setupReferenceControls();
         loadDownloadedHouse();
         // Lighting Buttons
@@ -2272,6 +2369,7 @@
     window.activateAvatar3View = function(active) {
         isActive = active;
         if (!active) {
+            stopCinematic();
             if (animFrameId) cancelAnimationFrame(animFrameId);
             animFrameId = null;
             hideHoverTooltip();
