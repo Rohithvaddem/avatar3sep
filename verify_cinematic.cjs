@@ -1,5 +1,8 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-global.window={};const THREE=require('./three.min.js');
+const threeContext={window:{},console};
+vm.createContext(threeContext);
+vm.runInContext(fs.readFileSync('three.min.js','utf8'),threeContext);
+const THREE=threeContext.THREE || threeContext.window.THREE;
 const elements=new Map();
 const get=id=>{if(!elements.has(id))elements.set(id,{hidden:true,textContent:'',classList:{add(){},remove(){}}});return elements.get(id);};
 const camera=new THREE.PerspectiveCamera(45,16/9,.1,2000);camera.position.set(120,150,130);

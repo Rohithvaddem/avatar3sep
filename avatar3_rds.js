@@ -2,19 +2,33 @@
 function setupRds() {
     const form = document.getElementById('siteVisitForm');
     if (form) {
-        const submit = form.querySelector('button[type="submit"]');
-        const consent = document.createElement('div'); consent.className = 'rt-consent';
-        consent.innerHTML = '<input type="checkbox" id="visitShareConsent" required><label for="visitShareConsent">I agree to share these visit details and my phone number with Aspirealty sales through WhatsApp. I will review and send the message myself.</label>';
-        if (submit) form.insertBefore(consent, submit);
-        const pickup = document.getElementById('visitCabPickup'); if (pickup) pickup.checked = false;
-        const note = document.createElement('p'); note.className = 'rt-provenance';
-        note.textContent = 'A visit is confirmed only after the sales team responds. Your details are not sent until you send the WhatsApp message.';
-        if (submit) submit.before(note);
+        const modal=document.getElementById('siteVisitModal');
+        const submit=form.querySelector('button[type="submit"]');
+        const body=modal.querySelector('.modal-body');
+        const intro=body.querySelector('p');
+        if(intro) intro.textContent='Complimentary AC cab pick-up and drop included.';
+        document.getElementById('visitCabPickup')?.closest('label')?.remove();
+        const preferences=document.getElementById('visitPreferences')?.parentElement;
+        if(preferences) {
+            const details=document.createElement('details'); details.className='visit-optional';
+            const summary=document.createElement('summary');summary.textContent='Add plot / facing preferences (optional)';
+            details.append(summary);preferences.before(details);details.append(preferences);
+        }
+        const footer=document.createElement('div'); footer.className='visit-sheet-footer';
+        const consent=document.createElement('div');consent.className='rt-consent';
+        consent.innerHTML='<input type="checkbox" id="visitShareConsent" form="siteVisitForm" required><label for="visitShareConsent">I agree to share these details with Aspirealty sales via WhatsApp.</label>';
+        footer.append(consent);
+        if(submit) {submit.setAttribute('form','siteVisitForm');footer.append(submit);}
+        const note=document.createElement('p');note.className='rt-provenance';
+        note.textContent='Review and send in WhatsApp. The sales team will confirm your visit.';
+        footer.append(note);modal.append(footer);
+        document.getElementById('siteVisitCloseBtn')?.setAttribute('aria-label','Close site visit');
     }
-    const legend = document.getElementById('floatingLegendCard'); if (legend) legend.classList.add('collapsed');
+    const legend = document.getElementById('floatingLegendCard'); if (legend) legend.classList.toggle('collapsed', window.innerWidth <= 600);
     const layerHeader = document.querySelector('.layer-control-header');
     if (layerHeader) {
         const panel = layerHeader.parentElement;
+        const text=document.createElement('span');text.className='layers-open-label';text.textContent='Map layers';layerHeader.append(text);
         panel.classList.add('rt-layers-collapsed');
         layerHeader.setAttribute('role', 'button'); layerHeader.setAttribute('tabindex','0'); layerHeader.setAttribute('aria-expanded','false');
         const toggle = () => { const collapsed = panel.classList.toggle('rt-layers-collapsed'); layerHeader.setAttribute('aria-expanded',String(!collapsed)); };
@@ -26,8 +40,8 @@ function setupRds() {
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',setupRds); else setupRds();
 
 function setupLayoutWorkspace() {
-    const compactNav=matchMedia('(max-width:600px)');
-    const updateNav=()=>{ ['btnSchematicView','btnSatelliteView','btn3DView'].forEach((id,index)=>{const button=document.getElementById(id); button.setAttribute('aria-label',['Schematic View','Satellite View','3D View'][index]); button.querySelector('span').textContent=(compactNav.matches?['Schematic','Satellite','3D']:['Schematic View','Satellite View','3D View'])[index]; }); };
+    const compactNav=matchMedia('(max-width:992px)');
+    const updateNav=()=>{ ['btnSchematicView','btnSatelliteView','btn3DView'].forEach((id,index)=>{const button=document.getElementById(id); button.setAttribute('aria-label',['Schematic View','Satellite View','3D View'][index]); button.querySelector('span').textContent=['Schematic','Satellite','3D'][index]; }); };
     compactNav.addEventListener('change',updateNav); updateNav();
     const host = document.getElementById('threeMapContainer');
     const panel = host.querySelector('.modal-3d-header');
@@ -41,6 +55,7 @@ function setupLayoutWorkspace() {
     document.getElementById('plotSearchInput').setAttribute('aria-label','Find plot in 3D');
     document.getElementById('plotSearchInput').placeholder='Plot no.';
     panel.appendChild(host.querySelector('.three-hud-filters'));
+    const smartFinderButton=document.createElement('button');smartFinderButton.className='smart-finder-btn-header rt-smart-finder';smartFinderButton.innerHTML='<i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i><span>Smart Plot Finder</span>';smartFinderButton.addEventListener('click',()=>document.getElementById('openPlotFinderSidebarBtn').click());panel.appendChild(smartFinderButton);
     const toggle = bar.querySelector('#threeOptionsToggle');
     toggle.addEventListener('click', () => { panel.hidden = !panel.hidden; toggle.setAttribute('aria-expanded', String(!panel.hidden)); });
     bar.querySelector('#threePlanShortcut').addEventListener('click', () => panel.querySelector('[data-preset="topDown"]').click());
@@ -50,7 +65,7 @@ function setupLayoutWorkspace() {
     sun.hidden = true; host.appendChild(sun);
     const sunToggle = document.createElement('button'); sunToggle.className='toolbar-btn rt-sun-toggle'; sunToggle.textContent='Show sun & shadows';
     panel.appendChild(sunToggle);
-    sunToggle.addEventListener('click', () => { sun.hidden=!sun.hidden; host.classList.toggle('rt-sun-open',!sun.hidden && !desktop.matches); sunToggle.textContent=sun.hidden?'Show sun & shadows':'Hide sun & shadows'; if(!sun.hidden) updateSun(); else { stop(); window.disableAvatar3Sun?.(); } panel.hidden= !desktop.matches; toggle.setAttribute('aria-expanded','false'); });
+    sunToggle.addEventListener('click', () => { sun.hidden=!sun.hidden; host.classList.toggle('rt-sun-open',!sun.hidden && !desktop.matches); sunToggle.textContent=sun.hidden?'Show sun & shadows':'Hide sun & shadows'; if(!sun.hidden) updateSun(); else { stop(); window.disableAvatar3Sun?.(); } panel.hidden= !desktop.matches && !document.body.classList.contains("layout-shell"); toggle.setAttribute('aria-expanded','false'); });
     const sunClose=document.createElement('button'); sunClose.className='rt-sun-close'; sunClose.textContent='Close'; sunClose.setAttribute('aria-label','Close sun controls');
     sun.querySelector('h4').appendChild(sunClose); sunClose.addEventListener('click',()=>{sun.hidden=true;if(host.classList.contains('rt-sun-open')) host.classList.remove('rt-sun-open');});
     sun.querySelector('#sunDate').value = new Date().toLocaleDateString('en-CA', {timeZone:'Asia/Kolkata'});
@@ -72,16 +87,28 @@ function setupLayoutWorkspace() {
     const desktop=matchMedia('(min-width:993px)');
     const search=bar.querySelector('.three-hud-search');
     const sidebarContent=document.querySelector('.sidebar-content');
+    const searchSubmit=document.getElementById('plotSearchSubmit');
+    const searchIcon=document.createElement('i');searchIcon.className='fa-solid fa-magnifying-glass rt-three-search-icon';searchIcon.setAttribute('aria-hidden','true');search.prepend(searchIcon);
     panel.classList.add('rt-desktop-tools');
     const arrange = active => {
+        if(document.body.classList.contains("layout-shell")) {
+            sidebarContent.appendChild(panel); panel.appendChild(sun); panel.hidden=!active;
+            panel.querySelector(".modal-3d-title").textContent="3D view options";
+            search.hidden=true; searchSubmit.hidden=true; smartFinderButton.hidden=true; return;
+        }
         if(desktop.matches && active) {
             sidebarContent.appendChild(panel); panel.hidden=false;
-            panel.querySelector('.modal-3d-title').textContent='3D tools';
+            panel.querySelector('.modal-3d-title').textContent='Search Plots';
             panel.querySelector('.modal-3d-title-group').after(search);
+            search.after(searchSubmit);searchSubmit.after(smartFinderButton);
+            searchSubmit.innerHTML='<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span>Search</span>';
+            document.getElementById('plotSearchInput').placeholder='Enter Plot No. (e.g. 125)';
             panel.appendChild(sun);
             if(host.classList.contains('rt-sun-open')) host.classList.remove('rt-sun-open');
         } else {
             host.appendChild(panel); bar.appendChild(search); host.appendChild(sun);
+            search.appendChild(searchSubmit);searchSubmit.innerHTML='<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
+            document.getElementById('plotSearchInput').placeholder='Plot no.';
             panel.hidden=true; sun.hidden=true; panel.querySelector('.modal-3d-title').textContent='View options';
         }
     };

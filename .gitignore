@@ -4,11 +4,14 @@
 .vscode/
 temp_xlsx/
 node_modules/
-package.json
-package-lock.json
+dist/
+.netlify/
 __pycache__/
 *.pyc
 .env
 .env.*
 !.env.example
 
+# Local attachment copies and preview process output
+.codex-remote-attachments/
+design-review/preview-*.log

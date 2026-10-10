@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head><link rel="icon" type="image/svg+xml" href="/assets/avatar3-mark.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Aspirealty Avatar 3 - Interactive Plot Status Viewer</title>
@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="avatar3_reference_design.css?v=2">
     <link rel="stylesheet" href="avatar3_light.css?v=1">
     <link rel="stylesheet" href="avatar3_rds.css?v=3">
+    <link rel="stylesheet" href="layout-shell.css">
+<link rel="preload" as="image" href="avatar3_satellite_overlay-park1.svg" fetchpriority="low">
 </head>
 
 <body data-project="avatar3">
@@ -148,7 +150,9 @@
                 <div class="header-left">
                     <button class="sidebar-toggle" aria-label="Open search and filters" id="sidebarToggleBtn"><i class="fa-solid fa-bars"></i></button>
                     <div class="header-project-info">
-                        <h2 class="project-name">Layout View</h2>
+                        <h2 class="project-name"><img class="project-wordmark" src="assets/avatar3-wordmark.png" alt="Avatar 3" width="110" height="24"></h2>
+                        <div class="project-registrations" aria-label="Project registration numbers"><div class="registration-item"><img src="assets/dtcp-logo.jpg" alt="DTCP"><span>TLP 09-2024-H</span></div><div class="registration-item"><img src="assets/rera-logo.png" alt="RERA"><a href="https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400011281" title="https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400011281" target="_blank" rel="noopener noreferrer">P02400011281</a></div></div>
+                        <p class="project-description project-description-tag"><strong>13 Acres</strong><span aria-hidden="true">·</span><span>Open plots</span><span aria-hidden="true">·</span><span>DTCP approved layout</span></p>
                         <span class="badge approved-badge">
                             <i class="fa-solid fa-circle-check"></i> DTCP Approved (LP No. 224/2023/H)
                         </span>
@@ -172,6 +176,8 @@
                     </div>
                 </div>
 
+            </header>
+            <section class="inventory-summary" hidden aria-hidden="true">
                 <div class="header-stats">
                     <div class="stat-card stat-header-item">
                         <span class="stat-header-val stat-num" id="statTotalPlots">-</span>
@@ -190,7 +196,7 @@
                         <span class="stat-label">Mortgage</span>
                     </div>
                 </div>
-            </header>
+            </section>
 
             <!-- Map Viewport -->
             <div class="map-viewport" id="mapViewport">
@@ -199,7 +205,7 @@
                     <div class="floating-legend-header" id="floatingLegendHeader"
                         title="Click to collapse/expand legend">
                         <div class="floating-legend-title">
-                            <i class="fa-solid fa-palette" style="color: #60a5fa;"></i> <span>Plot Status Legend</span>
+                            <i class="fa-solid fa-palette" style="color: #60a5fa;"></i> <span>Plot status<small id="legendTotalCount">206 plots</small></span>
                         </div>
                         <button class="floating-legend-toggle" id="floatingLegendToggle">
                             <i class="fa-solid fa-chevron-up"></i>
@@ -224,7 +230,7 @@
 
                 <!-- 3D Interactive Model for Avatar 3 on Satellite Map -->
                 <div id="threeMapContainer" style="display: none; width: 100%; height: 100%; position: absolute; inset: 0; z-index: 5; overflow: hidden;">
-                    <div style="position:absolute;bottom:12px;left:12px;z-index:30;background:rgba(15,23,42,.85);padding:6px 9px;border-radius:6px;font-size:10px;color:#cbd5e1;">
+                    <div class="model-attribution" style="position:absolute;bottom:12px;left:12px;z-index:30;background:rgba(15,23,42,.85);padding:6px 9px;border-radius:6px;font-size:10px;color:#cbd5e1;">
                         <a href="https://sketchfab.com/3d-models/modern-lego-house-04d6f854fad246b999419ff8cf5ab309" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">Modern Lego House — Arrcaz</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;">CC BY 4.0</a> · Simplified for this layout
                     </div>
                     <div id="threeCanvasContainer" style="width: 100%; height: 100%; position: absolute; inset: 0;"></div>
@@ -317,8 +323,8 @@
                     </div>
 
                     <div class="three-hud-search">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="number" id="plotSearchInput" class="three-search-input" placeholder="Fly to Plot # (1–206)" min="1" max="206">
+                        <input type="number" id="plotSearchInput" class="three-search-input" placeholder="Fly to Plot # (1–206)" min="1" max="206" inputmode="numeric" enterkeyhint="search">
+                        <button type="button" id="plotSearchSubmit" aria-label="Search plot in 3D"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                     <!-- Bottom Controls Navigation Guide -->
                     <div class="three-controls-guide" id="threeControlsGuide" style="position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 25; pointer-events: none; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 20px; padding: 7px 18px; font-size: 11px; color: #e2e8f0; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
@@ -352,8 +358,8 @@
 
                 <!-- GIS Custom Layer Control Panel (glowing glassmorphism) -->
                 <div class="gis-layer-control" id="gisLayerControl" style="display: none;">
-                    <div class="layer-control-header">
-                        <i class="fa-solid fa-layer-group"></i> <span>Map Layers</span>
+                    <div class="layer-control-header" aria-label="Map layers" title="Map layers">
+                        <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
                     </div>
                     <div class="layer-control-body">
                         <label class="layer-toggle-item">
@@ -598,7 +604,7 @@
 
     <!-- Floating "Book Site Visit" Action Button -->
                 <button class="floating-site-visit-btn" id="floatingSiteVisitBtn" title="Book Free Site Visit">
-                    <i class="fa-solid fa-car-side"></i> <span>Book Free Site Visit</span>
+                    <i class="fa-solid fa-car-side" aria-hidden="true"></i> <span>Book free site visit</span>
                 </button>
 
                 <!-- Book Site Visit Modal (Glassmorphism Modal) -->
@@ -619,35 +625,7 @@
                                 complimentary AC cab pick-up.
                             </p>
                             <form id="siteVisitForm" style="display: flex; flex-direction: column; gap: 12px;">
-                                <div style="display: flex; flex-direction: column; gap: 4px;">
-                                    <label
-                                        style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Select
-                                        Project Layout</label>
-                                    <select id="visitProjectSelect" required
-                                        style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
-                                        <option value="Aspirealty Avatar 1">Aspirealty Avatar 1 (Kadthal)</option>
-                                        <option value="Aspirealty Avatar 2">Aspirealty Avatar 2 (Karkalpahad)</option>
-                                        <option value="Aspirealty Avatar 3">Aspirealty Avatar 3</option>
-                                    </select>
-                                </div>
 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div style="display: flex; flex-direction: column; gap: 4px;">
-                                        <label
-                                            style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Visit
-                                            Date</label>
-                                        <input type="date" id="visitDate" required
-                                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; gap: 4px;">
-                                        <label
-                                            style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Preferred
-                                            Time</label>
-                                        <input type="text" id="visitTimeSlot" placeholder="e.g. 11:30 AM or 4:00 PM"
-                                            required
-                                            style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
-                                    </div>
-                                </div>
 
                                 <div style="display: flex; flex-direction: column; gap: 4px;">
                                     <label style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Full
@@ -663,6 +641,11 @@
                                     <input type="tel" id="visitPhone" placeholder="Enter 10-digit mobile no." required
                                         pattern="[0-9]{10}"
                                         style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: #fff; padding: 9px 12px; border-radius: 8px; font-size: 12px; outline: none;">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 4px;">
+                                    <label for="visitDate" style="font-size:11px;font-weight:600;color:var(--text-secondary);">Preferred Date</label>
+                                    <input type="date" id="visitDate" required style="padding:9px 12px;outline:none;">
                                 </div>
 
                                 <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -819,6 +802,7 @@
                 <script src="avatar3_live_view.js?v=24"></script>
                 <script src="app.js?v=30"></script>
 <script src="avatar3_rds.js"></script>
+    <script src="layout-shell.js"></script>
 </body>
 
 </html>

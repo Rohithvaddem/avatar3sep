@@ -1,0 +1,308 @@
+[
+  {
+    "booking": {
+      "bottom": 730,
+      "height": 48,
+      "left": 108.171875,
+      "right": 308,
+      "top": 682,
+      "width": 199.828125,
+      "x": 108.171875,
+      "y": 682
+    },
+    "header": 144,
+    "map": 526,
+    "overflow": false,
+    "view": "schematic",
+    "width": 320
+  },
+  {
+    "booking": {
+      "bottom": 730,
+      "height": 48,
+      "left": 108.171875,
+      "right": 308,
+      "top": 682,
+      "width": 199.828125,
+      "x": 108.171875,
+      "y": 682
+    },
+    "header": 144,
+    "map": 526,
+    "overflow": false,
+    "view": "satellite",
+    "width": 320
+  },
+  {
+    "booking": {
+      "bottom": 730,
+      "height": 48,
+      "left": 108.171875,
+      "right": 308,
+      "top": 682,
+      "width": 199.828125,
+      "x": 108.171875,
+      "y": 682
+    },
+    "header": 144,
+    "map": 526,
+    "overflow": false,
+    "view": "3d",
+    "width": 320
+  },
+  {
+    "booking": {
+      "bottom": 842,
+      "height": 48,
+      "left": 119.2265625,
+      "right": 381,
+      "top": 794,
+      "width": 261.7734375,
+      "x": 119.2265625,
+      "y": 794
+    },
+    "header": 144,
+    "map": 638,
+    "overflow": false,
+    "view": "schematic",
+    "width": 393
+  },
+  {
+    "booking": {
+      "bottom": 842,
+      "height": 48,
+      "left": 119.2265625,
+      "right": 381,
+      "top": 794,
+      "width": 261.7734375,
+      "x": 119.2265625,
+      "y": 794
+    },
+    "header": 144,
+    "map": 638,
+    "overflow": false,
+    "view": "satellite",
+    "width": 393
+  },
+  {
+    "booking": {
+      "bottom": 842,
+      "height": 48,
+      "left": 119.2265625,
+      "right": 381,
+      "top": 794,
+      "width": 261.7734375,
+      "x": 119.2265625,
+      "y": 794
+    },
+    "header": 144,
+    "map": 638,
+    "overflow": false,
+    "view": "3d",
+    "width": 393
+  },
+  {
+    "booking": {
+      "bottom": 1014,
+      "height": 48,
+      "left": 119.0546875,
+      "right": 756,
+      "top": 966,
+      "width": 636.9453125,
+      "x": 119.0546875,
+      "y": 966
+    },
+    "header": 165,
+    "map": 789,
+    "overflow": false,
+    "view": "schematic",
+    "width": 768
+  },
+  {
+    "booking": {
+      "bottom": 1014,
+      "height": 48,
+      "left": 12,
+      "right": 756,
+      "top": 966,
+      "width": 744,
+      "x": 12,
+      "y": 966
+    },
+    "header": 165,
+    "map": 789,
+    "overflow": false,
+    "view": "satellite",
+    "width": 768
+  },
+  {
+    "booking": {
+      "bottom": 1014,
+      "height": 48,
+      "left": 119.0546875,
+      "right": 756,
+      "top": 966,
+      "width": 636.9453125,
+      "x": 119.0546875,
+      "y": 966
+    },
+    "header": 165,
+    "map": 789,
+    "overflow": false,
+    "view": "3d",
+    "width": 768
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 829.25,
+      "right": 1012,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 829.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 606.5,
+    "overflow": false,
+    "view": "schematic",
+    "width": 1024
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 829.25,
+      "right": 1012,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 829.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 606.5,
+    "overflow": false,
+    "view": "satellite",
+    "width": 1024
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 829.25,
+      "right": 1012,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 829.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 606.5,
+    "overflow": false,
+    "view": "3d",
+    "width": 1024
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1237.25,
+      "right": 1420,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1237.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 738.5,
+    "overflow": false,
+    "view": "schematic",
+    "width": 1440
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1237.25,
+      "right": 1420,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1237.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 738.5,
+    "overflow": false,
+    "view": "satellite",
+    "width": 1440
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1237.25,
+      "right": 1420,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1237.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 738.5,
+    "overflow": false,
+    "view": "3d",
+    "width": 1440
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1717.25,
+      "right": 1900,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1717.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 918.5,
+    "overflow": false,
+    "view": "schematic",
+    "width": 1920
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1717.25,
+      "right": 1900,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1717.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 918.5,
+    "overflow": false,
+    "view": "satellite",
+    "width": 1920
+  },
+  {
+    "booking": {
+      "bottom": 70.25,
+      "height": 46,
+      "left": 1717.25,
+      "right": 1900,
+      "top": 24.25,
+      "width": 182.75,
+      "x": 1717.25,
+      "y": 24.25
+    },
+    "header": 95.5,
+    "map": 918.5,
+    "overflow": false,
+    "view": "3d",
+    "width": 1920
+  }
+]

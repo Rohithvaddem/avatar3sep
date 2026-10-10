@@ -1,0 +1,773 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Price Quote - Plot #125 - Avatar 3</title>
+            <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+                * {
+                    box-sizing: border-box;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                    color-adjust: exact !important;
+                }
+                body {
+                    font-family: 'Outfit', sans-serif;
+                    background: #f1f5f9;
+                    color: #0f172a;
+                    margin: 0;
+                    padding: 15px;
+                    font-size: 11px;
+                }
+                .no-print {
+                    max-width: 820px;
+                    margin: 0 auto 15px auto;
+                }
+                .btn-print-quote {
+                    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                    color: #ffffff;
+                    border: none;
+                    padding: 12px 28px;
+                    font-size: 14px;
+                    font-weight: 800;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                }
+                .btn-print-quote:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.35);
+                }
+
+                [contenteditable="true"] {
+                    transition: background 0.15s, outline 0.15s;
+                    border-radius: 3px;
+                }
+                [contenteditable="true"]:hover {
+                    outline: 1.5px dashed #2563eb !important;
+                    background-color: rgba(37, 99, 235, 0.08) !important;
+                    cursor: text;
+                }
+                [contenteditable="true"]:focus {
+                    outline: 2px solid #1d4ed8 !important;
+                    background-color: #ffffff !important;
+                }
+
+                .quote-container {
+                    max-width: 820px;
+                    margin: 0 auto;
+                    background: #ffffff;
+                    border: 2px solid #0f172a;
+                    padding: 18px 24px;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+                    page-break-inside: avoid;
+                }
+                .quote-banner {
+                    background: #e2e8f0 !important;
+                    border: 1.5px solid #0f172a;
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 800;
+                    padding: 5px;
+                    margin-bottom: -1px;
+                    position: relative;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .quote-date {
+                    position: absolute;
+                    right: 12px;
+                    top: 8px;
+                    font-size: 11px;
+                    font-weight: 700;
+                }
+                .section-header-banner {
+                    background: #f1f5f9 !important;
+                    border: 1.5px solid #0f172a !important;
+                    padding: 3.5px 10px;
+                    font-weight: 800;
+                    text-align: center;
+                    font-size: 11.5px;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .q-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: -1px;
+                    page-break-inside: avoid;
+                }
+                .q-table th, .q-table td {
+                    border: 1.5px solid #0f172a;
+                    padding: 3.5px 8px;
+                    font-size: 11px;
+                    text-align: left;
+                }
+                .q-table th {
+                    background: #f1f5f9 !important;
+                    font-weight: 700;
+                    color: #0f172a;
+                    text-transform: uppercase;
+                    font-size: 10.5px;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .bg-blue {
+                    background: #c2ecff !important;
+                    font-weight: 700;
+                    color: #0f172a !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .bg-yellow, .bg-yellow-highlight {
+                    background: #fef08a !important;
+                    font-weight: 800;
+                    color: #0f172a !important;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .bg-green {
+                    background: #f8fafc !important;
+                    font-weight: 800;
+                    font-size: 11.5px;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                .notes-block {
+                    font-size: 9.5px;
+                    font-weight: 700;
+                    line-height: 1.4;
+                    border: 1.5px solid #0f172a !important;
+                    padding: 6px 10px;
+                }
+                .notes-title { color: #0f172a; font-weight: 800; }
+                .red-heading { color: #dc2626; font-weight: 800; font-size: 10.5px; }
+                .reg-table {
+                    width: 70% !important;
+                }
+                .reg-table th, .reg-table td {
+                    padding: 2.5px 6px !important;
+                    font-size: 9px !important;
+                }
+                .reg-table .red-heading {
+                    font-size: 9px !important;
+                }
+                .sig-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 18px;
+                    padding-top: 6px;
+                    font-weight: 800;
+                    font-size: 11px;
+                    page-break-inside: avoid;
+                }
+
+                @media print {
+                    @page {
+                        size: A4 portrait;
+                        margin: 4mm 6mm;
+                    }
+                    html, body {
+                        background: #ffffff !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        overflow: hidden !important;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    .no-print { display: none !important; }
+                    .quote-container {
+                        border: none !important;
+                        padding: 0 !important;
+                        max-width: 100% !important;
+                        width: 100% !important;
+                        box-shadow: none !important;
+                        margin: 0 !important;
+                        page-break-inside: avoid !important;
+                    }
+                    [contenteditable="true"] {
+                        outline: none !important;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="quote-container">
+                <div class="quote-banner">
+                    <span contenteditable="true">Price Quote</span>
+                    <span class="quote-date">DATE: <span id="lblDate" contenteditable="true">06.10.2026</span></span>
+                </div>
+
+                <!-- Client Info Table -->
+                <table class="q-table">
+                    <tr>
+                        <td style="width: 20%; font-weight: 700; background: #f8fafc;" contenteditable="true">Client Name</td>
+                        <td style="width: 80%; font-weight: 700;" class="bg-blue" id="lblClientName" contenteditable="true">-</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700; background: #f8fafc;" contenteditable="true">Address</td>
+                        <td id="lblAddress" class="bg-blue" contenteditable="true">-</td>
+                    </tr>
+                </table>
+
+                <!-- Project & Closing Price Table -->
+                <table class="q-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;" contenteditable="true">Project Name</th>
+                            <th style="width: 15%; text-align: center;" contenteditable="true">Plot No.</th>
+                            <th style="width: 15%; text-align: center;" contenteditable="true">Facing</th>
+                            <th style="width: 20%; text-align: right;" contenteditable="true">Per sq.yd.</th>
+                            <th style="width: 20%; text-align: right;" contenteditable="true">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 800;" contenteditable="true">Avatar 3</td>
+                            <td style="font-weight: 700; text-align: center;" contenteditable="true">125</td>
+                            <td style="font-weight: 700; text-align: center; text-transform: uppercase;" contenteditable="true">West</td>
+                            <td style="text-align: right;" id="lblPerSqYd" contenteditable="true">₹ 15,499</td>
+                            <td class="bg-yellow-highlight" style="text-align: right; font-weight: 700;" id="lblOriginalTotalCost" contenteditable="true">₹ 22,73,238</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Extras & Additional Charges Table -->
+                <div class="section-header-banner" style="margin-top: 10px;" contenteditable="true">Extras &amp; Premium Charges (If Applicable)</div>
+                <table class="q-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;" contenteditable="true">Particulars / Add-on</th>
+                            <th style="width: 25%; text-align: center;" contenteditable="true">Rate / Sq.yd</th>
+                            <th style="width: 30%; text-align: right;" contenteditable="true">Total Extra Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td contenteditable="true">East Plot Premium</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblEastRate" contenteditable="true">₹ 0</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblEastTotal" contenteditable="true">₹ 0</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Corner Plot Premium</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblCornerRate" contenteditable="true">₹ 0</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblCornerTotal" contenteditable="true">₹ 0</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Mortgage Plot Charge</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblMortgageRate" contenteditable="true">₹ 0</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblMortgageTotal" contenteditable="true">₹ 0</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Bank Loan Processing Extra</td>
+                            <td style="text-align: center;" class="bg-blue" id="lblBankLoanRate" contenteditable="true">₹ 0</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblBankLoanTotal" contenteditable="true">₹ 0</td>
+                        </tr>
+                        <tr class="bg-yellow-highlight">
+                            <td style="font-weight: 800;" contenteditable="true">TOTAL PLOT VALUE (WITH ADD-ONS)</td>
+                            <td style="text-align: center; font-weight: 800;" id="lblTotalValueRate" contenteditable="true">₹ 15,499</td>
+                            <td style="text-align: right; font-weight: 800;" id="lblTotalValueTotal" contenteditable="true">₹ 22,73,238</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Price Quotation Table -->
+                <div class="section-header-banner" style="margin-top: 10px;" contenteditable="true">Price Quotation</div>
+                <table class="q-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%; text-align: center;" contenteditable="true">Total sq.yds</th>
+                            <th style="width: 25%; text-align: right;" contenteditable="true">Closing Price</th>
+                            <th style="width: 25%; text-align: right;" contenteditable="true">Discount</th>
+                            <th style="width: 30%; text-align: right;" contenteditable="true">Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bg-blue" style="text-align: center;" id="lblPlotArea" contenteditable="true">146.67</td>
+                            <td class="bg-blue" style="text-align: right;" id="lblClosingPrice" contenteditable="true">₹ 15,499</td>
+                            <td class="bg-blue" style="text-align: right; font-weight: 700;" id="lblDiscount" contenteditable="true">₹ 0</td>
+                            <td class="bg-yellow-highlight" style="text-align: right;" id="lblTotalAmount" contenteditable="true">₹ 22,73,238</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Payment Structure Table -->
+                <div class="section-header-banner" style="margin-top: 10px;" contenteditable="true">Payment Structure</div>
+                <table class="q-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;" contenteditable="true">Payment Mode</th>
+                            <th style="width: 25%; text-align: center;" contenteditable="true">Total sq.yd</th>
+                            <th style="width: 25%; text-align: right;" contenteditable="true">Per sq.yd.</th>
+                            <th style="width: 20%; text-align: right;" contenteditable="true">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bg-blue"><strong contenteditable="true">By A/C Transfer</strong></td>
+                            <td style="text-align: center;" class="bg-blue" id="lblBankSqYd" contenteditable="true">146.67</td>
+                            <td class="bg-blue" style="text-align: right;" id="lblBankRate" contenteditable="true">₹ 3,000</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblBankTotal" contenteditable="true">₹ 4,40,010</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-blue"><strong contenteditable="true">By Cash</strong></td>
+                            <td style="text-align: center;" class="bg-blue" id="lblCashSqYd" contenteditable="true">146.67</td>
+                            <td class="bg-blue" style="text-align: right;" id="lblCashRate" contenteditable="true">₹ 12,499</td>
+                            <td style="text-align: right;" class="bg-blue" id="lblCashTotal" contenteditable="true">₹ 18,33,228</td>
+                        </tr>
+                        <tr class="bg-yellow-highlight">
+                            <td colspan="3" style="text-align: right; font-weight: 800;" contenteditable="true">Total</td>
+                            <td style="text-align: right;" id="lblStructTotal" contenteditable="true">₹ 22,73,238</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Payment Schedule Table -->
+                <div class="section-header-banner" style="margin-top: 10px; display: flex; align-items: center; justify-content: center; position: relative;" contenteditable="true">
+                    <span>Payment Schedule</span>
+                    <button id="btnAddScheduleRow" contenteditable="false" class="no-print" title="Add New Payment Schedule Row" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #0f172a; color: #ffffff; border: none; font-size: 11px; font-weight: 800; padding: 2px 10px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                        <i class="fa-solid fa-plus"></i> Add Row
+                    </button>
+                </div>
+                <table class="q-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;" contenteditable="true">Date</th>
+                            <th style="width: 40%;" contenteditable="true">Particulars</th>
+                            <th style="width: 20%; text-align: center;" contenteditable="true">Percentage (%)</th>
+                            <th style="width: 20%; text-align: right;" contenteditable="true">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyPaymentSchedule">
+                        <tr>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: center;" id="lblPct1" class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: right;" id="lblAmt1" class="bg-blue" contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: center;" id="lblPct2" class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: right;" id="lblAmt2" class="bg-blue" contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: center;" id="lblPct3" class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: right;" id="lblAmt3" class="bg-blue" contenteditable="true"></td>
+                        </tr>
+                        <tr id="rowScheduleTotal" class="bg-yellow-highlight">
+                            <td colspan="3" style="text-align: right; font-weight: 800;" contenteditable="true">TOTAL</td>
+                            <td style="text-align: right;" id="lblScheduleTotal" contenteditable="true">₹ 22,73,238</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Corpus Fund Table -->
+                <table class="q-table" style="margin-top: 10px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 45%; font-weight: 700;" contenteditable="true">Corpus Fund (Not Included in Plot Cost)</td>
+                            <td style="width: 25%; text-align: center;" id="lblCorpusRate" contenteditable="true">₹ 200</td>
+                            <td style="width: 30%; text-align: right;" id="lblCorpusTotal" contenteditable="true">₹ 29,334</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Standard Notes -->
+                <div class="notes-block" style="margin-top: 10px;">
+                    <div class="notes-title" contenteditable="true">NOTE 1 : CORPUS FUND 200/- Rs Per SQ Yd ( Not Included In Plot Cost )</div>
+                    <div class="notes-title" contenteditable="true">NOTE 2 : Documentation Charges 5,000 and Registration Charges - 7.6% on Sale Deed Value, these charges are not included in the Price Quotation</div>
+                    <div class="notes-title" contenteditable="true">NOTE 3: Please note that canceling your plot booking after 15 days will result in a cancellation charge of Rs. 50,000.</div>
+                </div>
+
+                <!-- Registration Charges Table (25% Size Reduction) -->
+                <table class="q-table reg-table" style="margin-top: 10px;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 65%;" class="red-heading" contenteditable="true">REGISTRATION CHARGES: 7.5% ON TOTAL BANK AMOUNT</td>
+                            <td style="width: 35%; text-align: right; font-weight: 700;" id="lblReg75" contenteditable="true">₹ 33,001</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">USER CHARGES</td>
+                            <td style="text-align: right; font-weight: 700;" contenteditable="true">1000</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">STAMP</td>
+                            <td style="text-align: right; font-weight: 700;" contenteditable="true">100</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">HARITHA HARAM</td>
+                            <td style="text-align: right; font-weight: 700;" contenteditable="true">50</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">DOCUMENTATION CHARGES</td>
+                            <td style="text-align: right; font-weight: 700;" contenteditable="true">5000</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">MUTATION 0.1%</td>
+                            <td style="text-align: right; font-weight: 700;" id="lblMutation" contenteditable="true">800</td>
+                        </tr>
+                        <tr class="bg-yellow-highlight">
+                            <td style="font-weight: 800;" contenteditable="true">TOTAL REGISTRATION CHARGES</td>
+                            <td style="text-align: right;" id="lblRegTotal" contenteditable="true">₹ 39,951</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="sig-row">
+                    <div contenteditable="true">CUSTOMER SIGN :</div>
+                    <div contenteditable="true">AUTHORISED SIGN :</div>
+                </div>
+            </div>
+
+            <!-- Print / Save as PDF Button placed at the DOWN of the page -->
+            <div class="no-print" style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+                <button class="btn-print-quote" onclick="window.print()"><i class="fa-solid fa-print"></i> Print / Save Official Price Quote PDF</button>
+            </div>
+
+            <script>
+                function attachLiveRecalculation() {
+                    function parseNum(str) {
+                        if (!str) return 0;
+                        const cleaned = str.replace(/[^0-9.]/g, '');
+                        return parseFloat(cleaned) || 0;
+                    }
+
+                    function fmt(val) {
+                        return '₹ ' + Math.round(val).toLocaleString('en-IN');
+                    }
+
+                    function updateCalculations() {
+                        const active = document.activeElement;
+                        const areaEl = document.getElementById('lblPlotArea');
+                        const perSqYdEl = document.getElementById('lblPerSqYd');
+                        const originalTotalCostEl = document.getElementById('lblOriginalTotalCost');
+                        const closingPriceEl = document.getElementById('lblClosingPrice');
+                        const discountEl = document.getElementById('lblDiscount');
+                        const bankRateEl = document.getElementById('lblBankRate');
+                        const cashRateEl = document.getElementById('lblCashRate');
+
+                        const eastRateEl = document.getElementById('lblEastRate');
+                        const cornerRateEl = document.getElementById('lblCornerRate');
+                        const mortgageRateEl = document.getElementById('lblMortgageRate');
+                        const bankLoanRateEl = document.getElementById('lblBankLoanRate');
+                        const corpusRateEl = document.getElementById('lblCorpusRate');
+
+                        const plotArea = parseNum(areaEl ? areaEl.innerText : '200');
+                        let basePerSqYdRate = parseNum(perSqYdEl ? perSqYdEl.innerText : '15499');
+
+                        // If user edits Original Total Price directly, update Per Sq.Yd Rate
+                        if (active === originalTotalCostEl) {
+                            const typedOriginalCost = parseNum(originalTotalCostEl.innerText);
+                            basePerSqYdRate = plotArea > 0 ? Math.round(typedOriginalCost / plotArea) : 0;
+                            if (perSqYdEl) perSqYdEl.innerText = fmt(basePerSqYdRate);
+                        }
+
+                        let baseClosingPrice = parseNum(closingPriceEl ? closingPriceEl.innerText : String(basePerSqYdRate));
+                        const bankRate = parseNum(bankRateEl ? bankRateEl.innerText : '3000');
+
+                        const stdEastRate = 0;
+                        const stdCornerRate = 0;
+                        const stdMortgageRate = 0;
+
+                        const eastRate = parseNum(eastRateEl ? eastRateEl.innerText : '0');
+                        const cornerRate = parseNum(cornerRateEl ? cornerRateEl.innerText : '0');
+                        const mortgageRate = parseNum(mortgageRateEl ? mortgageRateEl.innerText : '0');
+                        const bankLoanRate = parseNum(bankLoanRateEl ? bankLoanRateEl.innerText : '0');
+                        const corpusRate = parseNum(corpusRateEl ? corpusRateEl.innerText : '200');
+
+                        // Standard List Price Rate (Base Rate + Standard Add-ons)
+                        const stdFullListRate = basePerSqYdRate + stdEastRate + stdCornerRate + stdMortgageRate;
+                        const stdFullListTotal = Math.round(plotArea * stdFullListRate);
+
+                        // Net buyer closing rate including any remaining add-ons
+                        let netClosingRate = baseClosingPrice + eastRate + cornerRate + mortgageRate + bankLoanRate;
+
+                        // If user edits Discount directly, calculate baseClosingPrice from stdFullListRate - Discount
+                        if (active === discountEl) {
+                            const typedDiscount = parseNum(discountEl.innerText);
+                            netClosingRate = Math.max(0, stdFullListRate - typedDiscount);
+                            baseClosingPrice = Math.max(0, netClosingRate - (eastRate + cornerRate + mortgageRate + bankLoanRate));
+                            if (closingPriceEl) closingPriceEl.innerText = fmt(baseClosingPrice);
+                        }
+
+                        // If user edits By Cash Rate directly in Payment Structure, update base Closing Price
+                        if (active === cashRateEl) {
+                            const typedCashRate = parseNum(cashRateEl.innerText);
+                            baseClosingPrice = Math.max(0, (typedCashRate + bankRate) - (eastRate + cornerRate + mortgageRate + bankLoanRate));
+                            netClosingRate = baseClosingPrice + eastRate + cornerRate + mortgageRate + bankLoanRate;
+                            if (closingPriceEl) closingPriceEl.innerText = fmt(baseClosingPrice);
+                        }
+
+                        // Original Total Price based on original Per Sq.Yd Rate and Plot Area
+                        const originalTotalCost = Math.round(plotArea * basePerSqYdRate);
+                        if (originalTotalCostEl && originalTotalCostEl !== active) {
+                            originalTotalCostEl.innerText = fmt(originalTotalCost);
+                        }
+
+                        // TOTAL PLOT VALUE (WITH ADD-ONS) in Extras section updates dynamically from current add-on rates
+                        const currentExtrasValueRate = basePerSqYdRate + eastRate + cornerRate + mortgageRate + bankLoanRate;
+                        const currentExtrasValueTotal = Math.round(plotArea * currentExtrasValueRate);
+
+                        const totalValueRateEl = document.getElementById('lblTotalValueRate');
+                        if (totalValueRateEl && totalValueRateEl !== active) totalValueRateEl.innerText = fmt(currentExtrasValueRate);
+
+                        const totalValueTotalEl = document.getElementById('lblTotalValueTotal');
+                        if (totalValueTotalEl && totalValueTotalEl !== active) totalValueTotalEl.innerText = fmt(currentExtrasValueTotal);
+
+                        // Calculate Discount per sq.yd (stdFullListRate - netClosingRate) - Includes any zeroed/removed add-ons!
+                        const discountPerSqYd = Math.max(0, stdFullListRate - netClosingRate);
+                        if (discountEl && discountEl !== active) {
+                            discountEl.innerText = fmt(discountPerSqYd);
+                        }
+
+                        // Grand Total Amount after discount in Price Quotation section
+                        const grandTotalAmount = Math.round(plotArea * netClosingRate);
+                        const totalAmtEl = document.getElementById('lblTotalAmount');
+                        if (totalAmtEl && totalAmtEl !== active) totalAmtEl.innerText = fmt(grandTotalAmount);
+
+                        // Update Extras totals
+                        const eastTotalEl = document.getElementById('lblEastTotal');
+                        if (eastTotalEl && eastTotalEl !== active) eastTotalEl.innerText = fmt(Math.round(plotArea * eastRate));
+
+                        const cornerTotalEl = document.getElementById('lblCornerTotal');
+                        if (cornerTotalEl && cornerTotalEl !== active) cornerTotalEl.innerText = fmt(Math.round(plotArea * cornerRate));
+
+                        const mortgageTotalEl = document.getElementById('lblMortgageTotal');
+                        if (mortgageTotalEl && mortgageTotalEl !== active) mortgageTotalEl.innerText = fmt(Math.round(plotArea * mortgageRate));
+
+                        const bankLoanTotalEl = document.getElementById('lblBankLoanTotal');
+                        if (bankLoanTotalEl && bankLoanTotalEl !== active) bankLoanTotalEl.innerText = fmt(Math.round(plotArea * bankLoanRate));
+
+                        // Update Corpus Fund total (not added into plot total value)
+                        const corpusTotalEl = document.getElementById('lblCorpusTotal');
+                        if (corpusTotalEl && corpusTotalEl !== active) corpusTotalEl.innerText = fmt(Math.round(plotArea * corpusRate));
+
+                        // Update Payment Structure (Bank + Cash) based on Grand Total Amount after discount
+                        const bankTotal = Math.round(plotArea * bankRate);
+                        const cashRate = Math.max(0, baseClosingPrice - bankRate + eastRate + cornerRate + mortgageRate + bankLoanRate);
+                        const cashTotal = Math.max(0, grandTotalAmount - bankTotal);
+
+                        const bookingAmt = 100000;
+                        const amt1 = Math.round(grandTotalAmount * 0.25);
+                        const amt2 = Math.max(0, grandTotalAmount - bookingAmt - amt1);
+
+                        const bankSqYdEl = document.getElementById('lblBankSqYd');
+                        if (bankSqYdEl && bankSqYdEl !== active) bankSqYdEl.innerText = plotArea;
+
+                        const cashSqYdEl = document.getElementById('lblCashSqYd');
+                        if (cashSqYdEl && cashSqYdEl !== active) cashSqYdEl.innerText = plotArea;
+
+                        const bankTotalEl = document.getElementById('lblBankTotal');
+                        if (bankTotalEl && bankTotalEl !== active) bankTotalEl.innerText = fmt(bankTotal);
+
+                        if (cashRateEl && cashRateEl !== active) cashRateEl.innerText = fmt(cashRate);
+
+                        const cashTotalEl = document.getElementById('lblCashTotal');
+                        if (cashTotalEl && cashTotalEl !== active) cashTotalEl.innerText = fmt(cashTotal);
+
+                        const structTotalEl = document.getElementById('lblStructTotal');
+                        if (structTotalEl && structTotalEl !== active) structTotalEl.innerText = fmt(grandTotalAmount);
+
+                    let scheduleRowCount = 3;
+
+                    function bindScheduleCell(pctEl, amtEl) {
+                        if (!pctEl || !amtEl) return;
+                        [pctEl, amtEl].forEach(el => {
+                            el.addEventListener('input', updateCalculations);
+                            el.addEventListener('keyup', updateCalculations);
+                            el.addEventListener('blur', function() {
+                                if (el === pctEl) {
+                                    const raw = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                    if (raw !== '') {
+                                        const num = parseFloat(raw);
+                                        if (!isNaN(num)) pctEl.innerText = (num % 1 === 0 ? num.toFixed(0) : num.toFixed(1)) + '%';
+                                    }
+                                } else if (el === amtEl) {
+                                    const val = parseNum(amtEl.innerText);
+                                    if (val > 0) amtEl.innerText = fmt(val);
+                                }
+                                updateCalculations();
+                            });
+                        });
+                    }
+
+                    // Update Payment Schedule Live Percentage & Amount Calculation
+                    for (let idx = 1; idx <= scheduleRowCount; idx++) {
+                        const pctEl = document.getElementById('lblPct' + idx);
+                        const amtEl = document.getElementById('lblAmt' + idx);
+
+                        if (pctEl && amtEl) {
+                            if (active === pctEl) {
+                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawPctStr !== '') {
+                                    const pctVal = parseFloat(rawPctStr);
+                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
+                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
+                                        amtEl.innerText = fmt(calcAmt);
+                                    }
+                                } else {
+                                    amtEl.innerText = '';
+                                }
+                            } else if (active === amtEl) {
+                                const rawAmtStr = amtEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawAmtStr !== '') {
+                                    const amtVal = parseFloat(rawAmtStr);
+                                    if (!isNaN(amtVal) && grandTotalAmount > 0) {
+                                        const calcPct = (amtVal / grandTotalAmount) * 100;
+                                        const pctFormatted = (calcPct % 1 === 0 ? calcPct.toFixed(0) : calcPct.toFixed(1)) + '%';
+                                        pctEl.innerText = pctFormatted;
+                                    }
+                                } else {
+                                    pctEl.innerText = '';
+                                }
+                            } else if (pctEl.innerText.trim() !== '') {
+                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawPctStr !== '') {
+                                    const pctVal = parseFloat(rawPctStr);
+                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
+                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
+                                        amtEl.innerText = fmt(calcAmt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    updateScheduleRows(grandTotalAmount, active);
+
+                    const scheduleTotalEl = document.getElementById('lblScheduleTotal');
+                    if (scheduleTotalEl && scheduleTotalEl !== active) scheduleTotalEl.innerText = fmt(grandTotalAmount);
+                }
+
+                let scheduleRowCount = 3;
+
+                function bindScheduleCell(pctEl, amtEl) {
+                    if (!pctEl || !amtEl) return;
+                    [pctEl, amtEl].forEach(el => {
+                        el.addEventListener('input', updateCalculations);
+                        el.addEventListener('keyup', updateCalculations);
+                        el.addEventListener('blur', function() {
+                            if (el === pctEl) {
+                                const raw = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                if (raw !== '') {
+                                    const num = parseFloat(raw);
+                                    if (!isNaN(num)) pctEl.innerText = (num % 1 === 0 ? num.toFixed(0) : num.toFixed(1)) + '%';
+                                }
+                            } else if (el === amtEl) {
+                                const val = parseNum(amtEl.innerText);
+                                if (val > 0) amtEl.innerText = fmt(val);
+                            }
+                            updateCalculations();
+                        });
+                    });
+                }
+
+                // Update Payment Schedule Live Percentage & Amount Calculation across all rows
+                function updateScheduleRows(grandTotalAmount, active) {
+                    for (let idx = 1; idx <= scheduleRowCount; idx++) {
+                        const pctEl = document.getElementById('lblPct' + idx);
+                        const amtEl = document.getElementById('lblAmt' + idx);
+
+                        if (pctEl && amtEl) {
+                            if (active === pctEl) {
+                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawPctStr !== '') {
+                                    const pctVal = parseFloat(rawPctStr);
+                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
+                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
+                                        amtEl.innerText = fmt(calcAmt);
+                                    }
+                                } else {
+                                    amtEl.innerText = '';
+                                }
+                            } else if (active === amtEl) {
+                                const rawAmtStr = amtEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawAmtStr !== '') {
+                                    const amtVal = parseFloat(rawAmtStr);
+                                    if (!isNaN(amtVal) && grandTotalAmount > 0) {
+                                        const calcPct = (amtVal / grandTotalAmount) * 100;
+                                        const pctFormatted = (calcPct % 1 === 0 ? calcPct.toFixed(0) : calcPct.toFixed(1)) + '%';
+                                        pctEl.innerText = pctFormatted;
+                                    }
+                                } else {
+                                    pctEl.innerText = '';
+                                }
+                            } else if (pctEl.innerText.trim() !== '') {
+                                const rawPctStr = pctEl.innerText.replace(/[^0-9.]/g, '');
+                                if (rawPctStr !== '') {
+                                    const pctVal = parseFloat(rawPctStr);
+                                    if (!isNaN(pctVal) && grandTotalAmount > 0) {
+                                        const calcAmt = Math.round(grandTotalAmount * (pctVal / 100));
+                                        amtEl.innerText = fmt(calcAmt);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Registration listeners for initial elements
+                ['lblPlotArea', 'lblClosingPrice', 'lblPerSqYd', 'lblOriginalTotalCost', 'lblDiscount', 'lblBankRate', 'lblCashRate', 'lblEastRate', 'lblCornerRate', 'lblMortgageRate', 'lblBankLoanRate', 'lblCorpusRate'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.addEventListener('input', updateCalculations);
+                        el.addEventListener('keyup', updateCalculations);
+                        el.addEventListener('blur', function() {
+                            const val = parseNum(el.innerText);
+                            if (val > 0) el.innerText = fmt(val);
+                            updateCalculations();
+                        });
+                    }
+                });
+
+                // Bind initial 3 rows of Payment Schedule
+                for (let idx = 1; idx <= 3; idx++) {
+                    bindScheduleCell(document.getElementById('lblPct' + idx), document.getElementById('lblAmt' + idx));
+                }
+
+                // Add Row button handler
+                const btnAddRow = document.getElementById('btnAddScheduleRow');
+                if (btnAddRow) {
+                    btnAddRow.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        scheduleRowCount++;
+                        const newPctId = 'lblPct' + scheduleRowCount;
+                        const newAmtId = 'lblAmt' + scheduleRowCount;
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: center;" id="${newPctId}" class="bg-blue" contenteditable="true"></td>
+                            <td style="text-align: right;" id="${newAmtId}" class="bg-blue" contenteditable="true"></td>
+                        `;
+
+                        const totalRow = document.getElementById('rowScheduleTotal');
+                        if (totalRow && totalRow.parentNode) {
+                            totalRow.parentNode.insertBefore(tr, totalRow);
+                            const newPctEl = document.getElementById(newPctId);
+                            const newAmtEl = document.getElementById(newAmtId);
+                            bindScheduleCell(newPctEl, newAmtEl);
+                            const firstTd = tr.querySelector('td');
+                            if (firstTd) firstTd.focus();
+                        }
+                    });
+                }
+            }
+                attachLiveRecalculation();
+            </script>
+        </body>
+        </html>
+    

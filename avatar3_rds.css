@@ -146,7 +146,7 @@ body.immersive-view.rt-three-active .dashboard-header > .header-stats { display:
 body:has(.three-inspect-drawer.open) #floatingSiteVisitBtn,.map-viewport:has(.three-inspect-drawer.open) > .floating-recenter-btn { visibility:visible!important; }
 @media(max-width:992px) { .main-content::after { left:0; } .floating-recenter-btn { left:12px!important; } }
 @media(max-width:600px) {
- .rt-three-active .dashboard-header { padding:8px 12px; gap:6px; }
+
  .rt-three-active .approved-badge { display:none; }
  .rt-three-active .header-center-actions { margin:0!important; }
  .rt-three-bar { padding:6px 8px; gap:4px; }
@@ -286,3 +286,273 @@ body.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:none!impor
 #threeMapContainer.cinematic-playing .three-hud-filters { visibility:hidden!important; pointer-events:none!important; }
 #threeMapContainer.cinematic-playing #threeCanvasContainer { pointer-events:none; }
 #dealSimulatorBody #simMarginBadge { color:#056348!important; background:#E0F3EB!important; border-color:#8DBBA8!important; }
+
+/* Project registrations beside the title, wrapping on narrow screens. */
+.header-project-info { display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:8px 16px; }
+.project-registrations { display:flex; flex-direction:column; gap:3px; font-size:11px; line-height:1.4; color:var(--rt-ink-muted, #526479); }
+.project-registrations span { white-space:nowrap; }
+@media (max-width:600px) { .header-project-info { gap:4px 12px; } .project-registrations { font-size:10px; } }
+
+.project-registrations { flex-direction:row; flex-wrap:wrap; gap:8px; }
+.registration-item { display:flex; align-items:center; gap:6px; padding:5px 8px; border:1px solid #dce5ec; border-radius:8px; background:#fff; font-size:10px; font-weight:600; color:#334d63; }
+.registration-item img { width:44px; height:27px; object-fit:contain; }
+@media (max-width:600px) { .project-registrations { gap:6px; } .registration-item { padding:3px 5px; gap:4px; font-size:9px; } .registration-item img { width:34px; height:23px; } }
+
+/* Keep image and plot overlay in one fixed coordinate system at every viewport size. */
+#mapContainer { width:1024px; height:576px; flex-shrink:0; }
+#mapImage { max-width:none; max-height:none; width:1024px; height:576px; }
+#plotsOverlay { width:100%; height:100%; }
+
+/* Site visit sheet: persistent actions, only fields can scroll. */
+#siteVisitModal { display:flex; flex-direction:column; padding:0!important; overflow:hidden; max-height:calc(100dvh - 24px); width:min(480px,100%); }
+#siteVisitModal > .modal-header { flex-shrink:0; padding:12px 16px; margin:0; }
+#siteVisitCloseBtn { width:44px; height:44px; flex-shrink:0; }
+#siteVisitModal > .modal-body { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:10px 16px 12px!important; }
+#siteVisitModal .modal-body > p { margin:0 0 10px!important; font-size:12px!important; }
+#siteVisitForm { gap:10px!important; }
+#siteVisitForm input,#siteVisitForm select,#siteVisitForm textarea { min-width:0; width:100%; box-sizing:border-box; min-height:44px!important; font-size:16px!important; padding:8px 10px!important; }
+#siteVisitForm label { font-size:12px!important; }
+.visit-sheet-footer { flex-shrink:0; padding:10px 16px max(10px,env(safe-area-inset-bottom)); border-top:1px solid var(--rt-hairline); background:var(--rt-surface); }
+.visit-sheet-footer .rt-consent { gap:8px; margin:0 0 10px; font-size:12px; }
+.visit-sheet-footer .rt-consent label { line-height:1.4; }
+.visit-sheet-footer input[type=checkbox] { width:20px; height:20px; min-width:20px!important; min-height:20px!important; margin:0; }
+.visit-sheet-footer button[type=submit] { width:100%; margin:0!important; min-height:46px; box-shadow:none!important; }
+.visit-sheet-footer .rt-provenance { margin:8px 0 0; font-size:11px; line-height:1.4; }
+.visit-optional summary { cursor:pointer; font-size:12px; color:var(--rt-brand-strong); padding:8px 0; }
+@media(max-width:600px) {
+ #siteVisitModalBackdrop { padding:8px!important; align-items:center; }
+ #siteVisitModal { max-height:calc(100dvh - 16px); }
+ #siteVisitModal > .modal-header { padding:8px 12px; }
+ #siteVisitModal > .modal-body { padding:8px 12px 10px!important; }
+ .visit-sheet-footer { padding-left:12px; padding-right:12px; }
+}
+
+#threeMapContainer .three-hud-search { display:flex; align-items:center; gap:6px; }
+#threeMapContainer .three-hud-search input { flex:1; width:0!important; }
+#plotSearchSubmit { width:44px; height:44px; flex-shrink:0; border:0; border-radius:8px; background:var(--rt-action); color:var(--rt-on-action); cursor:pointer; }
+/* Readable plot preview on the light layout. */
+.plot-hover-tooltip {
+    background: #fffdf8;
+    color: #182c3d;
+    border: 1px solid #cbd5df;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 6px 20px rgba(24, 44, 61, 0.18);
+}
+.plot-hover-tooltip .tooltip-header { border-bottom-color: #dce2e8; }
+.plot-hover-tooltip .tooltip-title { color: #075985; }
+.plot-hover-tooltip .tooltip-row { color: #34485b; font-size: 12px; }
+.plot-hover-tooltip .tooltip-row i { color: #075985; }
+.plot-hover-tooltip .status-badge { box-shadow: none; }
+/* Status colours are independent of the brand action colour. */
+:root {
+ --status-available:#1E8A4C; --status-aspirealty:#1E8A4C;
+ --status-sold:#C62F2F; --status-hold:#B45309;
+ --status-mortgage:#7A3FC4; --status-registered:#475569;
+ --status-resale:#0369A1;
+}
+.plot-dot {
+ border:1px solid #fff; text-shadow:none;
+ box-shadow:0 0 0 .6px rgba(15,35,53,.35);
+}
+.plot-dot::before { display:none!important; }
+.plot-dot[data-status="MORTGAGE"], .plot-dot[data-status="MORTAGAGE"] { border-radius:4px; }
+.plot-dot[data-status="HOLD"] { border-style:dashed; border-radius:3px; }
+.plot-dot[data-status="REGISTERED"] { border-style:double; border-width:3px; }
+.floating-legend-item .color-dot { width:12px; height:12px; box-shadow:none; border:1px solid rgba(15,35,53,.2); }
+.floating-legend-item[data-status="MORTGAGE"] .color-dot { border-radius:3px; }
+.floating-legend-item[data-status="HOLD"] .color-dot { border-radius:2px; border:1px dashed #fff; outline:1px solid #B45309; }
+.floating-legend-item[data-status="REGISTERED"] .color-dot { border:3px double #fff; outline:1px solid #475569; }
+/* Keep the title/view row anchored when the inventory row is hidden. */
+body.rt-three-active .dashboard-header { min-height:0; align-content:start; }
+.three-loading-state { position:absolute; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; background:#f6f8fa; color:#34485b; font-size:16px; padding:24px; text-align:center; }
+.three-loading-state[hidden] { display:none; }
+/* Project identity: title above compact registration metadata at every width. */
+.header-project-info { display:flex!important; flex-direction:column!important; align-items:flex-start; gap:5px!important; }
+.project-registrations { display:flex; flex-wrap:wrap; gap:6px 14px; }
+.registration-item { padding:0; border:0; border-radius:0; background:transparent; font-size:11px; gap:5px; color:#526479; font-weight:500; }
+.registration-item img { width:30px; height:22px; }
+@media(max-width:600px) {
+ .header-project-info { gap:4px!important; }
+ .project-registrations { gap:4px 10px; font-size:10px; }
+ .registration-item { font-size:10px; padding:0; gap:4px; }
+ .registration-item img { width:24px; height:18px; }
+ .project-name { font-size:22px; }
+}
+.header-status-counts { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:6px 16px; font-size:11px; color:#526479; }
+.header-status-counts > span { display:flex; align-items:center; gap:5px; white-space:nowrap; }
+.header-status-counts i { width:8px; height:8px; border-radius:50%; background:var(--count-color); }
+.header-status-counts strong { color:var(--count-color); font-weight:700; }
+.rt-three-active .header-status-counts { display:none; }
+#statAvailablePlots { color:var(--status-available)!important; }
+#statBookedPlots { color:var(--status-sold)!important; }
+#statMortgagePlots { color:var(--status-mortgage)!important; }
+.header-project-info { display:grid!important; grid-template-columns:auto 1fr; gap:4px 16px!important; align-items:center; }
+.project-registrations { padding-left:14px; border-left:1px solid #dce5ec; flex-direction:column; gap:4px; }
+.registration-item img { width:28px; height:22px; }
+@media(max-width:600px) {
+ .header-project-info { grid-template-columns:1fr!important; gap:6px!important; }
+ .project-registrations { flex-direction:row; gap:8px; padding-left:0; border-left:0; }
+ .registration-item { display:grid; grid-template-columns:24px auto; font-size:10px; }
+}
+/* Prevent the host's optional promotional badge from covering visit actions. */
+#nl-badge-frame { display:none!important; }
+body.immersive-view:not(.rt-three-active) .dashboard-header > .header-status-counts { display:flex!important; }
+
+.project-description { grid-column:1/-1; margin:2px 0 0; font-size:12px; line-height:1.45; color:#526479; max-width:460px; }
+.registration-item a { color:#245879; text-decoration:underline; text-underline-offset:3px; }
+.registration-item a:hover { color:#006b9f; }
+.registration-item:has(img[alt="RERA"]) img { width:64px; height:30px; }
+@media(max-width:600px) {
+ .registration-item:has(img[alt="RERA"]) { grid-template-columns:48px auto; }
+ .registration-item:has(img[alt="RERA"]) img { width:48px; height:24px; }
+ .project-description { font-size:10px; max-width:310px; }
+}
+
+/* A quiet project subtitle beneath the title and registration metadata. */
+.project-description { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 6px; margin:3px 0 0; font-size:12px; line-height:1.5; color:#526479; max-width:none; }
+.project-description strong { color:#086b9b; font-weight:700; white-space:nowrap; }
+.description-divider { color:#8ca8bb; }
+@media(max-width:600px) {
+ .project-description { font-size:11px; gap:3px 5px; margin:0; max-width:100%; }
+ .header-project-info { min-width:0; }
+ .header-left { min-width:0; }
+}
+
+.document-preview-dialog { width:min(940px,calc(100vw - 32px)); height:calc(100dvh - 32px); max-width:none; max-height:none; padding:0; border:1px solid #dce5ec; border-radius:16px; background:#fff; overflow:hidden; }
+.document-preview-dialog[open] { display:flex; flex-direction:column; }
+.document-preview-dialog::backdrop { background:rgba(16,35,48,.5); }
+.document-preview-dialog > header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 16px; border-bottom:1px solid #dce5ec; }
+.document-preview-dialog h3 { margin:0; font-size:16px; color:#142c3d; }
+.document-preview-dialog header button { background:#e6f4fc; color:#086b9b; border:1px solid #b8d9ea; border-radius:8px; min-height:44px; padding:8px 16px; font:inherit; cursor:pointer; }
+.document-preview-dialog iframe { width:100%; flex:1; min-height:0; border:0; background:#f1f5f9; }
+@media(max-width:600px) { .document-preview-dialog { width:100vw; height:100dvh; margin:0; border-radius:0; border:0; } }
+
+.document-preview-actions { display:flex; gap:8px; flex-shrink:0; }
+@media(max-width:600px) { .document-preview-dialog > header { padding:8px; gap:8px; } .document-preview-dialog h3 { font-size:13px; } .document-preview-dialog header button { font-size:12px; padding:8px; } }
+
+.mortgage-reference-tag { color:#6b21a8; background:#f3e8ff; border:1px solid #d8b4fe; border-radius:6px; padding:4px 8px; font-size:12px; font-weight:600; }
+.mortgage-reference-control { width:100%; margin-bottom:8px; color:#6b21a8!important; background:#faf5ff!important; }
+.mortgage-reference-dialog { width:min(480px,calc(100vw - 24px)); max-height:85dvh; padding:20px; border:1px solid #dce5ec; border-radius:16px; color:#142c3d; background:#fff; }
+.mortgage-reference-dialog::backdrop { background:rgba(16,35,48,.5); }
+.mortgage-reference-dialog header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.mortgage-reference-dialog h3 { margin:0; font-size:18px; }
+.mortgage-reference-dialog p { color:#526479; font-size:13px; line-height:1.5; }
+.mortgage-reference-dialog button { min-height:44px; border:1px solid #dce5ec; border-radius:8px; background:#f8fafc; color:#142c3d; padding:8px 12px; cursor:pointer; }
+.mortgage-reference-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; max-height:55dvh; overflow:auto; }
+
+svg [data-plot].dimmed-finder-dot { opacity:.15; }
+svg [data-plot].matched-finder-dot > g { stroke:#0f2335; stroke-width:3; }
+body.rt-three-active .finder-result-banner { display:flex; }
+@media(max-width:600px) {
+ body .rt-mobile-finder, body.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:block!important; position:fixed; left:124px; bottom:68px; height:44px; padding:0 12px; border:1px solid #BACBDB; border-radius:22px; background:white; color:#0F2335; z-index:32; font-weight:600; }
+}
+
+.rt-desktop-tools > .rt-smart-finder { display:block; width:100%; margin:10px 0; }
+
+/* Project identity and inventory are separate aligned bands. */
+.inventory-summary { flex-shrink:0; display:grid; grid-template-columns:1fr; gap:10px; padding:16px 24px; background:#f8fafc; border-bottom:1px solid #dce5ec; }
+.inventory-summary .header-stats { grid-row:auto; gap:0; }
+.inventory-summary .stat-card { padding:0 18px; border-right:1px solid #dce5ec; }
+.inventory-summary .stat-card:first-child { padding-left:0; }
+.inventory-summary .stat-card:last-child { border-right:0; }
+.inventory-summary .header-status-counts { margin:0; }
+body.rt-three-active .inventory-summary { display:none; }
+.project-description-tag { width:fit-content; padding:5px 10px; border:1px solid #cce5f1; border-radius:8px; background:#edf7fc; color:#27546c; font-size:11px; gap:4px 6px; }
+.project-description-tag strong { color:#086b9b; }
+#smartFinderModalBackdrop .smart-finder-modal { background:#fff!important; opacity:1!important; backdrop-filter:none!important; }
+#smartFinderModalBackdrop { z-index:1500!important; }
+@media(min-width:993px) {
+ .dashboard-header,body.rt-three-active .dashboard-header { min-height:136px; padding:16px 24px; align-content:center; border-bottom:1px solid #dce5ec; }
+ .sidebar-brand { height:136px; min-height:136px; box-sizing:border-box; display:flex; align-items:center; }
+}
+@media(max-width:600px) {
+ .inventory-summary { padding:12px; gap:8px; }
+ .inventory-summary .header-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 12px; }
+ .inventory-summary .stat-card { padding:0; border:0; }
+ .project-description-tag { font-size:10px; padding:4px 7px; gap:3px 4px; }
+}
+
+/* Give the map priority: one compact identity band, counts only in the legend. */
+.inventory-summary { display:none!important; }
+#legendTotalCount { display:block; font-size:10px; font-weight:500; color:#526479; margin-top:2px; text-transform:none; }
+@media(min-width:993px) {
+ .dashboard-header,body.rt-three-active .dashboard-header { min-height:96px; padding:8px 24px; gap:4px 20px; }
+ .sidebar-brand { height:96px; min-height:96px; padding-top:12px; padding-bottom:12px; }
+ .sidebar-brand img { max-height:70px; object-fit:contain; }
+ .project-description-tag { margin:0; padding:3px 8px; }
+}
+@media(max-width:600px) {
+ .dashboard-header { padding:8px 12px!important; gap:8px!important; }
+ .header-project-info { grid-template-columns:auto minmax(0,1fr)!important; gap:4px 8px!important; align-items:center; }
+ .project-name { font-size:20px!important; white-space:nowrap; }
+ .project-registrations { flex-direction:column; gap:2px; }
+ .registration-item { font-size:9px; }
+ .registration-item img { height:18px; }
+ .registration-item:has(img[alt="RERA"]) img { height:18px; }
+ .project-description-tag { font-size:9px; padding:3px 6px; }
+}
+
+/* The legend now owns inventory counts in every view. */
+body.satellite-mode-active .floating-legend-card { display:block!important; }
+.gis-layer-control { left:16px!important; right:auto!important; top:16px!important; }
+svg [data-plot].filtered-out { opacity:.12; }
+@media(max-width:600px) { .gis-layer-control { left:12px!important; top:88px!important; width:150px; } }
+
+body.rt-three-active .layout-loader,body.satellite-mode-active .layout-loader { display:none!important; }
+@media(max-width:992px) {
+ body.rt-three-active .floating-legend-card { top:72px!important; }
+ .dashboard-header,body.rt-three-active .dashboard-header { min-height:0; }
+ .rt-three-bar .three-hud-search { min-width:0!important; flex:1; }
+}
+@media(max-width:360px) {
+ .rt-three-bar { padding:6px; gap:4px; }
+ .rt-three-bar > button { padding:6px!important; font-size:11px; }
+ body .rt-mobile-finder { left:118px!important; width:84px; padding:0 6px!important; font-size:11px; }
+ .floating-recenter-btn { width:98px; padding:8px 10px!important; font-size:12px; }
+}
+
+/* Reuse the sidebar's search and pill-button hierarchy in 3D. */
+.rt-smart-finder { display:flex!important; justify-content:center; align-items:center; gap:8px; width:100%; min-height:44px; background:#fff!important; color:var(--rt-ink)!important; border:1px solid var(--rt-hairline-strong)!important; border-radius:999px!important; font-weight:600; }
+@media(min-width:993px) {
+ .rt-three-active .sidebar-content { padding:40px!important; }
+ .rt-desktop-tools { gap:8px!important; }
+ .rt-desktop-tools .modal-3d-title { font-size:16px; }
+ .rt-desktop-tools .three-hud-search { height:48px; border:1px solid var(--rt-field-border)!important; border-radius:var(--rt-radius-input)!important; background:#fff!important; }
+ .rt-desktop-tools #plotSearchSubmit { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:44px; border-radius:999px; background:var(--rt-action); color:var(--rt-on-action); font:inherit; font-size:12px; font-weight:600; }
+ .rt-desktop-tools .rt-smart-finder { margin:0 0 16px; }
+ .rt-desktop-tools .toolbar-btn,.rt-desktop-tools .three-filter-pill { border-radius:999px!important; font-weight:600; min-height:44px; }
+ .rt-desktop-tools .toolbar-group { border-radius:999px; }
+}
+
+.rt-three-search-icon { display:none; }
+@media(min-width:993px) {
+ .rt-three-search-icon { display:block; color:#526479; font-size:14px; }
+ .rt-desktop-tools .modal-3d-toolbar { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .rt-desktop-tools .toolbar-group { grid-column:1/-1; width:auto!important; min-width:0; }
+ .rt-desktop-tools .toolbar-btn { width:100%; min-width:0; padding:8px 4px; font-size:11px; }
+ .rt-desktop-tools .toolbar-group button { padding:8px 3px; white-space:nowrap; }
+ .rt-desktop-tools .three-hud-filters { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+ .rt-desktop-tools .three-hud-filters > span { grid-column:1/-1; }
+ .rt-desktop-tools .three-filter-pill { width:100%; min-width:0; }
+}
+
+@media(min-width:993px) { .rt-desktop-tools .modal-3d-toolbar { width:100%!important; max-width:none!important; min-width:0; margin:0!important; padding:0!important; } }
+
+/* Let the denser 3D controls use the sidebar width without tight labels. */
+@media(min-width:993px) {
+ .rt-three-active .sidebar-content { padding:28px 20px!important; }
+ .rt-desktop-tools { gap:10px!important; }
+ .rt-desktop-tools .toolbar-btn { min-height:48px; padding:10px 8px; font-size:12px; }
+ .rt-desktop-tools .toolbar-group button { padding:10px 6px; }
+ .rt-desktop-tools .three-filter-pill { min-height:48px; padding:10px 8px; font-size:12px; }
+ .rt-desktop-tools .rt-smart-finder { margin-bottom:12px; }
+ .rt-desktop-tools #plotSearchSubmit,.rt-desktop-tools .rt-smart-finder { min-height:48px; font-size:12px; }
+}
+
+.gis-layer-control.rt-layers-collapsed { width:44px!important; min-width:44px; }
+.gis-layer-control .layer-control-header { width:44px; height:44px; min-height:44px; padding:0; display:flex; align-items:center; justify-content:center; }
+.gis-layer-control:not(.rt-layers-collapsed) { width:240px; max-width:calc(100% - 24px); }
+
+.visit-project-summary { display:flex; align-items:center; gap:10px; padding:8px 0; font-size:13px; color:#526479; }
+.visit-project-summary strong { color:#086b9b; font-weight:600; }

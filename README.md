@@ -33,3 +33,15 @@ These models retain their source geometry. Materials are merged per tree variant
 ## Data
 
 This workspace includes sales and customer information. Keep the repository private unless the data has been reviewed for public release.
+
+## Netlify public layout and staff access
+
+`npm run build` creates `dist/`, the only directory to publish. Root files remain the legacy local preview. The production layout is public; the sidebar Staff Login authenticates invited email accounts with Netlify Identity. Invite-only registration and server-assigned `staff` / `director` roles protect editing, customer contact information, CRM notes and exports. Both roles edit plot records; director mode also exposes the existing director UI features.
+
+Anonymous GET requests return an explicit allowlist of plot numbers, sizes, facing, status and dimensions. Raw customer datasets and old passwords are excluded from published assets. PATCH requests verify the authenticated role and request origin, validate fields and use conditional writes in the site-scoped `staff-plots` Netlify Blobs store. Public readers see saved inventory changes.
+
+Use `/login.html` for invitation/password recovery callbacks only; ordinary visitors are redirected to the layout. Netlify production visibility must allow public visitors; previews may remain team-private. No site-wide login gate is required.
+
+Existing Firebase/browser edits are not migrated automatically. Review the authoritative dataset before importing existing edits. Legacy credentials must not be reused.
+
+Run `npm run build` and `npm test`. Use `npx netlify-cli dev` for the backend locally; Python static serving cannot run the production API. Verify invited staff/director login, logout and two-session update conflicts on Netlify before staff rollout.
