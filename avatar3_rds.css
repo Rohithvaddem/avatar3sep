@@ -274,17 +274,6 @@ body.immersive-view:not(.rt-three-active) .rt-mobile-finder { display:none!impor
 @media(max-width:820px) {
  #plotModal { max-height:75dvh!important; }
 }
-
-#threeCinematicOverlay { position:absolute; inset:0; z-index:150; pointer-events:none; box-shadow:inset 0 36px #0a1320,inset 0 -36px #0a1320; }
-#threeCinematicOverlay[hidden] { display:none; }
-#threeCinematicCaption { position:absolute; bottom:52px; left:24px; padding:10px 18px; border-radius:24px; color:white; background:rgba(10,27,42,.85); font-size:14px; font-weight:600; }
-#threeCinematicStop { position:absolute; top:48px; right:16px; pointer-events:auto; padding:10px 14px; border:1px solid #ffffff55; border-radius:10px; background:#0a1b2a; color:white; cursor:pointer; }
-#threeMapContainer.cinematic-playing .modal-3d-header,
-#threeMapContainer.cinematic-playing .rt-three-bar,
-#threeMapContainer.cinematic-playing .rt-sun-controls,
-#threeMapContainer.cinematic-playing .three-inspect-drawer,
-#threeMapContainer.cinematic-playing .three-hud-filters { visibility:hidden!important; pointer-events:none!important; }
-#threeMapContainer.cinematic-playing #threeCanvasContainer { pointer-events:none; }
 #dealSimulatorBody #simMarginBadge { color:#056348!important; background:#E0F3EB!important; border-color:#8DBBA8!important; }
 
 /* Project registrations beside the title, wrapping on narrow screens. */
