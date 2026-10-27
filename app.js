@@ -2373,10 +2373,7 @@ function openPlotModal(plotNo) {
                 <div style="font-weight: 700; color: var(--accent); font-size: 13px; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
                     <i class="fa-solid fa-address-card"></i> CRM & Lead Details
                 </div>
-                <div class="detail-row" style="padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                    <span class="detail-label" style="font-size: 11px;">Client Name</span>
-                    <span class="detail-val" style="font-size: 12px; font-weight: 600;">${item.customer_name || 'N/A'}</span>
-                </div>
+
                 <div class="detail-row" style="padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.03);">
                     <span class="detail-label" style="font-size: 11px;">Phone</span>
                     <span class="detail-val" style="font-size: 12px; font-weight: 600;">${item.customer_phone || 'N/A'}</span>
@@ -2435,6 +2432,7 @@ function openPlotModal(plotNo) {
                 <span class="detail-label">Plot Number</span>
                 <span class="detail-val" style="font-size: 18px; font-weight: 700; color: var(--accent)"># ${item.plot_no}</span>
             </div>
+            ${isAdminLoggedIn ? '<div class="detail-row" id="plotCustomerNameRow"><span class="detail-label">Customer Name</span><span class="detail-val" id="plotCustomerName">' + escapeDocumentText(String(item.customer_name || '').trim() || 'Not recorded') + '</span></div>' : ''}
             <div class="detail-row">
                 <span class="detail-label">Status</span>
                 <span class="status-badge" style="--badge-color: ${color}; --badge-glow: ${color}">${item.plot_status}</span>
@@ -2449,7 +2447,7 @@ function openPlotModal(plotNo) {
             </div>
 
             ${isAdminLoggedIn && item.mortgage_reference === true ? '<div class="detail-row"><span class="detail-label">Staff reference</span><span class="mortgage-reference-tag">Mortgage plot</span></div>' : ''}
-            ${currentProject === 'avatar3' ? '<div class="detail-row"><span class="detail-label">Reference / Share</span><span class="detail-val">' + (item.reference_name || 'ASPIREALTY') + '</span></div>' : ''}
+            ${currentProject === 'avatar3' ? '<div class="detail-row"><span class="detail-label">Reference / Share</span><span class="detail-val">ASPIREALTY</span></div>' : ''}
             ${emiHtml}
             ${adminCrmHtml}
         </div>
