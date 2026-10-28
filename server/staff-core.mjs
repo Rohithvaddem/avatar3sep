@@ -24,7 +24,8 @@ export function createHandler(deps) {
    const current=await store.getWithMetadata(project,{type:'json'});
    const isMortgage=row=>row?.mortgage_reference===true || row?.is_mortgage===true || ['MORTGAGE','MORTAGAGE'].includes(String(row?.plot_status||'').toUpperCase().trim());
    const originalMortgagePlots=new Set(seed.filter(isMortgage).map(row=>String(row.plot_no)));
-   const rows=(current?.data || seed).filter(row=>Number.isFinite(Number(row.plot_no)) && Number(row.plot_no)>0).map(row=>({...row,mortgage_reference:originalMortgagePlots.has(String(row.plot_no)) || isMortgage(row)}));
+   const surveyedAreas=new Map(project==='avatar3'?seed.map(row=>[String(row.plot_no),row.plot_size]):[]);
+   const rows=(current?.data || seed).filter(row=>Number.isFinite(Number(row.plot_no)) && Number(row.plot_no)>0).map(row=>({...row,...(surveyedAreas.has(String(row.plot_no))?{plot_size:surveyedAreas.get(String(row.plot_no))}:{}),mortgage_reference:originalMortgagePlots.has(String(row.plot_no)) || isMortgage(row)}));
    if(request.method==='GET') {
     if(role) return json({plots:rows,version:current?.etag || 'seed'});
     const publicFields=['plot_no','plot_size','extent_sq_mtrs','facing','plot_status','dim_north','dim_south','dim_east','dim_west'];

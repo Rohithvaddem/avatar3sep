@@ -403,3 +403,24 @@ svg [data-plot].selected-plot-location>circle:first-child{fill:rgba(245,158,11,.
 body.layout-shell.plot-details-open #modalBackdrop{background:rgba(14,42,71,.22)!important;backdrop-filter:none!important}
 /* Tablet controls use the bottom row rather than reserving an expanded dial column. */
 @media(min-width:600px) and (max-width:992px){body.layout-shell .facing-compass{bottom:12px!important}body.layout-shell .facing-compass.expanded,body.layout-shell .facing-compass.shrinking{bottom:76px!important}body.layout-shell #floatingLegendCard.collapsed{left:124px!important;bottom:12px!important}body.layout-shell #finderResultBanner{left:320px!important;right:72px!important;bottom:12px!important}}
+
+/* Keep staff sign-in accessible outside the collapsible plot-tools drawer. */
+body.layout-shell #sidebarFooter #staffLoginBtn { display:none!important; }
+.shell-staff-login { display:inline-flex; align-items:center; justify-content:center; gap:8px; flex:0 0 auto; min-height:42px; padding:10px 15px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; color:#12334c; font:inherit; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; }
+.shell-staff-login:hover { background:#eef6fc; border-color:#3284b8; }
+.shell-staff-login:focus-visible { outline:3px solid #38bdf8; outline-offset:3px; }
+.shell-staff-login[hidden] { display:none!important; }
+@media(max-width:992px) { .shell-mobile-actions .shell-staff-login { min-height:48px; padding:10px 12px; font-size:12px; } }
+/* Snapshot only the map viewport so the header stays steady during view changes. */
+.map-viewport { view-transition-name: layout-map; }
+::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+::view-transition-group(layout-map) { animation-duration:420ms; animation-timing-function:ease-in-out; }
+::view-transition-old(layout-map) { animation:map-view-fade-out 420ms ease-in-out both; }
+::view-transition-new(layout-map) { animation:map-view-fade-in 420ms ease-in-out both; }
+@keyframes map-view-fade-out { from { opacity:1; } to { opacity:0; } }
+@keyframes map-view-fade-in { from { opacity:0; } to { opacity:1; } }
+@media(prefers-reduced-motion:reduce) {
+ ::view-transition-group(layout-map), ::view-transition-old(layout-map), ::view-transition-new(layout-map) { animation:none!important; }
+}
+.satellite-load-status { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:900; max-width:80%; padding:10px 14px; border-radius:8px; background:#fff; color:#18354b; box-shadow:0 2px 12px #0003; font-size:13px; pointer-events:none; }
+.satellite-load-status[hidden] {display:none!important;}

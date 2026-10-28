@@ -586,7 +586,7 @@
 
         // Load transparent layout cutout
         const layoutB64 = (typeof AVATAR3_LAYOUT_TEXTURE_B64 !== 'undefined') ? AVATAR3_LAYOUT_TEXTURE_B64 : null;
-        loadTextureSafe(null, 'avatar3_satellite_overlay-park1.svg', (tex) => {
+        loadTextureSafe(window.AVATAR3_LAYOUT_SVG_DATA || layoutB64, 'avatar3_satellite_overlay-park1.svg', (tex) => {
             groundMesh.material.map = removeExteriorWhite(tex);
             groundMesh.material.needsUpdate = true;
         });

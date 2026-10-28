@@ -1,7 +1,7 @@
-﻿[
+[
     {
         "plot_no":  "1",
-        "plot_size":  "401.00",
+        "plot_size":  "401",
         "extent_sq_mtrs":  "479.59",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -17,7 +17,7 @@
     },
     {
         "plot_no":  "2",
-        "plot_size":  "267.00",
+        "plot_size":  "267",
         "extent_sq_mtrs":  "319.33",
         "facing":  "North",
         "plot_status":  "AVAILABLE",
@@ -33,7 +33,7 @@
     },
     {
         "plot_no":  "3",
-        "plot_size":  "269.00",
+        "plot_size":  "269",
         "extent_sq_mtrs":  "321.72",
         "facing":  "North",
         "plot_status":  "AVAILABLE",
@@ -49,7 +49,7 @@
     },
     {
         "plot_no":  "4",
-        "plot_size":  "270.00",
+        "plot_size":  "270",
         "extent_sq_mtrs":  "322.92",
         "facing":  "North",
         "plot_status":  "AVAILABLE",
@@ -65,7 +65,7 @@
     },
     {
         "plot_no":  "5",
-        "plot_size":  "272.00",
+        "plot_size":  "272",
         "extent_sq_mtrs":  "325.31",
         "facing":  "North",
         "plot_status":  "AVAILABLE",
@@ -81,7 +81,7 @@
     },
     {
         "plot_no":  "6",
-        "plot_size":  "464.00",
+        "plot_size":  "464",
         "extent_sq_mtrs":  "554.94",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -97,7 +97,7 @@
     },
     {
         "plot_no":  "7",
-        "plot_size":  "224.00",
+        "plot_size":  "224",
         "extent_sq_mtrs":  "267.90",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -113,7 +113,7 @@
     },
     {
         "plot_no":  "8",
-        "plot_size":  "180.00",
+        "plot_size":  "180",
         "extent_sq_mtrs":  "215.28",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -129,7 +129,7 @@
     },
     {
         "plot_no":  "9",
-        "plot_size":  "180.00",
+        "plot_size":  "180",
         "extent_sq_mtrs":  "215.28",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -145,7 +145,7 @@
     },
     {
         "plot_no":  "10",
-        "plot_size":  "180.00",
+        "plot_size":  "180",
         "extent_sq_mtrs":  "215.28",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -161,7 +161,7 @@
     },
     {
         "plot_no":  "11",
-        "plot_size":  "300.00",
+        "plot_size":  "300",
         "extent_sq_mtrs":  "358.80",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -177,7 +177,7 @@
     },
     {
         "plot_no":  "12",
-        "plot_size":  "275.00",
+        "plot_size":  "275",
         "extent_sq_mtrs":  "328.90",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -193,7 +193,7 @@
     },
     {
         "plot_no":  "13",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -209,7 +209,7 @@
     },
     {
         "plot_no":  "14",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -225,7 +225,7 @@
     },
     {
         "plot_no":  "15",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -241,7 +241,7 @@
     },
     {
         "plot_no":  "16",
-        "plot_size":  "271.00",
+        "plot_size":  "271",
         "extent_sq_mtrs":  "324.11",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -257,7 +257,7 @@
     },
     {
         "plot_no":  "17",
-        "plot_size":  "214.00",
+        "plot_size":  "214",
         "extent_sq_mtrs":  "255.94",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -273,7 +273,7 @@
     },
     {
         "plot_no":  "18",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -289,7 +289,7 @@
     },
     {
         "plot_no":  "19",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -305,7 +305,7 @@
     },
     {
         "plot_no":  "20",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -321,7 +321,7 @@
     },
     {
         "plot_no":  "21",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -337,7 +337,7 @@
     },
     {
         "plot_no":  "22",
-        "plot_size":  "275.00",
+        "plot_size":  "275",
         "extent_sq_mtrs":  "328.90",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -353,7 +353,7 @@
     },
     {
         "plot_no":  "23",
-        "plot_size":  "275.00",
+        "plot_size":  "275",
         "extent_sq_mtrs":  "328.90",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -369,7 +369,7 @@
     },
     {
         "plot_no":  "24",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -385,7 +385,7 @@
     },
     {
         "plot_no":  "25",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -401,7 +401,7 @@
     },
     {
         "plot_no":  "26",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -417,7 +417,7 @@
     },
     {
         "plot_no":  "27",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -433,7 +433,7 @@
     },
     {
         "plot_no":  "28",
-        "plot_size":  "276.00",
+        "plot_size":  "276",
         "extent_sq_mtrs":  "330.09",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -449,7 +449,7 @@
     },
     {
         "plot_no":  "29",
-        "plot_size":  "192.00",
+        "plot_size":  "192",
         "extent_sq_mtrs":  "229.63",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -465,7 +465,7 @@
     },
     {
         "plot_no":  "30",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -481,7 +481,7 @@
     },
     {
         "plot_no":  "31",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -497,7 +497,7 @@
     },
     {
         "plot_no":  "32",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -513,7 +513,7 @@
     },
     {
         "plot_no":  "33",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -529,7 +529,7 @@
     },
     {
         "plot_no":  "34",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -545,7 +545,7 @@
     },
     {
         "plot_no":  "35",
-        "plot_size":  "244.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "291.82",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -561,7 +561,7 @@
     },
     {
         "plot_no":  "36",
-        "plot_size":  "244.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "291.82",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -577,7 +577,7 @@
     },
     {
         "plot_no":  "37",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -593,7 +593,7 @@
     },
     {
         "plot_no":  "38",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -609,7 +609,7 @@
     },
     {
         "plot_no":  "39",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -625,7 +625,7 @@
     },
     {
         "plot_no":  "40",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -641,7 +641,7 @@
     },
     {
         "plot_no":  "41",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -657,7 +657,7 @@
     },
     {
         "plot_no":  "42",
-        "plot_size":  "203.00",
+        "plot_size":  "203",
         "extent_sq_mtrs":  "242.79",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -673,7 +673,7 @@
     },
     {
         "plot_no":  "43",
-        "plot_size":  "156.00",
+        "plot_size":  "156",
         "extent_sq_mtrs":  "186.57",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -689,7 +689,7 @@
     },
     {
         "plot_no":  "44",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -705,7 +705,7 @@
     },
     {
         "plot_no":  "45",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -721,7 +721,7 @@
     },
     {
         "plot_no":  "46",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -737,7 +737,7 @@
     },
     {
         "plot_no":  "47",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -753,7 +753,7 @@
     },
     {
         "plot_no":  "48",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -769,7 +769,7 @@
     },
     {
         "plot_no":  "49",
-        "plot_size":  "244.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "291.82",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -785,7 +785,7 @@
     },
     {
         "plot_no":  "50",
-        "plot_size":  "244.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "291.82",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -801,7 +801,7 @@
     },
     {
         "plot_no":  "51",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -817,7 +817,7 @@
     },
     {
         "plot_no":  "52",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -833,7 +833,7 @@
     },
     {
         "plot_no":  "53",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -849,7 +849,7 @@
     },
     {
         "plot_no":  "54",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -865,7 +865,7 @@
     },
     {
         "plot_no":  "55",
-        "plot_size":  "277.00",
+        "plot_size":  "277",
         "extent_sq_mtrs":  "331.29",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -881,7 +881,7 @@
     },
     {
         "plot_no":  "56",
-        "plot_size":  "230.00",
+        "plot_size":  "230",
         "extent_sq_mtrs":  "275.08",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -897,7 +897,7 @@
     },
     {
         "plot_no":  "57",
-        "plot_size":  "146.61",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.35",
         "facing":  "East",
         "plot_status":  "SOLD",
@@ -913,7 +913,7 @@
     },
     {
         "plot_no":  "58",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -929,7 +929,7 @@
     },
     {
         "plot_no":  "59",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "SOLD",
@@ -945,7 +945,7 @@
     },
     {
         "plot_no":  "60",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "SOLD",
@@ -961,7 +961,7 @@
     },
     {
         "plot_no":  "61",
-        "plot_size":  "244.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "291.82",
         "facing":  "North-East",
         "plot_status":  "SOLD",
@@ -977,7 +977,7 @@
     },
     {
         "plot_no":  "62",
-        "plot_size":  "244.00",
+        "plot_size":  "268",
         "extent_sq_mtrs":  "291.82",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -993,7 +993,7 @@
     },
     {
         "plot_no":  "63",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1009,7 +1009,7 @@
     },
     {
         "plot_no":  "64",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1025,7 +1025,7 @@
     },
     {
         "plot_no":  "65",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "SOLD",
@@ -1041,7 +1041,7 @@
     },
     {
         "plot_no":  "66",
-        "plot_size":  "268.00",
+        "plot_size":  "244",
         "extent_sq_mtrs":  "320.53",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -1057,7 +1057,7 @@
     },
     {
         "plot_no":  "67",
-        "plot_size":  "217.00",
+        "plot_size":  "217",
         "extent_sq_mtrs":  "259.53",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -1073,7 +1073,7 @@
     },
     {
         "plot_no":  "68",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1089,7 +1089,7 @@
     },
     {
         "plot_no":  "69",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1105,7 +1105,7 @@
     },
     {
         "plot_no":  "70",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1121,7 +1121,7 @@
     },
     {
         "plot_no":  "71",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1137,7 +1137,7 @@
     },
     {
         "plot_no":  "72",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1153,7 +1153,7 @@
     },
     {
         "plot_no":  "73",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1169,7 +1169,7 @@
     },
     {
         "plot_no":  "74",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1185,7 +1185,7 @@
     },
     {
         "plot_no":  "75",
-        "plot_size":  "183.00",
+        "plot_size":  "183",
         "extent_sq_mtrs":  "218.87",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1201,7 +1201,7 @@
     },
     {
         "plot_no":  "76",
-        "plot_size":  "188.00",
+        "plot_size":  "188",
         "extent_sq_mtrs":  "224.85",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1217,7 +1217,7 @@
     },
     {
         "plot_no":  "77",
-        "plot_size":  "168.91",
+        "plot_size":  "169",
         "extent_sq_mtrs":  "202.01",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1233,7 +1233,7 @@
     },
     {
         "plot_no":  "78",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1249,7 +1249,7 @@
     },
     {
         "plot_no":  "79",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1265,7 +1265,7 @@
     },
     {
         "plot_no":  "80",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1281,7 +1281,7 @@
     },
     {
         "plot_no":  "81",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1297,7 +1297,7 @@
     },
     {
         "plot_no":  "82",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1313,7 +1313,7 @@
     },
     {
         "plot_no":  "83",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1329,7 +1329,7 @@
     },
     {
         "plot_no":  "84",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1345,7 +1345,7 @@
     },
     {
         "plot_no":  "85",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1361,7 +1361,7 @@
     },
     {
         "plot_no":  "86",
-        "plot_size":  "195.00",
+        "plot_size":  "195",
         "extent_sq_mtrs":  "233.22",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -1377,7 +1377,7 @@
     },
     {
         "plot_no":  "87",
-        "plot_size":  "195.00",
+        "plot_size":  "195",
         "extent_sq_mtrs":  "233.22",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -1393,7 +1393,7 @@
     },
     {
         "plot_no":  "88",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1409,7 +1409,7 @@
     },
     {
         "plot_no":  "89",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1425,7 +1425,7 @@
     },
     {
         "plot_no":  "90",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1441,7 +1441,7 @@
     },
     {
         "plot_no":  "91",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1457,7 +1457,7 @@
     },
     {
         "plot_no":  "92",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1473,7 +1473,7 @@
     },
     {
         "plot_no":  "93",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1489,7 +1489,7 @@
     },
     {
         "plot_no":  "94",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1505,7 +1505,7 @@
     },
     {
         "plot_no":  "95",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1521,7 +1521,7 @@
     },
     {
         "plot_no":  "96",
-        "plot_size":  "167.00",
+        "plot_size":  "167",
         "extent_sq_mtrs":  "199.73",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1537,7 +1537,7 @@
     },
     {
         "plot_no":  "97",
-        "plot_size":  "166.00",
+        "plot_size":  "166",
         "extent_sq_mtrs":  "198.53",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1553,7 +1553,7 @@
     },
     {
         "plot_no":  "98",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1569,7 +1569,7 @@
     },
     {
         "plot_no":  "99",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1585,7 +1585,7 @@
     },
     {
         "plot_no":  "100",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1601,7 +1601,7 @@
     },
     {
         "plot_no":  "101",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1617,7 +1617,7 @@
     },
     {
         "plot_no":  "102",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1633,7 +1633,7 @@
     },
     {
         "plot_no":  "103",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1649,7 +1649,7 @@
     },
     {
         "plot_no":  "104",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1665,7 +1665,7 @@
     },
     {
         "plot_no":  "105",
-        "plot_size":  "165.00",
+        "plot_size":  "165",
         "extent_sq_mtrs":  "197.34",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1681,7 +1681,7 @@
     },
     {
         "plot_no":  "106",
-        "plot_size":  "195.00",
+        "plot_size":  "195",
         "extent_sq_mtrs":  "233.22",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -1697,7 +1697,7 @@
     },
     {
         "plot_no":  "107",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -1713,7 +1713,7 @@
     },
     {
         "plot_no":  "108",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1729,7 +1729,7 @@
     },
     {
         "plot_no":  "109",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1745,7 +1745,7 @@
     },
     {
         "plot_no":  "110",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1761,7 +1761,7 @@
     },
     {
         "plot_no":  "111",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1777,7 +1777,7 @@
     },
     {
         "plot_no":  "112",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1793,7 +1793,7 @@
     },
     {
         "plot_no":  "113",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1809,7 +1809,7 @@
     },
     {
         "plot_no":  "114",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1825,7 +1825,7 @@
     },
     {
         "plot_no":  "115",
-        "plot_size":  "146.66",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -1841,7 +1841,7 @@
     },
     {
         "plot_no":  "116",
-        "plot_size":  "153.00",
+        "plot_size":  "153",
         "extent_sq_mtrs":  "182.99",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -1857,7 +1857,7 @@
     },
     {
         "plot_no":  "117",
-        "plot_size":  "171.00",
+        "plot_size":  "171",
         "extent_sq_mtrs":  "204.51",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -1873,7 +1873,7 @@
     },
     {
         "plot_no":  "118",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1889,7 +1889,7 @@
     },
     {
         "plot_no":  "119",
-        "plot_size":  "146.66",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1905,7 +1905,7 @@
     },
     {
         "plot_no":  "120",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1921,7 +1921,7 @@
     },
     {
         "plot_no":  "121",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1937,7 +1937,7 @@
     },
     {
         "plot_no":  "122",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1953,7 +1953,7 @@
     },
     {
         "plot_no":  "123",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1969,7 +1969,7 @@
     },
     {
         "plot_no":  "124",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -1985,7 +1985,7 @@
     },
     {
         "plot_no":  "125",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2001,7 +2001,7 @@
     },
     {
         "plot_no":  "126",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -2017,7 +2017,7 @@
     },
     {
         "plot_no":  "127",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -2033,7 +2033,7 @@
     },
     {
         "plot_no":  "128",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2049,7 +2049,7 @@
     },
     {
         "plot_no":  "129",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2065,7 +2065,7 @@
     },
     {
         "plot_no":  "130",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2081,7 +2081,7 @@
     },
     {
         "plot_no":  "131",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2097,7 +2097,7 @@
     },
     {
         "plot_no":  "132",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2113,7 +2113,7 @@
     },
     {
         "plot_no":  "133",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2129,7 +2129,7 @@
     },
     {
         "plot_no":  "134",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2145,7 +2145,7 @@
     },
     {
         "plot_no":  "135",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2161,7 +2161,7 @@
     },
     {
         "plot_no":  "136",
-        "plot_size":  "204.00",
+        "plot_size":  "204",
         "extent_sq_mtrs":  "243.98",
         "facing":  "East (Cross)",
         "plot_status":  "AVAILABLE",
@@ -2177,7 +2177,7 @@
     },
     {
         "plot_no":  "137",
-        "plot_size":  "243.00",
+        "plot_size":  "243",
         "extent_sq_mtrs":  "290.63",
         "facing":  "West (Cross)",
         "plot_status":  "AVAILABLE",
@@ -2193,7 +2193,7 @@
     },
     {
         "plot_no":  "138",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2209,7 +2209,7 @@
     },
     {
         "plot_no":  "139",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2225,7 +2225,7 @@
     },
     {
         "plot_no":  "140",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2241,7 +2241,7 @@
     },
     {
         "plot_no":  "141",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2257,7 +2257,7 @@
     },
     {
         "plot_no":  "142",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2273,7 +2273,7 @@
     },
     {
         "plot_no":  "143",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2289,7 +2289,7 @@
     },
     {
         "plot_no":  "144",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2305,7 +2305,7 @@
     },
     {
         "plot_no":  "145",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2321,7 +2321,7 @@
     },
     {
         "plot_no":  "146",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -2337,7 +2337,7 @@
     },
     {
         "plot_no":  "147",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -2353,7 +2353,7 @@
     },
     {
         "plot_no":  "148",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2369,7 +2369,7 @@
     },
     {
         "plot_no":  "149",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2385,7 +2385,7 @@
     },
     {
         "plot_no":  "150",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2401,7 +2401,7 @@
     },
     {
         "plot_no":  "151",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2417,7 +2417,7 @@
     },
     {
         "plot_no":  "152",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2433,7 +2433,7 @@
     },
     {
         "plot_no":  "153",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2449,7 +2449,7 @@
     },
     {
         "plot_no":  "154",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2465,7 +2465,7 @@
     },
     {
         "plot_no":  "155",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2481,7 +2481,7 @@
     },
     {
         "plot_no":  "156",
-        "plot_size":  "221.00",
+        "plot_size":  "221",
         "extent_sq_mtrs":  "264.31",
         "facing":  "North-East",
         "plot_status":  "AVAILABLE",
@@ -2497,7 +2497,7 @@
     },
     {
         "plot_no":  "157",
-        "plot_size":  "221.00",
+        "plot_size":  "221",
         "extent_sq_mtrs":  "264.31",
         "facing":  "North-West",
         "plot_status":  "AVAILABLE",
@@ -2513,7 +2513,7 @@
     },
     {
         "plot_no":  "158",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2529,7 +2529,7 @@
     },
     {
         "plot_no":  "159",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2545,7 +2545,7 @@
     },
     {
         "plot_no":  "160",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2561,7 +2561,7 @@
     },
     {
         "plot_no":  "161",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2577,7 +2577,7 @@
     },
     {
         "plot_no":  "162",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2593,7 +2593,7 @@
     },
     {
         "plot_no":  "163",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2609,7 +2609,7 @@
     },
     {
         "plot_no":  "164",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2625,7 +2625,7 @@
     },
     {
         "plot_no":  "165",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2641,7 +2641,7 @@
     },
     {
         "plot_no":  "166",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -2657,7 +2657,7 @@
     },
     {
         "plot_no":  "167",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-East",
         "plot_status":  "AVAILABLE",
@@ -2673,7 +2673,7 @@
     },
     {
         "plot_no":  "168",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2689,7 +2689,7 @@
     },
     {
         "plot_no":  "169",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "East",
         "plot_status":  "AVAILABLE",
@@ -2705,7 +2705,7 @@
     },
     {
         "plot_no":  "170",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2721,7 +2721,7 @@
     },
     {
         "plot_no":  "171",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2737,7 +2737,7 @@
     },
     {
         "plot_no":  "172",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2753,7 +2753,7 @@
     },
     {
         "plot_no":  "173",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2769,7 +2769,7 @@
     },
     {
         "plot_no":  "174",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2785,7 +2785,7 @@
     },
     {
         "plot_no":  "175",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -2801,7 +2801,7 @@
     },
     {
         "plot_no":  "176",
-        "plot_size":  "221.48",
+        "plot_size":  "221",
         "extent_sq_mtrs":  "264.89",
         "facing":  "North-East",
         "plot_status":  "MORTGAGE",
@@ -2817,7 +2817,7 @@
     },
     {
         "plot_no":  "177",
-        "plot_size":  "221.48",
+        "plot_size":  "221",
         "extent_sq_mtrs":  "264.89",
         "facing":  "North-West",
         "plot_status":  "MORTGAGE",
@@ -2833,7 +2833,7 @@
     },
     {
         "plot_no":  "178",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2849,7 +2849,7 @@
     },
     {
         "plot_no":  "179",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2865,7 +2865,7 @@
     },
     {
         "plot_no":  "180",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2881,7 +2881,7 @@
     },
     {
         "plot_no":  "181",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2897,7 +2897,7 @@
     },
     {
         "plot_no":  "182",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2913,7 +2913,7 @@
     },
     {
         "plot_no":  "183",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -2929,7 +2929,7 @@
     },
     {
         "plot_no":  "184",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2945,7 +2945,7 @@
     },
     {
         "plot_no":  "185",
-        "plot_size":  "147.00",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.81",
         "facing":  "West",
         "plot_status":  "AVAILABLE",
@@ -2961,7 +2961,7 @@
     },
     {
         "plot_no":  "186",
-        "plot_size":  "173.00",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "206.91",
         "facing":  "South-West",
         "plot_status":  "AVAILABLE",
@@ -2977,7 +2977,7 @@
     },
     {
         "plot_no":  "187",
-        "plot_size":  "185.94",
+        "plot_size":  "186",
         "extent_sq_mtrs":  "222.38",
         "facing":  "South-West",
         "plot_status":  "MORTGAGE",
@@ -2993,7 +2993,7 @@
     },
     {
         "plot_no":  "188",
-        "plot_size":  "159.29",
+        "plot_size":  "159",
         "extent_sq_mtrs":  "190.51",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3009,7 +3009,7 @@
     },
     {
         "plot_no":  "189",
-        "plot_size":  "160.46",
+        "plot_size":  "160",
         "extent_sq_mtrs":  "191.90",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3025,7 +3025,7 @@
     },
     {
         "plot_no":  "190",
-        "plot_size":  "159.37",
+        "plot_size":  "159",
         "extent_sq_mtrs":  "190.61",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3041,7 +3041,7 @@
     },
     {
         "plot_no":  "191",
-        "plot_size":  "150.84",
+        "plot_size":  "151",
         "extent_sq_mtrs":  "180.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3057,7 +3057,7 @@
     },
     {
         "plot_no":  "192",
-        "plot_size":  "146.63",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.37",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3073,7 +3073,7 @@
     },
     {
         "plot_no":  "193",
-        "plot_size":  "146.63",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.37",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3089,7 +3089,7 @@
     },
     {
         "plot_no":  "194",
-        "plot_size":  "173.37",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "207.34",
         "facing":  "South-East",
         "plot_status":  "MORTGAGE",
@@ -3105,7 +3105,7 @@
     },
     {
         "plot_no":  "195",
-        "plot_size":  "173.37",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "207.34",
         "facing":  "South-West",
         "plot_status":  "MORTGAGE",
@@ -3121,7 +3121,7 @@
     },
     {
         "plot_no":  "196",
-        "plot_size":  "146.65",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.39",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3137,7 +3137,7 @@
     },
     {
         "plot_no":  "197",
-        "plot_size":  "146.65",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.39",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3153,7 +3153,7 @@
     },
     {
         "plot_no":  "198",
-        "plot_size":  "153.30",
+        "plot_size":  "153",
         "extent_sq_mtrs":  "183.35",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3169,7 +3169,7 @@
     },
     {
         "plot_no":  "199",
-        "plot_size":  "162.50",
+        "plot_size":  "162",
         "extent_sq_mtrs":  "194.35",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3185,7 +3185,7 @@
     },
     {
         "plot_no":  "200",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.41",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3201,7 +3201,7 @@
     },
     {
         "plot_no":  "201",
-        "plot_size":  "146.64",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.39",
         "facing":  "East",
         "plot_status":  "MORTGAGE",
@@ -3217,7 +3217,7 @@
     },
     {
         "plot_no":  "202",
-        "plot_size":  "173.30",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "207.27",
         "facing":  "South-East",
         "plot_status":  "MORTGAGE",
@@ -3233,7 +3233,7 @@
     },
     {
         "plot_no":  "203",
-        "plot_size":  "173.32",
+        "plot_size":  "173",
         "extent_sq_mtrs":  "207.29",
         "facing":  "South-West",
         "plot_status":  "MORTGAGE",
@@ -3249,7 +3249,7 @@
     },
     {
         "plot_no":  "204",
-        "plot_size":  "146.69",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.44",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3265,7 +3265,7 @@
     },
     {
         "plot_no":  "205",
-        "plot_size":  "146.67",
+        "plot_size":  "147",
         "extent_sq_mtrs":  "175.42",
         "facing":  "West",
         "plot_status":  "MORTGAGE",
@@ -3281,7 +3281,7 @@
     },
     {
         "plot_no":  "206",
-        "plot_size":  "166.31",
+        "plot_size":  "166",
         "extent_sq_mtrs":  "198.91",
         "facing":  "West",
         "plot_status":  "MORTGAGE",

@@ -23,13 +23,11 @@
     <!-- Preload Layout Map Images for Instant Switching -->
     <link rel="preload" as="image" href="avatar1_map_layout.jpg">
     <link rel="preload" as="image" href="avatar2_digi/map_layout.jpg">
-    <link rel="preload" as="image" href="map_layout.png">
+    <link rel="preload" as="image" href="map_layout-brand.svg">
 
     <!-- Leaflet.js Real-World GIS Map Libraries -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
+    <script src="assets/vendor/leaflet/leaflet.js"></script>
 
     <link rel="stylesheet" href="style.css?v=5">
     <link rel="stylesheet" href="avatar3_page_design.css?v=3">
@@ -456,7 +454,7 @@
 
                 <!-- Drag/Zoom Container -->
                 <div class="map-container" id="mapContainer">
-                    <img src="map_layout.png" alt="Aspirealty Avatar 3 Project Layout" class="map-image"
+                    <img src="map_layout-brand.svg" alt="Aspirealty Avatar 3 Project Layout" class="map-image"
                         id="mapImage">
                     <!-- Dynamic overlay nodes go here -->
                     <div class="plots-overlay" id="plotsOverlay"></div>
@@ -780,6 +778,7 @@
                 <script src="avatar3_data.js"></script>
                 <script src="avatar3_texture_data.js"></script>
                 <script src="doc_kml.js"></script>
+                <script src="avatar3_local_layout.js"></script>
 
                 <!-- 3D Layout Model Engine & Core Application -->
                 

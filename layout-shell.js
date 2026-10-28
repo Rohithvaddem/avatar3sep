@@ -30,6 +30,13 @@ function setupMapShell() {
     finder.setAttribute('aria-label','Find plots: search and filters'); finder.title='Search and filter plots';
     finder.onclick=()=>document.getElementById('sidebarToggleBtn').click();
     mobileActions.append(finder); document.body.append(mobileActions);
+    const outsideLogin=document.createElement('button');
+    outsideLogin.type='button'; outsideLogin.id='outsideStaffLoginBtn'; outsideLogin.className='shell-staff-login';
+    outsideLogin.innerHTML='<i class="fa-solid fa-lock" aria-hidden="true"></i><span>Staff Login</span>';
+    outsideLogin.addEventListener('click',()=>document.getElementById('staffLoginBtn')?.click());
+    const syncLogin=()=>{outsideLogin.hidden=!document.getElementById('staffLoginBtn') || new URLSearchParams(location.search).get('share')==='true';};
+    new MutationObserver(syncLogin).observe(document.getElementById('sidebarFooter'),{childList:true,subtree:true});
+    syncLogin();
     const small=matchMedia('(max-width:992px)');
     const description=document.querySelector('.project-description');
     description.innerHTML='<strong>13 Acres</strong><span>Open plots</span><span>DTCP approved layout</span>';
@@ -40,11 +47,11 @@ function setupMapShell() {
         document.getElementById('floatingLegendToggle').setAttribute('aria-expanded','false');
     };
     const arrange=()=>{
-        if(small.matches) { content.prepend(search); mobileActions.append(booking); toolbar.append(description); }
+        if(small.matches) { content.prepend(search); mobileActions.append(outsideLogin,booking); toolbar.append(description); }
         else {
             if(sidebar.classList.contains('show')) { content.prepend(search); }
             else { toolbar.prepend(search);  }
-            header.append(booking);
+            header.append(outsideLogin,booking);
             toolbar.append(description);
         }
         requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));

@@ -367,7 +367,7 @@ function initApp() {
         const layout = {
             avatar1: { image: 'avatar1_map_layout.jpg', height: '647px' },
             avatar2: { image: 'avatar2_digi/map_layout.jpg', height: '646px' },
-            avatar3: { image: 'map_layout.png', height: '576px' }
+            avatar3: { image: 'map_layout-brand.svg', height: '576px' }
         }[currentProject];
         mapContainer.style.width = mapImage.style.width = '1024px';
         mapContainer.style.height = mapImage.style.height = layout.height;
@@ -3661,7 +3661,30 @@ function savePlotEdits(plotNo) {
 // ----------------------------------------------------
 
 function setupSatelliteToggle() {
+    let activeViewTransition = null;
+    let fallbackViewAnimation = null;
     const selectView = view => {
+        const previousView = document.body.dataset.view || (is3DViewActive ? '3d' : isSatelliteActive ? 'satellite' : 'schematic');
+        if (view === previousView) return;
+        activeViewTransition?.skipTransition();
+        fallbackViewAnimation?.cancel();
+        const crossfade = location.protocol !== 'file:' && previousView !== '3d' && view !== '3d' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (crossfade && location.protocol !== 'file:' && document.startViewTransition) {
+            activeViewTransition = document.startViewTransition(() => applyView(view));
+            activeViewTransition.finished.catch(() => {});
+        } else {
+            applyView(view);
+            if (crossfade) {
+                const incoming = view === 'satellite' ? document.getElementById('leafletMapContainer') : mapContainer;
+                fallbackViewAnimation = incoming?.animate?.([{ opacity: 0 }, { opacity: 1 }], { duration: 360, easing: 'ease-in-out' });
+            }
+        }
+    };
+    const applyView = view => {
+        if (view === 'satellite' && typeof L === 'undefined') {
+            alert('The satellite map library could not load. Keep the assets folder beside this HTML file and reopen the page.');
+            return;
+        }
         document.body.dataset.view = view;
         document.body.classList.toggle('immersive-view', view !== 'schematic');
         if (view !== 'schematic') document.getElementById('sidebar')?.classList.remove('show');
@@ -3671,7 +3694,20 @@ function setupSatelliteToggle() {
         isSatelliteActive = view === 'satellite';
         const legend = document.getElementById('floatingLegendCard');
         if (legend) legend.style.display = '';
-        toggleSatelliteView();
+        try {
+            toggleSatelliteView();
+        } catch (error) {
+            console.error('Map view failed to load:', error);
+            isSatelliteActive = false;
+            document.body.dataset.view = 'schematic';
+            document.body.classList.remove('satellite-mode-active', 'immersive-view');
+            mapContainer.style.display = 'block';
+            document.getElementById('leafletMapContainer').style.display = 'none';
+            document.getElementById('btnSchematicView').classList.add('active');
+            document.getElementById('btnSatelliteView').classList.remove('active');
+            alert('The map could not load. The schematic has been restored. Please reopen the page and retry.');
+            return;
+        }
         const btn3D = document.getElementById('btn3DView');
         if (btn3D) btn3D.classList.toggle('active', view === '3d');
         if (view === '3d') {
@@ -3820,7 +3856,7 @@ function toggleSatelliteView() {
                 updateStatistics();
             });
         } else {
-            changeLayoutImage('map_layout.png', '1024px', '576px', '1024px', '576px', () => {
+            changeLayoutImage('map_layout-brand.svg', '1024px', '576px', '1024px', '576px', () => {
                 plotData = avatarDataPool.avatar3 || [];
                 applyFilters();
                 updateStatistics();
@@ -3874,8 +3910,20 @@ function initLeafletMap() {
     
     // Shared map controls already route satellite zoom to Leaflet.
     
+    const fallbackAerial = window.AVATAR3_SATELLITE_FALLBACK;
+    if (fallbackAerial) {
+        leafletMap.createPane('fallbackAerial');
+        leafletMap.getPane('fallbackAerial').style.zIndex = '150';
+        L.imageOverlay(fallbackAerial.image, fallbackAerial.bounds, {pane:'fallbackAerial', interactive:false}).addTo(leafletMap);
+    }
+    const satelliteMessage = document.createElement('div');
+    satelliteMessage.className = 'satellite-load-status';
+    satelliteMessage.setAttribute('role', 'status');
+    satelliteMessage.textContent = 'Loading live satellite imagery…';
+    document.getElementById('leafletMapContainer').appendChild(satelliteMessage);
+    const satelliteMessageTimer = setTimeout(() => { satelliteMessage.textContent = fallbackAerial ? 'Showing saved satellite imagery; live tiles are still loading.' : 'Satellite imagery is taking longer to load. Check your internet connection.'; }, 8000);
     // Satellite Layer (Esri World Imagery with maxNativeZoom to auto-scale tiles when zooming close)
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    const liveSatelliteTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, USDA, USGS, AeroGRID, IGN, and the GIS User Community',
         maxNativeZoom: 18,
         maxZoom: 20,
@@ -3883,6 +3931,13 @@ function initLeafletMap() {
         updateWhenIdle: false, // Immediate tile updates
         updateWhenZooming: true // Keep background and overlays strictly in sync during zoom
     }).addTo(leafletMap);
+
+    liveSatelliteTiles.on('tileload', () => { clearTimeout(satelliteMessageTimer); satelliteMessage.hidden = true; });
+    liveSatelliteTiles.on('tileerror', () => {
+        clearTimeout(satelliteMessageTimer);
+        satelliteMessage.hidden = false;
+        satelliteMessage.textContent = fallbackAerial ? 'Live imagery unavailable — showing saved satellite imagery.' : 'Satellite imagery could not load. Check your internet connection.';
+    });
 
     // Initialize custom Mini-map Inset (Disabled)
     // setupMiniMap();
@@ -4040,7 +4095,7 @@ function initLeafletMap() {
             const name = overlayNode.getElementsByTagName('name')[0]?.textContent || 'Layout Overlay';
             const originalHref = overlayNode.getElementsByTagName('href')[0]?.textContent || '';
             const digitalAvatar3 = originalHref.endsWith('avatar_3_layout-removebg-preview.png');
-            const href = digitalAvatar3 ? 'avatar3_satellite_overlay-park1.svg' : originalHref;
+            const href = digitalAvatar3 ? (location.protocol === 'file:' && window.AVATAR3_LAYOUT_SVG_DATA ? window.AVATAR3_LAYOUT_SVG_DATA : 'avatar3_satellite_overlay-park1.svg') : originalHref;
             const latLonBox = overlayNode.getElementsByTagName('LatLonBox')[0];
             const visibilityNode = overlayNode.getElementsByTagName('visibility')[0];
             const isVisible = visibilityNode ? visibilityNode.textContent !== '0' : true;
@@ -4086,7 +4141,7 @@ function initLeafletMap() {
                     refreshLeafletMarkers();
                     // Keep the registered footprint; source detail comes from the high-res image.
                     const image=leafletOverlay.getElement();
-                    if(image) {
+                    if(image && location.protocol !== 'file:') {
                         image.style.maskImage=image.style.webkitMaskImage=`url("${originalHref}")`;
                         image.style.maskSize=image.style.webkitMaskSize='100% 100%';
                         image.style.maskRepeat=image.style.webkitMaskRepeat='no-repeat';
@@ -4190,6 +4245,13 @@ function initLeafletMap() {
     }
     
     // Parse doc.kml file with local fallback to support offline/local file loads
+    if (location.protocol === 'file:' && typeof docKmlContent !== 'undefined') {
+        Promise.resolve().then(() => parseKML(docKmlContent)).catch(error => {
+            console.error('Satellite layout overlay failed:', error);
+            satelliteMessage.hidden = false;
+            satelliteMessage.textContent = 'Satellite background loaded, but plot overlay failed. Reopen the page and retry.';
+        });
+    } else {
     fetch('doc.kml')
         .then(response => {
             if (!response.ok) throw new Error('Failed to load KML file');
@@ -4206,6 +4268,7 @@ function initLeafletMap() {
                 console.error('Local docKmlContent fallback not found.');
             }
         });
+    }
         
     function renderDefaultProjectMarkers() {
         if (!projectMarkersGroup) return;
@@ -4533,7 +4596,7 @@ function setupProjectNavigation() {
             } else if (project === 'avatar2') {
                 changeLayoutImage('avatar2_digi/map_layout.jpg', '1024px', '646px', '1024px', '646px');
             } else if (project === 'avatar3') {
-                changeLayoutImage('map_layout.png', '1024px', '576px', '1024px', '576px');
+                changeLayoutImage('map_layout-brand.svg', '1024px', '576px', '1024px', '576px');
             }
         });
     });
@@ -4622,7 +4685,7 @@ function setupMiniMap() {
     });
 
     // Add Esri Satellite tiles to the mini-map
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    const liveSatelliteTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 21
     }).addTo(miniMap);
 
@@ -4988,6 +5051,10 @@ function startRealtimeCloudSync() {
                         Object.keys(projectCloudData).forEach(plotNo => {
                             const cloudItem = projectCloudData[plotNo];
                             if (!cloudItem) return;
+                            if (projKey === 'avatar3' && typeof plotDataRawAvatar3 !== 'undefined') {
+                                const surveyedPlot = plotDataRawAvatar3.find(p => String(p.plot_no) === String(plotNo));
+                                if (surveyedPlot) cloudItem.plot_size = surveyedPlot.plot_size;
+                            }
                             
                             let localItem = localPool.find(p => String(p.plot_no) === String(plotNo));
                             if (localItem) {
