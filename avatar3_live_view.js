@@ -582,6 +582,7 @@
         const shadowSurface = new THREE.Mesh(layoutGeo.clone(), new THREE.ShadowMaterial({opacity:.4, depthWrite:false}));
         shadowSurface.rotation.x = -Math.PI/2; shadowSurface.position.y=.04;
         shadowSurface.receiveShadow=true; shadowSurface.renderOrder=11;
+        shadowSurface.name = 'LayoutShadowSurface';
         layoutWorldGroup.add(shadowSurface);
 
         // Load transparent layout cutout
@@ -2350,6 +2351,17 @@
                 object.material.depthWrite = !xray;
                 object.material.needsUpdate = true;
             }));
+            // X-ray must also remove the cached shadows from the opaque buildings.
+            renderer.shadowMap.enabled = !xray;
+            renderer.shadowMap.needsUpdate = true;
+            lights.sun.castShadow = !xray;
+            const shadowSurface = scene.getObjectByName('LayoutShadowSurface');
+            if (shadowSurface) shadowSurface.visible = !xray;
+            scene.traverse(object => {
+                if (!object.isMesh) return;
+                const materials = Array.isArray(object.material) ? object.material : [object.material];
+                materials.forEach(material => { if (material) material.needsUpdate = true; });
+            });
             event.currentTarget.classList.toggle('active', xray);
         });
         document.getElementById('threeFullscreenBtn')?.addEventListener('click', async () => {
