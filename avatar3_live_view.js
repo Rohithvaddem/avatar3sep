@@ -322,7 +322,9 @@
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.06;
-        controls.maxPolarAngle = Math.PI / 2 - 0.02;
+        // Stop orbiting at 75 degrees from vertical, before the horizon.
+        controls.maxPolarAngle = THREE.MathUtils.degToRad(75);
+        controls.screenSpacePanning = false;
         controls.minDistance = 2.0;
         controls.maxDistance = 1000;
         controls.target.set(calibration.east, 0, -calibration.north);
@@ -1552,6 +1554,16 @@
     /**
      * Main Render Loop
      */
+    function constrainCameraAboveGround() {
+        if (!camera || !controls) return;
+        // Panning must never move the orbit pivot or camera below the terrain.
+        if (controls.target.y < 0) {
+            camera.position.y -= controls.target.y;
+            controls.target.y = 0;
+        }
+        camera.position.y = Math.max(camera.position.y, 2);
+    }
+
     function startAnimationLoop() {
         if (animFrameId) cancelAnimationFrame(animFrameId);
         lastFrameTime = performance.now();
@@ -1593,6 +1605,7 @@
             }
 
             if (controls) controls.update();
+            constrainCameraAboveGround();
             updatePlotLabels();
             if (sunMarker && sunMarker.visible) sunMarker.position.copy(camera.position).addScaledVector(sunMarker.userData.direction,1800);
             updateHouseDetailLevels();
@@ -2438,6 +2451,8 @@
     window.zoom3DCamera = factor => {
         if (!camera || !controls) return;
         camera.position.sub(controls.target).multiplyScalar(factor).add(controls.target);
+        controls.update();
+        constrainCameraAboveGround();
     };
     window.reset3DCamera = () => {
         if (!camera) return;
