@@ -4094,6 +4094,7 @@ function initLeafletMap() {
             const overlayNode = groundOverlays[i];
             const name = overlayNode.getElementsByTagName('name')[0]?.textContent || 'Layout Overlay';
             const originalHref = overlayNode.getElementsByTagName('href')[0]?.textContent || '';
+            const suppliedAvatar3 = originalHref.endsWith('Avatar3,Layout-3.png');
             const digitalAvatar3 = originalHref.endsWith('avatar_3_layout-removebg-preview.png');
             const href = digitalAvatar3 ? (location.protocol === 'file:' && window.AVATAR3_LAYOUT_SVG_DATA ? window.AVATAR3_LAYOUT_SVG_DATA : 'avatar3_satellite_overlay-park1.svg') : originalHref;
             const latLonBox = overlayNode.getElementsByTagName('LatLonBox')[0];
@@ -4102,7 +4103,7 @@ function initLeafletMap() {
             
             // Only add GroundOverlays that are visible by default
             if (latLonBox && href && isVisible) {
-                const isAvatar3 = href.includes('avatar_3') || name.toLowerCase().includes('avatar 3') || name.toLowerCase().includes('avatar3');
+                const isAvatar3 = suppliedAvatar3 || href.includes('avatar_3') || name.toLowerCase().includes('avatar 3') || name.toLowerCase().includes('avatar3');
 
                 const north = parseFloat(latLonBox.getElementsByTagName('north')[0]?.textContent || '0');
                 const south = parseFloat(latLonBox.getElementsByTagName('south')[0]?.textContent || '0');
@@ -4135,13 +4136,13 @@ function initLeafletMap() {
                     });
                 }
                 layoutsGroup.addLayer(leafletOverlay);
-                if(digitalAvatar3) {
+                if(digitalAvatar3 || suppliedAvatar3) {
                     satellitePlotFrame={bounds,rotation};
                     requestAnimationFrame(fitSatelliteLayout);
                     refreshLeafletMarkers();
                     // Keep the registered footprint; source detail comes from the high-res image.
                     const image=leafletOverlay.getElement();
-                    if(image && location.protocol !== 'file:') {
+                    if(digitalAvatar3 && image && location.protocol !== 'file:') {
                         image.style.maskImage=image.style.webkitMaskImage=`url("${originalHref}")`;
                         image.style.maskSize=image.style.webkitMaskSize='100% 100%';
                         image.style.maskRepeat=image.style.webkitMaskRepeat='no-repeat';

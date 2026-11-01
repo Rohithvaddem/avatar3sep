@@ -648,6 +648,16 @@
         }).catch(error => console.error('Downloaded landscaping could not load:', error));
     }
 
+    // Preserve physical prop proportions under the calibrated layout's unequal X/Z scale.
+    function metricPropMatrix(position, yaw, scale = 1) {
+        const heightScale = calibration.scale;
+        return new THREE.Matrix4().makeTranslation(position.x, position.y, position.z)
+            .multiply(new THREE.Matrix4().makeScale(1 / (heightScale * calibration.width),
+                1 / heightScale, 1 / (heightScale * calibration.depth)))
+            .multiply(new THREE.Matrix4().makeRotationY(yaw))
+            .multiply(new THREE.Matrix4().makeScale(scale * heightScale, scale * heightScale, scale * heightScale));
+    }
+
     function instanceLandscapeModel(model, placements, parent, name) {
         if (!placements.length) return;
         model.updateMatrixWorld(true);
@@ -663,8 +673,7 @@
             mesh.frustumCulled = false;
             placements.forEach((item,index) => {
                 const scale = item.width ? item.width/Math.max(size.x,size.z) : item.height/size.y;
-                const matrix = new THREE.Matrix4().compose(item.position,
-                    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),item.yaw),new THREE.Vector3(scale,scale,scale));
+                const matrix = metricPropMatrix(item.position, item.yaw, scale);
                 matrix.multiply(new THREE.Matrix4().makeTranslation(-center.x,-bounds.min.y,-center.z));
                 matrix.multiply(object.matrixWorld);
                 mesh.setMatrixAt(index,matrix);
@@ -1264,8 +1273,7 @@
             let count = 0;
             streetLightPlacements.forEach(item => {
                 if ((batch.level === 0) !== nearby.has(item.plotNo)) return;
-                const matrix = new THREE.Matrix4().compose(item.position,
-                    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), item.yaw), new THREE.Vector3(1, 1, 1));
+                const matrix = metricPropMatrix(item.position, item.yaw);
                 batch.mesh.setMatrixAt(count++, matrix.multiply(batch.source));
             });
             batch.mesh.count = count;
@@ -1278,120 +1286,56 @@
      */
     function setupSingleRoamingCar() {
         const group = new THREE.Group();
-        const color = 0xf8fafc; // Pearl White Modern SUV
-
-        const bodyW = 1.9;
-        const bodyL = 4.0;
-        const bodyH = 1.3;
-
-        // 1. Lower chassis / body
-        const chassisGeo = new THREE.BoxGeometry(bodyW, bodyH * 0.48, bodyL);
-        const paintMat = new THREE.MeshStandardMaterial({
-            color: color,
-            metalness: 0.75,
-            roughness: 0.25
-        });
-        const chassis = new THREE.Mesh(chassisGeo, paintMat);
-        chassis.position.y = bodyH * 0.28 + 0.12;
-        chassis.castShadow = true;
-        group.add(chassis);
-
-        // 2. Cabin / Tinted Glass
-        const cabinW = bodyW * 0.84;
-        const cabinL = bodyL * 0.54;
-        const cabinH = bodyH * 0.56;
-        const cabinGeo = new THREE.BoxGeometry(cabinW, cabinH, cabinL);
-        const glassMat = new THREE.MeshStandardMaterial({
-            color: 0x0f172a,
-            metalness: 0.9,
-            roughness: 0.1,
-            transparent: true,
-            opacity: 0.92
-        });
-        const cabin = new THREE.Mesh(cabinGeo, glassMat);
-        cabin.position.set(0, bodyH * 0.65 + 0.12, -bodyL * 0.05);
-        cabin.castShadow = true;
-        group.add(cabin);
-
-        // 3. Cabin Roof Top
-        const roofGeo = new THREE.BoxGeometry(cabinW * 0.96, 0.08, cabinL * 0.92);
-        const roof = new THREE.Mesh(roofGeo, paintMat);
-        roof.position.set(0, bodyH * 0.65 + cabinH / 2 + 0.16, -bodyL * 0.05);
-        group.add(roof);
-
-        // 4. Wheels
-        const wheelGeo = new THREE.CylinderGeometry(0.34, 0.34, 0.24, 12);
-        wheelGeo.rotateZ(Math.PI / 2);
-        const tireMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.85 });
-        const rimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.85, roughness: 0.2 });
-
-        const wheels = [];
-        const xOffset = bodyW / 2 + 0.02;
-        const zFront = bodyL * 0.30;
-        const zRear = -bodyL * 0.30;
-        const wheelY = 0.34;
-
-        [
-            [-xOffset, wheelY, zFront],
-            [xOffset, wheelY, zFront],
-            [-xOffset, wheelY, zRear],
-            [xOffset, wheelY, zRear]
-        ].forEach(([wx, wy, wz]) => {
-            const wheelGroup = new THREE.Group();
-            wheelGroup.position.set(wx, wy, wz);
-            const tire = new THREE.Mesh(wheelGeo, tireMat);
-            const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.25, 8), rimMat);
-            rim.rotateZ(Math.PI / 2);
-            wheelGroup.add(tire);
-            wheelGroup.add(rim);
-            group.add(wheelGroup);
-            wheels.push(tire);
-        });
-
-        // 5. Front Headlights (+Z Forward)
-        headlightMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            emissive: 0xfef08a,
-            emissiveIntensity: 1.5
-        });
-        const headGeo = new THREE.BoxGeometry(0.4, 0.16, 0.1);
-        const headL = new THREE.Mesh(headGeo, headlightMat);
-        headL.position.set(-bodyW * 0.34, bodyH * 0.32 + 0.12, bodyL / 2 + 0.04);
-        const headR = new THREE.Mesh(headGeo, headlightMat);
-        headR.position.set(bodyW * 0.34, bodyH * 0.32 + 0.12, bodyL / 2 + 0.04);
-        group.add(headL);
-        group.add(headR);
-
-        // Forward Beam Projection
-        const beamGeo = new THREE.ConeGeometry(1.2, 5.0, 10);
-        beamGeo.rotateX(-Math.PI / 2);
-        beamGeo.translate(0, 0, 2.5);
-        const beamMat = new THREE.MeshBasicMaterial({
-            color: 0xfef08a,
-            transparent: true,
-            opacity: 0.12,
-            depthWrite: false,
-            side: THREE.DoubleSide
-        });
-        const beam = new THREE.Mesh(beamGeo, beamMat);
-        beam.position.set(0, bodyH * 0.30, bodyL / 2 + 0.2);
-        group.add(beam);
-
-        // 6. Rear Taillights (-Z Rear)
-        taillightMat = new THREE.MeshStandardMaterial({
-            color: 0xff0000,
-            emissive: 0xdc2626,
-            emissiveIntensity: 1.4
-        });
-        const tailGeo = new THREE.BoxGeometry(0.4, 0.15, 0.08);
-        const tailL = new THREE.Mesh(tailGeo, taillightMat);
-        tailL.position.set(-bodyW * 0.34, bodyH * 0.34 + 0.12, -bodyL / 2 - 0.04);
-        const tailR = new THREE.Mesh(tailGeo, taillightMat);
-        tailR.position.set(bodyW * 0.34, bodyH * 0.34 + 0.12, -bodyL / 2 - 0.04);
-        group.add(tailL);
-        group.add(tailR);
-
-        group.userData = { wheels, beam };
+        group.name = 'RealisticRoamingCar';
+        const heading = new THREE.Group();
+        heading.name = 'CarHeading';
+        group.add(heading);
+        // Cancel the map's non-uniform calibration BEFORE rotating the vehicle.
+        // The outer group handles route positions; this child handles the heading.
+        group.scale.set(1 / (calibration.scale * calibration.width), 1 / calibration.scale,
+            1 / (calibration.scale * calibration.depth));
+        group.userData = { wheels: [], heading, wheelRadius: .39 };
+        const installCar = () => {
+            const bytes = Uint8Array.from(atob(window.AVATAR3_CAR_B64), c => c.charCodeAt(0));
+            new THREE.GLTFLoader().parse(bytes.buffer, '', gltf => {
+                const car = gltf.scene;
+                const bounds = new THREE.Box3().setFromObject(car);
+                const size = bounds.getSize(new THREE.Vector3());
+                const center = bounds.getCenter(new THREE.Vector3());
+                const dimensions = new THREE.Group();
+                dimensions.scale.set(2.05 / size.x, 1.35 / size.y, 4.7 / size.z);
+                car.position.set(-center.x, -bounds.min.y, -center.z);
+                dimensions.add(car); heading.add(dimensions);
+                car.traverse(object => {
+                    if (!object.isMesh) return;
+                    object.castShadow = false; object.receiveShadow = true;
+                    const materials = Array.isArray(object.material) ? object.material : [object.material];
+                    materials.forEach(material => {
+                        const name = String(material.name || '').toLowerCase();
+                        if (name.includes('glass')) { material.transmission = 0; material.transparent = true; material.opacity = .45; material.depthWrite = false; }
+                        if (name.includes('headlight')) headlightMat = material;
+                        if (name.includes('brakelight')) taillightMat = material;
+                    });
+                });
+                group.updateMatrixWorld(true);
+                const carAxis = new THREE.Vector3(1, 0, 0).applyQuaternion(car.getWorldQuaternion(new THREE.Quaternion()));
+                car.traverse(object => {
+                    if (!/^Wheel(Front|Rear)[LR]$/.test(object.name)) return;
+                    object.userData.spinAxis = carAxis.clone().applyQuaternion(object.getWorldQuaternion(new THREE.Quaternion()).invert()).normalize();
+                    group.userData.wheels.push(object);
+                });
+                group.userData.modelLoaded = true;
+                group.userData.worldDimensions = { length:4.7, width:2.05, height:1.35 };
+                applyLightingMode(currentLightingMode);
+            }, error => console.error('Detailed car could not load:', error));
+        };
+        if (window.AVATAR3_CAR_B64) installCar();
+        else {
+            const script = document.createElement('script');
+            script.src = 'downloaded_car_data.js'; script.onload = installCar;
+            script.onerror = () => console.error('Detailed car asset could not load. Keep downloaded_car_data.js beside the HTML.');
+            document.body.appendChild(script);
+        }
 
         // 48 Precision Waypoints strictly along Black Road Corridors (Zero Plot Collisions)
         const wholeLayoutWaypoints = [
@@ -1469,18 +1413,18 @@
         ];
 
         singleCarMesh = group;
-        singleCarMesh.position.set(wholeLayoutWaypoints[0].x, 0.45, wholeLayoutWaypoints[0].z);
+        singleCarMesh.position.set(wholeLayoutWaypoints[0].x, .06 / calibration.scale, wholeLayoutWaypoints[0].z);
         layoutWorldGroup.add(singleCarMesh);
 
         singleCarState = {
             mesh: singleCarMesh,
             waypoints: wholeLayoutWaypoints,
             targetIndex: 1,
-            speed: 15.0,
+            speed: 5.5, // metres per second (19.8 km/h), independent of layout scale
             currentYaw: 0
         };
 
-        console.log('✅ Deployed single Pearl White SUV roaming continuously across the entire layout.');
+        console.log('Detailed licensed car follows the layout road route at 19.8 km/h.');
     }
 
     function lerpAngle(start, end, amount) {
@@ -1503,7 +1447,11 @@
         const dx = targetWp.x - mesh.position.x;
         const dz = targetWp.z - mesh.position.z;
         const dist = Math.hypot(dx, dz);
-        const step = v.speed * dt;
+        const dirLocalX = dist > 0 ? dx / dist : 0;
+        const dirLocalZ = dist > 0 ? dz / dist : 0;
+        const routeScale = Math.hypot(dirLocalX * calibration.scale * calibration.width,
+            dirLocalZ * calibration.scale * calibration.depth) || 1;
+        const step = v.speed * dt / routeScale;
 
         if (dist <= step * 1.2 || dist < 0.6) {
             mesh.position.x = targetWp.x;
@@ -1512,19 +1460,19 @@
         } else {
             const dirX = dx / dist;
             const dirZ = dz / dist;
-            const targetYaw = Math.atan2(dx, dz);
+            const targetYaw = Math.atan2(dx * calibration.width, dz * calibration.depth);
             v.currentYaw = lerpAngle(v.currentYaw, targetYaw, Math.min(dt * 10.0, 0.45));
-            mesh.rotation.y = v.currentYaw;
+            mesh.userData.heading.rotation.y = v.currentYaw;
 
             mesh.position.x += dirX * step;
             mesh.position.z += dirZ * step;
-            mesh.position.y = 0.45;
+            mesh.position.y = .06 / calibration.scale;
         }
 
         // Rotate wheels
         if (mesh.userData && mesh.userData.wheels) {
             mesh.userData.wheels.forEach(tire => {
-                tire.rotation.x += step * 3.5;
+                tire.rotateOnAxis(tire.userData.spinAxis, step * routeScale / mesh.userData.wheelRadius);
             });
         }
     }
@@ -2411,6 +2359,8 @@
             calibration.scale,
             calibration.scale * calibration.depth
         );
+        if (singleCarMesh) singleCarMesh.scale.set(1 / (calibration.scale * calibration.width),
+            1 / calibration.scale, 1 / (calibration.scale * calibration.depth));
         layoutWorldGroup.updateMatrixWorld(true);
     }
 

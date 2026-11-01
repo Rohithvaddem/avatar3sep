@@ -54,7 +54,7 @@ test('private build excludes raw data and credentials and escapes stored HTML',a
 
 test('satellite overlays referenced by KML are published',async()=>{
  const kml=await readFile('doc.kml','utf8');
- const paths=[...kml.matchAll(/<href>(files\/[^<]+)<\/href>/g)].map(match=>match[1]);
+ const paths=[...kml.matchAll(/<href>((?:files\/|assets\/rohith-map\/)[^<]+)<\/href>/g)].map(match=>match[1]);
  assert.ok(paths.length>0);
  for(const path of paths) await access('dist/'+path);
 });

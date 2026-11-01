@@ -1,0 +1,10 @@
+{
+  "title": "Car Concept",
+  "author": "Eric Chadwick / Darmstadt Graphics Group GmbH",
+  "copyright": "2024 Darmstadt Graphics Group GmbH",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "source": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept",
+  "download": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/CarConcept/glTF-Binary/CarConcept.glb",
+  "changes": "Model geometry and embedded textures retained; displayed at 4.7m length, 2.05m width, 1.35m height. Native axes +Z forward. Source front-wheel pose retained."
+}
