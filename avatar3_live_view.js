@@ -1337,80 +1337,12 @@
             document.body.appendChild(script);
         }
 
-        // 48 Precision Waypoints strictly along Black Road Corridors (Zero Plot Collisions)
-        const wholeLayoutWaypoints = [
-            // 1. Entrance Road (Main Gate to Boulevard past Park-1)
-            { x: 91.25, z: -9.01 },  // Main Entrance Gate
-            { x: 75.00, z: -1.00 },  // Along Park-1
-            { x: 60.00, z: 6.75 },
-            { x: 47.50, z: 13.51 },
-            { x: 41.25, z: 16.26 },  // Avenue 1 & Central Boulevard Junction
-
-            // 2. Avenue 1 North & South
-            { x: 41.00, z: -26.52 }, // Avenue 1 North end
-            { x: 41.25, z: 16.26 },  // Return to Boulevard
-            { x: 41.25, z: 44.78 },  // Avenue 1 South end
-            { x: 41.25, z: 16.26 },  // Return to Boulevard
-
-            // 3. Central Boulevard West to Avenue 2
-            { x: 23.75, z: 16.26 },  // Avenue 2 Junction
-
-            // 4. Avenue 2 North & South
-            { x: 22.75, z: -26.52 }, // Avenue 2 North end
-            { x: 23.75, z: 16.26 },  // Return to Boulevard
-            { x: 24.25, z: 49.79 },  // Avenue 2 South end
-            { x: 23.75, z: 16.26 },  // Return to Boulevard
-
-            // 5. Central Boulevard West to Avenue 3
-            { x: 6.00, z: 16.26 },   // Avenue 3 Junction
-
-            // 6. Avenue 3 North & South
-            { x: 5.75, z: -26.52 },  // Avenue 3 North end
-            { x: 6.00, z: 16.26 },   // Return to Boulevard
-            { x: 6.00, z: 54.79 },   // Avenue 3 South end
-            { x: 6.00, z: 16.26 },   // Return to Boulevard
-
-            // 7. Central Boulevard West to Avenue 4
-            { x: -10.50, z: 16.26 }, // Avenue 4 Junction
-
-            // 8. Avenue 4 North & South
-            { x: -11.25, z: -26.52 },// Avenue 4 North end
-            { x: -10.50, z: 16.26 }, // Return to Boulevard
-            { x: -10.00, z: 54.79 }, // Avenue 4 South end
-            { x: -10.50, z: 16.26 }, // Return to Boulevard
-
-            // 9. Central Boulevard West to Avenue 5
-            { x: -26.00, z: 16.26 }, // Avenue 5 Junction
-
-            // 10. Avenue 5 North & South
-            { x: -26.25, z: -26.52 },// Avenue 5 North end
-            { x: -26.00, z: 16.26 }, // Return to Boulevard
-            { x: -26.00, z: 46.03 }, // Avenue 5 South end
-            { x: -26.00, z: 16.26 }, // Return to Boulevard
-
-            // 11. Central Boulevard West into Avenue 6 & Upper Northwest Loop (Plots 167-206)
-            { x: -42.50, z: 16.26 }, // West Boulevard Junction
-            { x: -58.75, z: 16.26 }, // Turn onto Avenue 6
-            { x: -58.25, z: -10.26 },// Along Avenue 6 Northbound
-            { x: -58.75, z: -35.29 },// Mid Horizontal Crossing Junction
-            { x: -59.25, z: -56.56 },// Northwest Top Turn
-            { x: -43.50, z: -56.56 },// Top Road Eastward
-            { x: -43.50, z: -36.54 },// Northeast Turn Southward
-            { x: -58.75, z: -36.54 },// Cross back to Avenue 6
-            { x: -58.25, z: -10.26 },// Southward along Avenue 6
-            { x: -58.75, z: 16.26 }, // Reach Boulevard
-            { x: -42.50, z: 16.26 }, // Boulevard Eastbound
-
-            // 12. Return Journey Eastbound along Central Boulevard to Entrance Gate
-            { x: -26.00, z: 16.26 },
-            { x: -10.50, z: 16.26 },
-            { x: 6.00, z: 16.26 },
-            { x: 23.75, z: 16.26 },
-            { x: 41.25, z: 16.26 }, // Reach Entrance Road Junction
-            { x: 47.50, z: 13.51 }, // Eastbound alongside Park-1
-            { x: 60.00, z: 6.75 },
-            { x: 75.00, z: -1.00 }
-        ];
+        // Follow the paved lane between the 176/167 and 157/166 plot rows.
+        const laneX = (828 / 2500 - 0.5) * LAYOUT_WIDTH;
+        const wholeLayoutWaypoints = [450, 932].map(top => ({
+            x: laneX,
+            z: (top / 1579 - 0.5) * LAYOUT_HEIGHT
+        }));
 
         singleCarMesh = group;
         singleCarMesh.position.set(wholeLayoutWaypoints[0].x, .06 / calibration.scale, wholeLayoutWaypoints[0].z);

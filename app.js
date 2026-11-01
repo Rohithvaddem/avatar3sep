@@ -4343,7 +4343,10 @@ function refreshLeafletMarkers() {
     const coords = avatarCoordsPool.avatar3 || {};
     const marks = (avatarDataPool.avatar3 || []).map(plot => {
         const c=coords[plot.plot_no]; if(!c) return '';
-        const x=c.left, y=c.top*1406/1579, status=String(plot.plot_status).toUpperCase(), color=palette[status] || '#475569';
+        // Register schematic plot centers to the supplied KMZ artwork (2500-wide SVG).
+        const x = (211 + (c.left - 560.5) * 0.417) * 2.5;
+        const y = (41 + (c.top - 160.034) * 0.372) * 2.5;
+        const status=String(plot.plot_status).toUpperCase(), color=palette[status] || '#475569';
         const square=status==='MORTGAGE'||status==='MORTAGAGE'||status==='HOLD';
         const shape=square ? `<rect x="${x-13}" y="${y-13}" width="26" height="26" rx="4"/>` : `<circle cx="${x}" cy="${y}" r="13"/>`;
         return `<g data-plot="${Number(plot.plot_no)}"><circle cx="${x}" cy="${y}" r="20" fill="transparent"/><g fill="${color}" stroke="white" stroke-width="1.5">${shape}</g><text x="${x}" y="${y}" dominant-baseline="central" text-anchor="middle" fill="white" font-family="Arial" font-weight="700" font-size="${String(plot.plot_no).length===3?13:15}">${Number(plot.plot_no)}</text></g>`;
