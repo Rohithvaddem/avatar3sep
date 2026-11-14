@@ -3717,7 +3717,7 @@ function setupSatelliteToggle() {
             mapContainer.style.display = 'none';
             document.getElementById('threeMapContainer').style.display = 'block';
             if (mapTip) mapTip.style.display = 'none';
-            document.querySelector('.project-name').innerHTML = '<img class="project-wordmark" src="assets/avatar3-wordmark.png" alt="Avatar 3" width="110" height="24">';
+            document.querySelector('.project-name').innerHTML = '<img class="project-wordmark project-logo" src="assets/avatar3-logo-header.png" alt="Avatar 3 by Aspirealty" width="204" height="46">';
             for (const id of ['searchSection', 'filtersSection']) {
                 const element = document.getElementById(id);
                 if (element) element.style.display = 'none';
@@ -4400,7 +4400,7 @@ function updateSidebarAndHeaderForProject(project) {
             approvedBadge.innerHTML = '<i class="fa-solid fa-cube" style="color: #c084fc;"></i> DTCP Approved';
         }
         if (projectNameEl) {
-            projectNameEl.innerHTML = '<img class="project-wordmark" src="assets/avatar3-wordmark.png" alt="Avatar 3" width="110" height="24">';
+            projectNameEl.innerHTML = '<img class="project-wordmark project-logo" src="assets/avatar3-logo-header.png" alt="Avatar 3 by Aspirealty" width="204" height="46">';
         }
         if (comingSoonOverlay) {
             comingSoonOverlay.style.display = 'none';

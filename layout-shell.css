@@ -424,3 +424,12 @@ body.layout-shell #sidebarFooter #staffLoginBtn { display:none!important; }
 }
 .satellite-load-status { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:900; max-width:80%; padding:10px 14px; border-radius:8px; background:#fff; color:#18354b; box-shadow:0 2px 12px #0003; font-size:13px; pointer-events:none; }
 .satellite-load-status[hidden] {display:none!important;}
+/* New Avatar 3 logo in the header: emblem beside the name, no pill. */
+body.layout-shell .project-wordmark.project-logo { width:204px; height:46px; max-width:none; flex:0 0 auto; }
+body.layout-shell .project-name:has(.project-logo) { border:0; background:transparent!important; padding:0; min-height:0; flex:0 0 auto; }
+@media(max-width:1100px) { body.layout-shell .project-wordmark.project-logo { width:177px; height:40px; } }
+@media(min-width:600px) and (max-width:992px) { body.layout-shell .project-name img.project-logo { width:150px!important; height:34px!important; } }
+@media(min-width:361px) and (max-width:599px) { body.layout-shell .project-name img.project-logo { width:124px!important; height:28px!important; } }
+@media(max-width:360px) { body.layout-shell .project-wordmark.project-logo { width:97px; height:22px; } }
+/* Staff Login stays available in Satellite and 3D views. */
+body.layout-shell.immersive-view .dashboard-header > .shell-staff-login:not([hidden]) { display:inline-flex!important; }
