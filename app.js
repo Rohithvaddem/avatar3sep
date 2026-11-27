@@ -5058,16 +5058,13 @@ function startRealtimeCloudSync() {
                         Object.keys(projectCloudData).forEach(plotNo => {
                             const cloudItem = projectCloudData[plotNo];
                             if (!cloudItem) return;
-                            if (projKey === 'avatar3' && typeof plotDataRawAvatar3 !== 'undefined') {
-                                const surveyedPlot = plotDataRawAvatar3.find(p => String(p.plot_no) === String(plotNo));
-                                if (surveyedPlot) cloudItem.plot_size = surveyedPlot.plot_size;
-                            }
                             
                             let localItem = localPool.find(p => String(p.plot_no) === String(plotNo));
                             if (localItem) {
                                 if (localItem.plot_status !== cloudItem.plot_status || 
                                     localItem.customer_name !== cloudItem.customer_name ||
-                                    localItem.plot_size !== cloudItem.plot_size) {
+                                    localItem.plot_size !== cloudItem.plot_size ||
+                                    localItem.facing !== cloudItem.facing) {
                                     Object.assign(localItem, cloudItem);
                                     hasChanges = true;
                                 }

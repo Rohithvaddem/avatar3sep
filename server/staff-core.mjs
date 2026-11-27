@@ -25,10 +25,10 @@ export function createHandler(deps) {
    const isMortgage=row=>row?.mortgage_reference===true || row?.is_mortgage===true || ['MORTGAGE','MORTAGAGE'].includes(String(row?.plot_status||'').toUpperCase().trim());
    const originalMortgagePlots=new Set(seed.filter(isMortgage).map(row=>String(row.plot_no)));
    const surveyedAreas=new Map(project==='avatar3'?seed.map(row=>[String(row.plot_no),row.plot_size]):[]);
-   const rows=(current?.data || seed).filter(row=>Number.isFinite(Number(row.plot_no)) && Number(row.plot_no)>0).map(row=>({...row,...(surveyedAreas.has(String(row.plot_no))?{plot_size:surveyedAreas.get(String(row.plot_no))}:{}),mortgage_reference:originalMortgagePlots.has(String(row.plot_no)) || isMortgage(row)}));
+   const rows=(current?.data || seed).filter(row=>Number.isFinite(Number(row.plot_no)) && Number(row.plot_no)>0).map(row=>({...row,...(surveyedAreas.has(String(row.plot_no)) && !row.plot_size_updated?{plot_size:surveyedAreas.get(String(row.plot_no))}:{}),mortgage_reference:originalMortgagePlots.has(String(row.plot_no)) || isMortgage(row)}));
    if(request.method==='GET') {
     if(role) return json({plots:rows,version:current?.etag || 'seed'});
-    const publicFields=['plot_no','plot_size','extent_sq_mtrs','facing','plot_status','dim_north','dim_south','dim_east','dim_west'];
+    const publicFields=['plot_no','plot_size','extent_sq_mtrs','facing','plot_status','customer_name','dim_north','dim_south','dim_east','dim_west'];
     return json({plots:rows.map(row=>Object.fromEntries(publicFields.filter(key=>key in row).map(key=>[key,row[key]])))});
    }
    if(!role) return json({error:user?'Staff access required':'Sign in required'},user?403:401);
@@ -44,9 +44,9 @@ export function createHandler(deps) {
     else if(typeof value!=='string'||value.length>500) return json({error:'Invalid field value'},400);
    }
    if(patch.plot_status && !['AVAILABLE','SOLD','REGISTERED','HOLD','INVESTOR','MORTGAGE','RESALE','BOOKED'].includes(patch.plot_status)) return json({error:'Invalid status'},400);
-   if(patch.facing && !['East','West','North','South','North-East','North-West','South-East','South-West'].includes(patch.facing)) return json({error:'Invalid facing'},400);
+   if(patch.facing && !['East','West','North','South','North-East','North-West','South-East','South-West','East (Cross)','West (Cross)','North (Cross)'].includes(patch.facing)) return json({error:'Invalid facing'},400);
    if(patch.plot_size && (!Number.isFinite(Number(patch.plot_size))||Number(patch.plot_size)<=0)) return json({error:'Invalid area'},400);
-   rows[idx]={...rows[idx],...patch,mortgage_reference:rows[idx].mortgage_reference || patch.plot_status==='MORTGAGE',updated_at:new Date().toISOString(),updated_by:user.id};
+   rows[idx]={...rows[idx],...patch,...(patch.plot_size?{plot_size_updated:true}:{}),mortgage_reference:rows[idx].mortgage_reference || patch.plot_status==='MORTGAGE',updated_at:new Date().toISOString(),updated_by:user.id};
    const result=await store.setJSON(project,rows,current?{onlyIfMatch:current.etag}:{onlyIfNew:true});
    if(!result.modified) return json({error:'Concurrent update. Refresh and retry.'},409);
    return json({plot:rows[idx],version:result.etag});

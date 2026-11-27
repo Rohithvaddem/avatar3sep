@@ -17,7 +17,8 @@ test('public visitors get only plot information and cannot write',async()=>{
  for(const user of [null,{id:'x',roles:[]}]){
   const f=fixture(user);const response=await f.handler(f.request());assert.equal(response.status,200);
   const body=await response.json();assert.equal(body.plots.length,1);assert.equal(body.plots[0].plot_no,'1');
-  for(const key of ['customer_name','customer_phone','crm_notes','reference_name','updated_by']) assert.ok(!(key in body.plots[0]));
+  for(const key of ['customer_phone','crm_notes','reference_name','updated_by']) assert.ok(!(key in body.plots[0]));
+  assert.equal(body.plots[0].customer_name,'Private customer');
   assert.ok(!('version' in body));
   assert.equal((await f.handler(f.request('PATCH',{}))).status,user?403:401);
   assert.equal(f.writes(),0);
@@ -102,4 +103,16 @@ test('new mortgage assignment is retained as a reference after sale',async()=>{
  const mortgage=await (await f.handler(f.request('PATCH',{plotNo:'1',version:'seed',patch:{plot_status:'MORTGAGE'}}))).json();
  const sold=await (await f.handler(f.request('PATCH',{plotNo:'1',version:mortgage.version,patch:{plot_status:'SOLD'}}))).json();
  assert.equal(sold.plot.mortgage_reference,true);
+});
+test('staff edits to plot area and cross facing persist and appear for public visitors',async()=>{
+ const user={id:'trusted',roles:['staff']};
+ const f=fixture(user,[{plot_no:'6',plot_size:'464',facing:'North-West',plot_status:'AVAILABLE',customer_name:''}]);
+ const updated=await f.handler(f.request('PATCH',{plotNo:'6',version:'seed',patch:{plot_size:'470',facing:'North (Cross)',plot_status:'SOLD',customer_name:'Public Buyer'}}));
+ assert.equal(updated.status,200);
+ user.roles=[];
+ const publicRead=await (await f.handler(f.request())).json();
+ assert.equal(publicRead.plots[0].plot_size,'470');
+ assert.equal(publicRead.plots[0].facing,'North (Cross)');
+ assert.equal(publicRead.plots[0].plot_status,'SOLD');
+ assert.equal(publicRead.plots[0].customer_name,'Public Buyer');
 });

@@ -19,7 +19,7 @@ for(const name of ['avatar1_plot_coords.json','avatar2_plot_coords.json','avatar
 let html=await readFile('avatar 3.html','utf8');
 html=html.replace('<head>', '<head><script>if(/invite_token|recovery_token|confirmation_token|access_token/.test(location.hash))location.replace("/login.html"+location.hash);</script>');
 html=html.replace(/\s*<script src="(?:data|avatar[123]_data)\.js"><\/script>/g,'');
-html=html.replace('<script src="app.js?v=30"></script>','<script src="staff-session.js"></script><script src="app.js"></script>');
+html=html.replace(/<script src="app\.js(?:\?v=\d+)?"><\/script>/,'<script src="staff-session.js"></script><script src="app.js"></script>');
 if(!html.includes('staff-session.js')) throw new Error('App script entry changed; update build transform');
 html=html.replace('Username / Login ID','Staff email').replace('Login as Staff','Sign in').replace(/Staff Username|Director Login ID/g,'Staff email').replace(/Enter staff username|Enter Director ID \(Aspirealty Avatar\)/g,'Staff email address');
 const lazyScripts=[];
