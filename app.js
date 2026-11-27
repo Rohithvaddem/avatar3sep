@@ -2423,6 +2423,9 @@ function openPlotModal(plotNo) {
     const isDealSimulatorAllowed = isDirectorLoggedIn && (isAvailable || isResale);
     const canGenerateQuote = (plotStatusUpper === 'AVAILABLE' || plotStatusUpper === 'HOLD' || plotStatusUpper === 'MORTGAGE' || plotStatusUpper === 'MORTAGAGE' || plotStatusUpper === 'RESALE');
 
+    const rawCustomerName = String(item.customer_name || '').trim();
+    const customerNameDisplay = rawCustomerName || (isAvailable ? 'NA' : (isAdminLoggedIn ? 'Not recorded' : 'NA'));
+
     let emiHtml = '';
 
     modalBody.innerHTML = `
@@ -2432,7 +2435,7 @@ function openPlotModal(plotNo) {
                 <span class="detail-label">Plot Number</span>
                 <span class="detail-val" style="font-size: 18px; font-weight: 700; color: var(--accent)"># ${item.plot_no}</span>
             </div>
-            ${isAdminLoggedIn ? '<div class="detail-row" id="plotCustomerNameRow"><span class="detail-label">Customer Name</span><span class="detail-val" id="plotCustomerName">' + escapeDocumentText(String(item.customer_name || '').trim() || 'Not recorded') + '</span></div>' : ''}
+            <div class="detail-row" id="plotCustomerNameRow"><span class="detail-label">Customer Name</span><span class="detail-val" id="plotCustomerName">${escapeDocumentText(customerNameDisplay)}</span></div>
             <div class="detail-row">
                 <span class="detail-label">Status</span>
                 <span class="status-badge" style="--badge-color: ${color}; --badge-glow: ${color}">${item.plot_status}</span>
